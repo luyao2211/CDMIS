@@ -1,0 +1,130 @@
+﻿@model CDMIS.ViewModels.PatientDetailInfoViewModel
+@{
+    ViewBag.Title = "详细信息";
+    Layout = "~/Views/Shared/_PatientInfoLayout.cshtml";
+}
+@using (Ajax.BeginForm("PatientDetailInfoEdit", "PatientInfo", new { PatientId = @Model.UserId },
+     new AjaxOptions
+    {
+        UpdateTargetId = "tableContainer",
+        HttpMethod = "Get",
+        OnSuccess = " ",
+    }))
+{
+    
+    <style type="text/css">
+        h2
+        {
+            font-size: 22px;
+            font-family: 微软雅黑;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        h3
+        {
+            font-size: 18px;
+            font-family: 微软雅黑;
+            font-weight: normal;
+            color: #000;
+            margin-bottom: 8px;
+        }
+        .table1
+        {
+            font-size: 17px;
+        }
+    </style>
+
+    @Html.HiddenFor(model => model.UserId)  
+    
+    <div style="margin-top:30px;">
+    
+    @if (Model.PatientDetailInfo.Count > 0)
+    {
+        foreach (var items in Model.PatientDetailInfo)
+        {
+        <div>
+    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#@items[0].CategoryName">+ @items[0].CategoryName</button>
+
+    <div id="@items[0].CategoryName" class="collapse in">
+        <div role="form" class="form-horizontal">
+        @if (items.Count > 0)
+        {
+            foreach (var item in items)
+            {
+                if (item.ParentCode == "")
+                {
+                    if (@item.ItemCode == "Doctor")
+                    {
+            <h3>
+                <span>@item.ItemName</span><span style="margin-left: 20px;">@item.Content</span></h3>
+                    }
+
+                    else
+                    {
+            <h3>@item.ItemName</h3>  
+                    }
+                }
+                else
+                { 
+            <div class="form-group">
+                    <label class="col-sm-4 control-label" style="font-size: 16px;">
+                        @if (item.ControlType == "7" && item.ItemSeq != 1){}
+                        else
+                        {
+                            @item.ItemName
+                        }
+                    </label>
+                    <div class="col-sm-8">
+                    @if (item.ControlType == "1")
+                    {
+                            <div class="alert alert-info">@item.Content</div>
+                            @*@item.Content*@
+                            @*@Html.TextBox(item.ItemCode, item.Content, new { id = item.ItemCode, style = "font-size:17px;", @class = "form-control", disabled="disabled" })*@
+                    }
+                    else
+                    {
+                            <div class="alert alert-info">@item.Content</div>
+                            @*@item.Content*@
+                            @*@Html.TextBox(item.ItemCode, item.Content, new { id = item.ItemCode, style = "font-size:17px;", @class = "form-control", disabled = "disabled" })*@
+                    }
+                    </div>
+            </div>
+                }
+            }
+        }
+        </div>
+    </div>
+    
+    </div>
+    
+        <div id="white"  style="height:20px;width:100%">
+        </div>
+        }
+   
+    <input type="submit" class="btn btn-primary" id="Sure" value="编辑" style="font-size: 16px;margin-top: 50px" />
+    
+    }
+    else
+    {
+        
+    <div style="margin-top:30px;" > <p style="font-size: 20px; color: red;" align="center" >没有关注的健康模块！</p>
+    </div>
+    
+    }
+    <div id="white"  style="height:30px;width:100%">
+    </div>
+  </div>
+    
+}
+<script type="text/javascript">
+    $(function () {
+        $("#menu a").attr("id", ""); //Reset id's 
+        $("#menu li:eq(1) a").attr("id", "current");
+    });
+
+    function show(name) {
+        $("#" + name).toggle();
+    }
+</script>
