@@ -2,7 +2,7 @@
 
 *{list-style-type:none;}
 a,img{border:0;}
-.demo{width:960px;margin:60px auto 0 auto;}
+.demo{width:960px;margin:30px auto 0 auto;}
 /*history*/
 .history{background:url(/Content/Image/clinicInfo-line.gif) repeat-y 187px 0;overflow:hidden;position:relative;}
 .history-date{overflow:hidden;position:relative;}
@@ -41,6 +41,13 @@ a,img{border:0;}
 *body .history-date ul li.green dl dt a{_background:transparent!important;*background:transparent!important;*font-size:12px!important;_font-weight:normal!important;}
 
 .Itemhref {color:#000;font-size:16px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;}
+
+.Itemhref_Diagnosis {color:#000;font-size:16px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;}
+.Itemhref_Examination {color:#000;font-size:16px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;}
+.Itemhref_LabTest {color:#000;font-size:16px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;}
+.Itemhref_Drug {color:#000;font-size:16px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;}
+
+
 .Item {color:#000;font-size:20px;font-family:Î¢ÈíÑÅºÚ;font-weight:normal;text-decoration:none;font-weight:bold;}
 .cbp_tmlabel {
 	margin: 0 0 15px 25%;
