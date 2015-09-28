@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://bme319.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://bme319.org/AbstractTypes" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://bme319.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://bme319.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://bme319.org/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://bme319.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://bme319.org/">
       <s:element name="SetMpExaminationCmp">
@@ -1282,6 +1282,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="History" type="tns:ArrayOfClinicBasicInfoandTime" />
           <s:element minOccurs="0" maxOccurs="1" name="AdmissionDateMark" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="ClinicDateMark" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="mark_contitue" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfClinicBasicInfoandTime">
@@ -4482,7 +4483,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="OrderClass" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="OrderContent" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="Dosage" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Dosage" type="s:decimal" />
             <s:element minOccurs="0" maxOccurs="1" name="DosageUnits" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="Administration" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="StartDateTime" type="s:dateTime" />
@@ -4518,7 +4519,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="OrderClass" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="OrderContent" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="Dosage" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Dosage" type="s:decimal" />
             <s:element minOccurs="0" maxOccurs="1" name="DosageUnits" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="Administration" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="StartDateTime" type="s:dateTime" />
@@ -38588,16 +38589,16 @@
   </wsdl:binding>
   <wsdl:service name="Services">
     <wsdl:port name="ServicesSoap" binding="tns:ServicesSoap">
-      <soap:address location="http://10.13.22.66:8088/Services.asmx" />
+      <soap:address location="http://121.43.107.106:8088/Services.asmx" />
     </wsdl:port>
     <wsdl:port name="ServicesSoap12" binding="tns:ServicesSoap12">
-      <soap12:address location="http://10.13.22.66:8088/Services.asmx" />
+      <soap12:address location="http://121.43.107.106:8088/Services.asmx" />
     </wsdl:port>
     <wsdl:port name="ServicesHttpGet" binding="tns:ServicesHttpGet">
-      <http:address location="http://10.13.22.66:8088/Services.asmx" />
+      <http:address location="http://121.43.107.106:8088/Services.asmx" />
     </wsdl:port>
     <wsdl:port name="ServicesHttpPost" binding="tns:ServicesHttpPost">
-      <http:address location="http://10.13.22.66:8088/Services.asmx" />
+      <http:address location="http://121.43.107.106:8088/Services.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

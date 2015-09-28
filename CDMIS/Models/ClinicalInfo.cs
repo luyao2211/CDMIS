@@ -141,7 +141,7 @@ namespace CDMIS.Models
         public string OrderClassCode { get; set; }
         public string OrderClass { get; set; }
         public string OrderContent { get; set; }
-        public int Dosage { get; set; }
+        public string Dosage { get; set; }
         public string DosageUnitsCode { get; set; }
         public string DosageUnits { get; set; }
         public string AdministrationCode { get; set; }

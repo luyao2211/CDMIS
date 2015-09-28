@@ -2336,7 +2336,7 @@ namespace CDMIS.Controllers
         }
 
         //增加
-        public JsonResult DrugInfoAdd(string UserId, string VisitId, int OrderSubNo, string OrderClass, int RepeatIndicator, string OrderCode, string OrderContent, int Dosage, string DosageUnits, string Administration, DateTime StartDateTime, DateTime StopDateTime, int FreqCounter, string Frequency, int FreqInteval, string FreqIntevalUnit, string DeptCode)
+        public JsonResult DrugInfoAdd(string UserId, string VisitId, int OrderSubNo, string OrderClass, int RepeatIndicator, string OrderCode, string OrderContent, double Dosage, string DosageUnits, string Administration, DateTime StartDateTime, DateTime StopDateTime, int FreqCounter, string Frequency, int FreqInteval, string FreqIntevalUnit, string DeptCode)
         {
             var user = Session["CurrentUser"] as UserAndRole;
             var res = new JsonResult();
@@ -2354,7 +2354,8 @@ namespace CDMIS.Controllers
             bool flag = false;         //Convert.ToInt32(Admission)
             //flag = _ServicesSoapClient.SetDrugRecord(UserId, VisitId, OrderSubNo, RepeatIndicator, OrderClass, OrderCode, OrderContent, Dosage, DosageUnits, Administration, StartDateTime, StopDateTime, 1, "", Frequency, FreqCounter, FreqInteval, FreqIntevalUnit, DeptCode, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
             //OrderSubNo = 1 修改 ZC 2015-05-19
-            flag = _ServicesSoapClient.SetDrugRecord(UserId, VisitId, 1, RepeatIndicator, OrderClass, OrderCode, OrderContent, Dosage, DosageUnits, Administration, StartDateTime, StopDateTime, 1, "", Frequency, FreqCounter, FreqInteval, FreqIntevalUnit, DeptCode, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+            decimal test = (decimal)Dosage;
+            flag = _ServicesSoapClient.SetDrugRecord(UserId, VisitId, 1, RepeatIndicator, OrderClass, OrderCode, OrderContent, test, DosageUnits, Administration, StartDateTime, StopDateTime, 1, "", Frequency, FreqCounter, FreqInteval, FreqIntevalUnit, DeptCode, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
             if (flag == true)
             {
                 res.Data = true;
@@ -2368,7 +2369,7 @@ namespace CDMIS.Controllers
         }
 
         //编辑
-        public JsonResult DrugInfoEdit(string UserId, string VisitId, int OrderNo, int OrderSubNo, string OrderClass, int RepeatIndicator, string OrderCode, string OrderContent, int Dosage, string DosageUnitsCode, string Administration, DateTime StartDateTime, DateTime StopDateTime, int FreqCounter, string FreqCounterUnit, int FreqInteval, string FreqIntevalUnit, string DeptCode)
+        public JsonResult DrugInfoEdit(string UserId, string VisitId, int OrderNo, int OrderSubNo, string OrderClass, int RepeatIndicator, string OrderCode, string OrderContent, double Dosage, string DosageUnitsCode, string Administration, DateTime StartDateTime, DateTime StopDateTime, int FreqCounter, string FreqCounterUnit, int FreqInteval, string FreqIntevalUnit, string DeptCode)
         {
             var user = Session["CurrentUser"] as UserAndRole;
             var res = new JsonResult();
@@ -2383,8 +2384,9 @@ namespace CDMIS.Controllers
             //{
             //    Stop_DateTime = "0";
             //}
+            decimal test = (decimal)Dosage;
             bool flag = false;         //Convert.ToInt32(Admission)
-            flag = _ServicesSoapClient.UpdateDrugRecord(UserId, VisitId, OrderNo, OrderSubNo, RepeatIndicator, OrderClass, OrderCode, OrderContent, Dosage, DosageUnitsCode, Administration, StartDateTime, StopDateTime, 1, "", FreqCounterUnit, FreqCounter, FreqInteval, FreqIntevalUnit, DeptCode, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+            flag = _ServicesSoapClient.UpdateDrugRecord(UserId, VisitId, OrderNo, OrderSubNo, RepeatIndicator, OrderClass, OrderCode, OrderContent, test, DosageUnitsCode, Administration, StartDateTime, StopDateTime, 1, "", FreqCounterUnit, FreqCounter, FreqInteval, FreqIntevalUnit, DeptCode, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
             if (flag == true)
             {
                 res.Data = true;
@@ -3256,7 +3258,7 @@ namespace CDMIS.Controllers
                         item.OrderClass = dr["OrderClass"].ToString();
                         item.OrderCode = dr["OrderCode"].ToString();
                         item.OrderContent = dr["OrderContent"].ToString();
-                        item.Dosage = Convert.ToInt32(dr["Dosage"]);
+                        item.Dosage = dr["Dosage"].ToString();
                         item.DosageUnitsCode = dr["DosageUnitsCode"].ToString();
                         item.DosageUnits = dr["DosageUnits"].ToString();
                         item.AdministrationCode = dr["AdministrationCode"].ToString();

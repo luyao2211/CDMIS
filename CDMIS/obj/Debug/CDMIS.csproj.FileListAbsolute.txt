@@ -95,3 +95,22 @@ C:\Users\Administrator\Desktop\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
 C:\Users\Administrator\Desktop\CDMIS\CDMIS\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\CDMIS\CDMIS\obj\Debug\CDMIS.dll
 C:\Users\Administrator\Desktop\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\CDMIS.dll
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\CDMIS.pdb
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\EntityFramework.dll
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.dll
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\EntityFramework.xml
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\obj\Debug\ResolveAssemblyReference.cache
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
+F:\bme319\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
+C:\慢病管理\github\CDMIS\CDMIS\bin\CDMIS.dll
+C:\慢病管理\github\CDMIS\CDMIS\bin\CDMIS.pdb
+C:\慢病管理\github\CDMIS\CDMIS\bin\EntityFramework.dll
+C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.dll
+C:\慢病管理\github\CDMIS\CDMIS\bin\EntityFramework.xml
+C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
+C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
+C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
+C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb

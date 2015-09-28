@@ -657,13 +657,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://10.13.22.139:57772/csp/hz_mb/Bs.WebService.CLS%3fWSDL=1">
+    <WebReferenceUrl Include="http://10.0.0.120:57772/csp/hz_mb/Bs.WebService.CLS%3fWSDL=1">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WebReferenceJC\</RelPath>
-      <UpdateFromURL>http://10.13.22.139:57772/csp/hz_mb/Bs.WebService.CLS%3fWSDL=1</UpdateFromURL>
+      <UpdateFromURL>http://10.0.0.120:57772/csp/hz_mb/Bs.WebService.CLS%3fWSDL=1</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -671,6 +668,9 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>CDMIS_WebReferenceJC_Bs_WebService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -101,6 +101,29 @@
 </div>
 
 @*时间轴动态*@
+
+<div>
+    <h4>临床信息按类型筛选</h4>
+    <div class="modalContent" style="margin-top: 5px; text-align: center;">
+        <div class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    选择类型
+                </label>
+                <div class="col-sm-4">
+                    <select id="type_chose" class="form-control" onclick = "TypeChange()">
+                        <option value="all">所有</option>
+                        <option value="Itemhref_Diagnosis">诊断</option>
+                        <option value="Itemhref_Examination">检查</option>
+                        <option value="Itemhref_LabTest">化验</option>
+                        <option value="Itemhref_Drug">用药</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+                </div>
+</div>
+
 <div id="norecord" style="display: none; margin-top: 20px;margin-bottom:40px;" align="center">
     <p style="font-size: 20px; color: Red;">还没有任何临床信息</p>
 </div>
@@ -129,8 +152,24 @@
 
                                  else
                                  { 
-                                    <p><a href="javascript:void(0)" class="Itemhref" id="@Model.History[i].ItemGroup[m].KeyCode" onclick="OpenClinicInfoDetail(this.id);">@Model.History[i].ItemGroup[m].Time&nbsp;&nbsp;@Model.History[i].ItemGroup[m].Event</a></p>
-                                }
+                                     if (Model.History[i].ItemGroup[m].Type  == "诊断")
+                                     {
+                                         <p class = "Itemhref_Diagnosis"><a href="javascript:void(0)" class="Itemhref" id="@Model.History[i].ItemGroup[m].KeyCode" onclick="OpenClinicInfoDetail(this.id);">@Model.History[i].ItemGroup[m].Time&nbsp;&nbsp;@Model.History[i].ItemGroup[m].Event</a></p>
+                                     }
+                                     else if (Model.History[i].ItemGroup[m].Type == "检查")
+                                     {
+                                         <p class = "Itemhref_Examination"><a href="javascript:void(0)" class="Itemhref" id="@Model.History[i].ItemGroup[m].KeyCode" onclick="OpenClinicInfoDetail(this.id);">@Model.History[i].ItemGroup[m].Time&nbsp;&nbsp;@Model.History[i].ItemGroup[m].Event</a></p>
+                                     }
+                                     else if (Model.History[i].ItemGroup[m].Type == "化验")
+                                     {
+                                          <p class = "Itemhref_LabTest"><a href="javascript:void(0)" class="Itemhref" id="@Model.History[i].ItemGroup[m].KeyCode" onclick="OpenClinicInfoDetail(this.id);">@Model.History[i].ItemGroup[m].Time&nbsp;&nbsp;@Model.History[i].ItemGroup[m].Event</a></p>
+                                     }
+                                     else if (Model.History[i].ItemGroup[m].Type == "用药")
+                                     {
+                                          <p class = "Itemhref_Drug"><a href="javascript:void(0)" class="Itemhref" id="@Model.History[i].ItemGroup[m].KeyCode" onclick="OpenClinicInfoDetail(this.id);">@Model.History[i].ItemGroup[m].Time&nbsp;&nbsp;@Model.History[i].ItemGroup[m].Event</a></p>
+                                     }
+
+                                 }
                         }
                         </div>
 
@@ -148,10 +187,14 @@
 
     <div class="white" style="height: 10px; margin-top: 10px;">
     </div>
+
+    @if (Model.mark_contitue == "1")
+    {
     <div id="historyButton">
        <input type="button" style="width:800px;height:40px;" class="btn btn-primary" onclick="GetMoreClinic();" value="加载更多" />
     </div>
-    <div class="white" style="height: 80px;">
+    }
+    <div class="white" style="height:50px;">
     </div>
 </div>
 
@@ -240,13 +283,39 @@
                                 str += ' <p class="Item" id="">' + res.History[i].ItemGroup[j].Time + '<span style="margin-left:20px;">' + res.History[i].ItemGroup[j].Event + '</span></p>';
                             }
                             else {
-                                str += '<p><a href="javascript:void(0)" class="Itemhref" id="' + res.History[i].ItemGroup[j].KeyCode + '" onclick="OpenClinicInfoDetail(this.id);">' + res.History[i].ItemGroup[j].Time + '&nbsp;&nbsp;' + res.History[i].ItemGroup[j].Event + '</a></p>';
+                                //str += '<p><a href="javascript:void(0)" class="Itemhref" id="' + res.History[i].ItemGroup[j].KeyCode + '" onclick="OpenClinicInfoDetail(this.id);">' + res.History[i].ItemGroup[j].Time + '&nbsp;&nbsp;' + res.History[i].ItemGroup[j].Event + '</a></p>';
+                                //不同类型的标注
+                                var type_class = "";
+                                if (res.History[i].ItemGroup[j].Type == "诊断") {
+                                    type_class = "Itemhref_Diagnosis";
+                                }
+                                else if (res.History[i].ItemGroup[j].Type == "检查") {
+                                    type_class = "Itemhref_Examination";
+                                }
+                                else if (res.History[i].ItemGroup[j].Type == "化验") {
+                                    type_class = "Itemhref_LabTest";
+                                }
+                                else if (res.History[i].ItemGroup[j].Type == "用药") {
+                                    type_class = "Itemhref_Drug";
+                                }
+                                str += '<p class="' + type_class + '" ><a href="javascript:void(0)" id="' + res.History[i].ItemGroup[j].KeyCode + '" onclick="OpenClinicInfoDetail(this.id);">' + res.History[i].ItemGroup[j].Time + '&nbsp;&nbsp;' + res.History[i].ItemGroup[j].Event + '</a></p>';
                             }
                         }
                         str += '</li>';
                     }
                     $("#historyUl").append(str);
-                    $("#historyButton").show();
+
+                    if (res.mark_contitue == "1") {
+                        //$("#historyButton").show();
+                        document.getElementById("historyButton").style.display = "block";
+                    }
+                    else {
+                        //$("#historyButton").hide();
+                        document.getElementById("historyButton").style.display = "none";
+                    }
+                    //只显示选择的类型
+                    TypeChange();
+
                 }
                 else {
                     $("#historyButton").hide();
@@ -273,13 +342,13 @@
     }
 
     function GetHospitalList() {
-        
+
         $.ajax({
             url: "/PatientInfo/GetHospitalList",
             type: "GET",
             dataType: "json",
             async: false,
-            data: { },  //输入参数
+            data: {},  //输入参数
             success: function (res) {
                 $("#HospitalListDropDownListFor").empty();
                 var InitialElement = $("<option></option>").text("请选择");
@@ -378,4 +447,42 @@
             }, 2000);
         }
     });
+
+
+    function TypeChange() {
+        $('#historyUl').find('li').each(function () {
+            $(this).css({ display: 'block' });
+        });
+
+        var type_selected = $("#type_chose").val();
+        if (type_selected == "all") {
+            $('.Itemhref_Diagnosis ').css({ display: 'block' });
+            $('.Itemhref_Examination ').css({ display: 'block' });
+            $('.Itemhref_LabTest ').css({ display: 'block' });
+            $('.Itemhref_Drug ').css({ display: 'block' });
+        }
+        else {
+            $('.Itemhref_Diagnosis').css({ display: 'none' });
+            $('.Itemhref_Examination').css({ display: 'none' });
+            $('.Itemhref_LabTest').css({ display: 'none' });
+            $('.Itemhref_Drug').css({ display: 'none' });
+            $('.' + type_selected).css({ display: 'block' });
+        }
+
+        //空框被隐藏
+
+        $('#historyUl').find('li').each(function () {
+            var mark = 0;
+            $(this).find('p').each(function () {
+                if ($(this).css("display") == "block") {
+                    mark = 1;
+                }
+            });
+            if (mark == 0) {
+                $(this).css({ display: 'none' });
+            }
+        });
+
+    }
+
 </script>
