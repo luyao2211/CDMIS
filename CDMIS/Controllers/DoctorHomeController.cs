@@ -2879,7 +2879,7 @@ namespace CDMIS.Controllers
             return res;
         }
 
-        //同步部分模块信息
+        //同步部分模块信息(高血压)
         public JsonResult SynBasicInfoDetail(string PatientId)
         {
             var res = new JsonResult();
@@ -2897,6 +2897,23 @@ namespace CDMIS.Controllers
                 }
             }
             SynDetailDT = DS_SynDetail.Tables[1];
+            foreach (DataRow DR_2 in SynDetailDT.Rows)
+            {
+                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
+            }
+            res.Data = SynDetailList;
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
+        //同步部分模块信息(糖尿病)
+        public JsonResult SynDiabetesInfoDetail(string PatientId)
+        {
+            var res = new JsonResult();
+            List<string> SynDetailList = new List<string>();
+            DataSet DS_SynDetail = new DataSet();
+            DS_SynDetail = _ServicesSoapClient.SynBasicInfoDetailForM2(PatientId);
+            DataTable SynDetailDT = DS_SynDetail.Tables[0];
             foreach (DataRow DR_2 in SynDetailDT.Rows)
             {
                 SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());

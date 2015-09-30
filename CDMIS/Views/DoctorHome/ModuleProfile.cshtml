@@ -167,7 +167,11 @@
                             </p>
                             @if (Model.moduleUnBoughtCode[i].ToString() == "M1")
                             {
-                            <input type="button" class="btn btn-primary SynDetailInfoBtn" value="从临床信息中同步数据" style="float:right"/>
+                            <input type="button" class="btn btn-primary" value="从临床信息中同步数据" style="float:right" onclick="SynDetailInfo('M1')"/>
+                            }
+                            @if (Model.moduleUnBoughtCode[i].ToString() == "M2")
+                            {
+                            <input type="button" class="btn btn-primary" value="从临床信息中同步数据" style="float:right" onclick="SynDetailInfo('M2')"/>
                             }
                         </div>
                         @if (Model.InfoItemList[i].Count > 0)
@@ -192,36 +196,60 @@
                                         
                                         @* 1：下拉框  3：单选框*@
                                         <div class="col-sm-6">
-                                        @Html.DropDownList(items.Code, items.OptionList, new { id = items.Code, style = "font-size:18px", @class = "form-control defaultSelected" })
+                                        @Html.DropDownList(items.Code, items.OptionList, new { id = items.Code, style = "font-size:18px", title = items.Name, @class = "form-control defaultSelected", @onchange = "KeepEqual(this.title, this.id);"})
                                 </div>
                                     }
                                     @if (items.ControlType == "2")
                                     { 
                                         @* 复选框 *@
                                        <div class="col-sm-6">
-                                        @Html.ListBox(items.Code, items.OptionList, new { id = items.Code, @class = "form-control chzn-select", multiple = "multiple", style = "font-size:34px;width:100%;height:34px;" })
+                                        @Html.ListBox(items.Code, items.OptionList, new { id = items.Code, title = items.Name, @class = "form-control chzn-select", multiple = "multiple", style = "font-size:34px;width:100%;height:34px;"})
                    </div>
                                     }
                                     @if (items.ControlType == "4")
                                     { 
                                         @* 自由文本 *@
                                         <div class="col-sm-6">
-                                        @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", @class = "form-control" })
+                                        @Html.TextBox(items.Code, "", new { id = items.Code, title = items.Name, style = "font-size:17px;", @class = "form-control", @onchange = "KeepEqual(this.title, this.id);"})
                                         </div>
                                     }
                                     @if (items.ControlType == "5")
                                     { 
                                         @* 数字 *@
-                                       <div class="col-sm-6">
-                                        @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", @class = "form-control", @onkeyup = "IsLegal(this.id);" })
-                                        <p class="@items.Code" style="font-size: 24px; color: Red"></p>
-                                        </div>
+                                        if (items.Name == "身高（cm）" || items.Name == "体重（kg）")
+                                        {
+                                            <div class="col-sm-6">
+                                            @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", title = items.Name, @class = "form-control", @onkeyup = "IsLegal(this.id);", @onchange = "CalculateBMI(this.title, this.value);KeepEqual(this.title, this.id);"})
+                                            <p class="@items.Code" style="font-size: 24px; color: Red"></p>
+                                            </div>
+                                        }
+                                        else if (items.Name == "尿白蛋白浓度" || items.Name == "尿肌酐")
+                                        {
+                                            <div class="col-sm-6">
+                                            @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", title = items.Name, @class = "form-control", @onkeyup = "IsLegal(this.id);", @onchange = "CalculateDGB(this.title, this.value);KeepEqual(this.title, this.id);" })
+                                            <p class="@items.Code" style="font-size: 24px; color: Red"></p>
+                                            </div>
+                                        }
+                                        else if (items.Name == "BMI" || items.Name == "尿白蛋白与尿肌酐的比值")
+                                        {
+                                            <div class="col-sm-6">
+                                            @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", title = items.Name, @class = "form-control", @onkeyup = "IsLegal(this.id);", @readonly = "true" })
+                                            <p class="@items.Code" style="font-size: 24px; color: Red"></p>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-6">
+                                            @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", title = items.Name, @class = "form-control", @onkeyup = "IsLegal(this.id);", @onchange = "KeepEqual(this.title, this.id);" })
+                                            <p class="@items.Code" style="font-size: 24px; color: Red"></p>
+                                            </div>
+                                        }
                                     }
                                     @if (items.ControlType == "6")
                                     { 
                                         @* 数字加单位 *@
                                         <div class="col-sm-6">
-                                        @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", @class = "form-control", disabled = "disabled" })
+                                        @Html.TextBox(items.Code, "", new { id = items.Code, style = "font-size:17px;", title = items.Name, @class = "form-control", disabled = "disabled", @onchange = "KeepEqual(this.title, this.id);" })
                                         </div>
                                     }
                                      @if (items.ControlType == "7")
@@ -231,37 +259,49 @@
                                          if (items.OptionCategory == "Cm.MstHypertensionDrug")
                                          {
                                             <div class="col-sm-3" id="Hypertension" title="@items.Code">
-                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "TypeNameDropDownList1_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(1,1);" })
+                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "M1TypeNameDropDownList1_1", title = items.Name + "_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(this.id,1);KeepEqual(this.title, this.id);" })
                                             </div>
                                          }
-                                         if (items.OptionCategory == "Cm.MstDiabetesDrug")
+                                         if (items.OptionCategory == "Cm.MstDiabetesDrug" && items.Code.IndexOf("M1") == 0)
                                          {
-                                            <div class="col-sm-3" id="Diabetes" title="@items.Code">
-                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "TypeNameDropDownList2_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(2,1);" })
+                                            <div class="col-sm-3" id="Diabetes_1" title="@items.Code">
+                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "M1TypeNameDropDownList2_1", title = items.Name + "_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(this.id,1);KeepEqual(this.title, this.id);" })
+                                            </div>
+                                         }
+                                         if (items.OptionCategory == "Cm.MstDiabetesDrug" && items.Code.IndexOf("M2") == 0)
+                                         {
+                                            <div class="col-sm-3" id="Diabetes_2" title="@items.Code">
+                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "M2TypeNameDropDownList2_1", title = items.Name + "_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(this.id,1);KeepEqual(this.title, this.id);" })
                                             </div>
                                          }
                                          if (items.OptionCategory == "")
                                          {
                                             <div class="col-sm-3">
-                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "TypeNameDropDownList3_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "DrugTypeChanged(3,1);" })
+                                            @Html.DropDownList(items.Code, items.OptionList, new { id = "TypeNameDropDownList3_1", title = items.Name + "_1", style = "font-size:18px", @class = "form-control defaultSelected", onchange = "KeepEqual(this.title, this.id);" })
                                             </div>
                                          }
                                          <div class="col-sm-3">
                                             @if (items.OptionCategory == "Cm.MstHypertensionDrug")
                                             {
-                                              <select id="DrugNameDropDownList1_1" name="DrugNameSelected" class="form-control" style="font-size:18px">
+                                              <select id="M1DrugNameDropDownList1_1" name="DrugNameSelected" class="form-control" title="MstHypertensionDrug_1" style="font-size:18px" onchange="KeepEqual(this.title, this.id);">
                                                 <option value=""></option>
                                               </select>
                                             }
-                                            @if (items.OptionCategory == "Cm.MstDiabetesDrug")
+                                            @if (items.OptionCategory == "Cm.MstDiabetesDrug" && items.Code.IndexOf("M1") == 0)
                                             {
-                                              <select id="DrugNameDropDownList2_1" name="DrugNameSelected" class="form-control" style="font-size:18px">
+                                              <select id="M1DrugNameDropDownList2_1" name="DrugNameSelected" class="form-control" title="MstDiabetesDrug_1" style="font-size:18px" onchange="KeepEqual(this.title, this.id);">
+                                                <option value=""></option>
+                                              </select>  
+                                            }
+                                            @if (items.OptionCategory == "Cm.MstDiabetesDrug" && items.Code.IndexOf("M2") == 0)
+                                            {
+                                              <select id="M2DrugNameDropDownList2_1" name="DrugNameSelected" class="form-control" title="MstDiabetesDrug_1" style="font-size:18px" onchange="KeepEqual(this.title, this.id);">
                                                 <option value=""></option>
                                               </select>  
                                             }
                                             @if (items.OptionCategory == "")
                                             {
-                                              <select id="DrugNameDropDownList3_1" name="DrugNameSelected" class="form-control" style="font-size:18px">
+                                              <select id="DrugNameDropDownList3_1" name="DrugNameSelected" class="form-control" title="1,@items.Name" style="font-size:18px" onchange="KeepEqual(this.title, this.id);">
                                                 <option value=""></option>
                                               </select>  
                                             }
@@ -269,21 +309,21 @@
                                          <div class="col-sm-1">
                                             @if (items.OptionCategory == "Cm.MstHypertensionDrug")
                                             {
-                                              <input type="button" class="btn btn-primary addDrugInfoBtn1" value="添加" />
+                                              <input type="button" class="btn btn-primary" value="添加" onclick="AddDrugInfo(1);"/>
                                             }
                                             @if (items.OptionCategory == "Cm.MstDiabetesDrug")
                                             {
-                                              <input type="button" class="btn btn-primary addDrugInfoBtn2" value="添加" />  
+                                              <input type="button" class="btn btn-primary" value="添加" onclick="AddDrugInfo(2);"/>  
                                             }
                                          </div>
                                          <div class="col-sm-1">
                                             @if (items.OptionCategory == "Cm.MstHypertensionDrug")
                                             {
-                                              <input type="button" class="btn btn-primary deleteDrugInfoBtn1" value="删除" />
+                                              <input type="button" class="btn btn-primary" value="删除" onclick="DeleteDrugInfo(1);"/>
                                             }
                                             @if (items.OptionCategory == "Cm.MstDiabetesDrug")
                                             {
-                                              <input type="button" class="btn btn-primary deleteDrugInfoBtn2" value="删除" />  
+                                              <input type="button" class="btn btn-primary" value="删除" onclick="DeleteDrugInfo(2);"/>  
                                             }
                                          </div>
                                      }
@@ -357,113 +397,159 @@
 </div>
 <script type="text/javascript">
     var HypertensionDrugCode = $("#Hypertension").attr("title");
-    var DiabetesDrugCode = $("#Diabetes").attr("title");
+    var DiabetesDrugCode_1 = $("#Diabetes_1").attr("title");
+    var DiabetesDrugCode_2 = $("#Diabetes_2").attr("title");
     var HPNumber = 1;
     var DANumber = 1;
     var PatientId = "@Model.Patient.UserId";
     var Category = "";
+    var weight = 0;
+    var height = 0;
+    var NDB = 0;
+    var NJG = 0;
+
+    //自动计算BMI
+    function CalculateBMI(ChangeType, ChangeValue) {
+        if (ChangeType == "体重（kg）")
+            weight = ChangeValue;
+        else
+            height = ChangeValue;
+        if (height != 0)
+            $('*[title="BMI"]').val((weight * 10000 / (height * height)).toFixed(1));
+        else
+            $('*[title="BMI"]').val("");
+    }
+
+    function CalculateDGB(ChangeType, ChangeValue) {
+        if (ChangeType == "尿白蛋白浓度")
+            NDB = ChangeValue;
+        else
+            NJG = ChangeValue
+        if (NJG != 0)
+            $('*[title="尿白蛋白与尿肌酐的比值"]').val((NDB / NJG).toFixed(1));
+        else
+            $('*[title="尿白蛋白与尿肌酐的比值"]').val();
+    }
+
+    //保持数据一致性
+    function KeepEqual(ChangeName, ChangeId) {
+        $("*[title=" + ChangeName + "]").val($("#" + ChangeId).val());
+    }
 
     //根据类型动态加载药品名
     function DrugTypeChanged(Category, Number) {
-        var DrugTypeSelected = $("#TypeNameDropDownList" + Category + "_" + Number).val()
+        var c = 0;
+        var title = "";
+        if (Category.indexOf('DownList1') != -1) {
+            c = 1;
+            title = "MstHypertensionDrug_" + Number;
+        }
+        if (Category.indexOf('DownList2') != -1) {
+            c = 2;
+            title = "MstDiabetesDrug_" + Number;
+        }
+        var DrugTypeSelected = $("#" + Category).val()
         $.ajax({
             url: "/DoctorHome/GetListbyTypeName",
             type: "GET",
             dataType: "json",
             async: false,
-            data: { TypeSelected: DrugTypeSelected, Category: Category },  //输入参数
+            data: { TypeSelected: DrugTypeSelected, Category: c },  //输入参数
             success: function (res) {
-                $("#DrugNameDropDownList" + Category + "_" + Number).empty();
+                $("*[title=" + title + "]").empty();
                 var InitialElement = $("<option></option>").text("");
                 InitialElement.attr('value', "");
-                $("#DrugNameDropDownList" + Category + "_" + Number).append(InitialElement);
+                $("*[title=" + title + "]").append(InitialElement);
                 for (var item in res) {
                     var DrugNameList = res[item];
                     var Name = DrugNameList.split("|")[0];
                     var Code = DrugNameList.split("|")[1];
                     var NewElement = $("<option></option>").text(Name);
                     NewElement.attr('value', Code);
-                    $("#DrugNameDropDownList" + Category + "_" + Number).append(NewElement);
+                    $("*[title=" + title + "]").append(NewElement);
                 }
             }
         });
     }
 
-    //增加药品（高血压）
-    $(".addDrugInfoBtn1").click(function () {
-        $("#TypeNameDropDownList1_" + HPNumber).after('<select id="TypeNameDropDownList1_' + (HPNumber + 1) + '" name="TypeNameSelected" class="form-control" style="font-size:18px" onchange = "DrugTypeChanged(1,' + (HPNumber + 1) + ');"><option value=""></option></select>');
+    //增加药品
+    function AddDrugInfo(Category) {
+        if (Category == 1)
+            $("#M1TypeNameDropDownList1_" + HPNumber).after('<select id="M1TypeNameDropDownList1_' + (HPNumber + 1) + '" name="TypeNameSelected" class="form-control" title="' + '口服降压药种类_' + (HPNumber + 1) + '" style="font-size:18px" onchange = "DrugTypeChanged(this.id,' + (HPNumber + 1) + ');KeepEqual(this.title, this.id);"><option value=""></option></select>');
+        if (Category == 2) {
+            $("#M1TypeNameDropDownList2_" + DANumber).after('<select id="M1TypeNameDropDownList2_' + (DANumber + 1) + '" name="TypeNameSelected" class="form-control" title="' + '口服降糖药种类_' + (DANumber + 1) + '" style="font-size:18px" onchange = "DrugTypeChanged(this.id,' + (DANumber + 1) + ');KeepEqual(this.title, this.id);"><option value=""></option></select>');
+            $("#M2TypeNameDropDownList2_" + DANumber).after('<select id="M2TypeNameDropDownList2_' + (DANumber + 1) + '" name="TypeNameSelected" class="form-control" title="' + '口服降糖药种类_' + (DANumber + 1) + '" style="font-size:18px" onchange = "DrugTypeChanged(this.id,' + (DANumber + 1) + ');KeepEqual(this.title, this.id);"><option value=""></option></select>');
+        }
         $.ajax({
             url: "/DoctorHome/GetTypeNameList",
             type: "GET",
             dataType: "json",
             async: false,
-            data: { Category: 1 },  //输入参数
+            data: { Category: Category },  //输入参数
             success: function (res) {
-                $("#TypeNameDropDownList1_" + (HPNumber + 1)).empty();
+                if (Category == 1)
+                    $("#M1TypeNameDropDownList1_" + (HPNumber + 1)).empty();
+                if (Category == 2) {
+                    $("#M1TypeNameDropDownList2_" + (DANumber + 1)).empty();
+                    $("#M2TypeNameDropDownList2_" + (DANumber + 1)).empty();
+                }
                 var InitialElement = $("<option></option>").text("请选择");
                 InitialElement.attr('value', "");
-                $("#TypeNameDropDownList1_" + (HPNumber + 1)).append(InitialElement);
+                if (Category == 1)
+                    $("#M1TypeNameDropDownList1_" + (HPNumber + 1)).append(InitialElement);
+                if (Category == 2) {
+                    $("#M1TypeNameDropDownList2_" + (DANumber + 1)).append(InitialElement);
+                    var InitialElement = $("<option></option>").text("请选择");
+                    InitialElement.attr('value', "");
+                    $("#M2TypeNameDropDownList2_" + (DANumber + 1)).append(InitialElement);
+                }
                 for (var item in res) {
                     var TypeNameList = res[item];
                     var Name = TypeNameList.split("|")[0];
                     var Code = TypeNameList.split("|")[1];
                     var NewElement = $("<option></option>").text(Name);
                     NewElement.attr('value', Code);
-                    $("#TypeNameDropDownList1_" + (HPNumber + 1)).append(NewElement);
+                    if (Category == 1)
+                        $("#M1TypeNameDropDownList1_" + (HPNumber + 1)).append(NewElement);
+                    if (Category == 2) {
+                        $("#M1TypeNameDropDownList2_" + (DANumber + 1)).append(NewElement);
+                        var NewElement = $("<option></option>").text(Name);
+                        NewElement.attr('value', Code);
+                        $("#M2TypeNameDropDownList2_" + (DANumber + 1)).append(NewElement);
+                    }
                 }
             }
         });
-        $("#DrugNameDropDownList1_" + HPNumber).after('<select id="DrugNameDropDownList1_' + (HPNumber + 1) + '" name="DrugNameSelected" class="form-control" style="font-size:18px"><option value=""></option></select>');
-        HPNumber = HPNumber + 1;
-    })
-
-    //增加药品（糖尿病）
-    $(".addDrugInfoBtn2").click(function () {
-        $("#TypeNameDropDownList2_" + DANumber).after('<select id="TypeNameDropDownList2_' + (DANumber + 1) + '" name="TypeNameSelected" class="form-control" style="font-size:18px" onchange = "DrugTypeChanged(2,' + (DANumber + 1) + ');"><option value=""></option></select>');
-        $.ajax({
-            url: "/DoctorHome/GetTypeNameList",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: { Category: 2 },  //输入参数
-            success: function (res) {
-                $("#TypeNameDropDownList2_" + (DANumber + 1)).empty();
-                var InitialElement = $("<option></option>").text("请选择");
-                InitialElement.attr('value', "");
-                $("#TypeNameDropDownList2_" + (DANumber + 1)).append(InitialElement);
-                for (var item in res) {
-                    var TypeNameList = res[item];
-                    var Name = TypeNameList.split("|")[0];
-                    var Code = TypeNameList.split("|")[1];
-                    var NewElement = $("<option></option>").text(Name);
-                    NewElement.attr('value', Code);
-                    $("#TypeNameDropDownList2_" + (DANumber + 1)).append(NewElement);
-                }
-            }
-        });
-        $("#DrugNameDropDownList2_" + DANumber).after('<select id="DrugNameDropDownList2_' + (DANumber + 1) + '" name="DrugNameSelected" class="form-control" style="font-size:18px"><option value=""></option></select>');
-        DANumber = DANumber + 1;
-    })
-
-    //删除药品（高血压）
-    $(".deleteDrugInfoBtn1").click(function () {
-        if (HPNumber == 1) {
-            return;
+        if (Category == 1) {
+            $("#M1DrugNameDropDownList1_" + HPNumber).after('<select id="M1DrugNameDropDownList1_' + (HPNumber + 1) + '" name="DrugNameSelected" class="form-control" title="MstHypertensionDrug_' + (HPNumber + 1) + '" style="font-size:18px" onchange="KeepEqual(this.title, this.id);"><option value=""></option></select>');
+            HPNumber = HPNumber + 1;
         }
-        $("#TypeNameDropDownList1_" + HPNumber).remove();
-        $("#DrugNameDropDownList1_" + HPNumber).remove();
-        HPNumber = HPNumber - 1;
-    })
-
-    //删除药品（糖尿病）
-    $(".deleteDrugInfoBtn2").click(function () {
-        if (DANumber == 1) {
-            return;
+        if (Category == 2) {
+            $("#M1DrugNameDropDownList2_" + DANumber).after('<select id="M1DrugNameDropDownList2_' + (DANumber + 1) + '" name="DrugNameSelected" class="form-control" title="MstDiabetesDrug_' + (DANumber + 1) + '" style="font-size:18px" onchange="KeepEqual(this.title, this.id);"><option value=""></option></select>');
+            $("#M2DrugNameDropDownList2_" + DANumber).after('<select id="M2DrugNameDropDownList2_' + (DANumber + 1) + '" name="DrugNameSelected" class="form-control" title="MstDiabetesDrug_' + (DANumber + 1) + '" style="font-size:18px" onchange="KeepEqual(this.title, this.id);"><option value=""></option></select>');
+            DANumber = DANumber + 1;
         }
-        $("#TypeNameDropDownList2_" + DANumber).remove();
-        $("#DrugNameDropDownList2_" + DANumber).remove();
-        DANumber = DANumber - 1;
-    })
+    }
+
+    //删除药品
+    function DeleteDrugInfo(Category) {
+        if (Category == 1) {
+            if (HPNumber == 1)
+                return;
+            $("#M1TypeNameDropDownList1_" + HPNumber).remove();
+            $("#M1DrugNameDropDownList1_" + HPNumber).remove();
+            HPNumber = HPNumber - 1;
+        }
+        if (Category == 2) {
+            if (DANumber == 1)
+                return;
+            $("#M1TypeNameDropDownList2_" + DANumber).remove();
+            $("#M1DrugNameDropDownList2_" + DANumber).remove();
+            $("#M2TypeNameDropDownList2_" + DANumber).remove();
+            $("#M2DrugNameDropDownList2_" + DANumber).remove();
+            DANumber = DANumber - 1;
+        }
+    }
 
     //添加口服药数据
     $(".submitBtn").click(function () {
@@ -482,14 +568,6 @@
             });
             j = j + 1;
         }
-        $.ajax({
-            url: "/DoctorHome/SetDrugData",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: HypertensionDrugCode, ItemSeq: 1, Value: "0", SortNo: 1 },  //输入参数
-            success: function (res) { }
-        });
         i = 0;
         j = 1;
         while (i != 2) {
@@ -498,25 +576,32 @@
                 type: "GET",
                 dataType: "json",
                 async: false,
-                data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: DiabetesDrugCode, ItemSeq: j },  //输入参数
+                data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: DiabetesDrugCode_1, ItemSeq: j },  //输入参数
                 success: function (res) {
                     i = res;
                 }
             });
             j = j + 1;
         }
-        $.ajax({
-            url: "/DoctorHome/SetDrugData",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: DiabetesDrugCode, ItemSeq: 1, Value: "0", SortNo: 1 },  //输入参数
-            success: function (res) { }
-        });
+        i = 0;
+        j = 1;
+        while (i != 2) {
+            $.ajax({
+                url: "/DoctorHome/DeleteDrugData",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: { PatientId: PatientId, CategoryCode: "M2", ItemCode: DiabetesDrugCode_2, ItemSeq: j },  //输入参数
+                success: function (res) {
+                    i = res;
+                }
+            });
+            j = j + 1;
+        }
         j = 1;
         for (i = 1; i <= HPNumber; i++) {
-            var Type = $("#TypeNameDropDownList1_" + i).val();
-            var Code = $("#DrugNameDropDownList1_" + i).val();
+            var Type = $("#M1TypeNameDropDownList1_" + i).val();
+            var Code = $("#M1DrugNameDropDownList1_" + i).val();
             if (Code != "") {
                 var Value = Type + "," + Code;
                 $.ajax({
@@ -532,8 +617,8 @@
         }
         j = 1;
         for (i = 1; i <= DANumber; i++) {
-            var Type = $("#TypeNameDropDownList2_" + i).val();
-            var Code = $("#DrugNameDropDownList2_" + i).val();
+            var Type = $("#M1TypeNameDropDownList2_" + i).val();
+            var Code = $("#M1DrugNameDropDownList2_" + i).val();
             if (Code != "") {
                 var Value = Type + "," + Code;
                 $.ajax({
@@ -541,7 +626,24 @@
                     type: "GET",
                     dataType: "json",
                     async: false,
-                    data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: DiabetesDrugCode, ItemSeq: j, Value: Value, SortNo: j },  //输入参数
+                    data: { PatientId: PatientId, CategoryCode: "M1", ItemCode: DiabetesDrugCode_1, ItemSeq: j, Value: Value, SortNo: j },  //输入参数
+                    success: function (res) { }
+                });
+                j = j + 1;
+            }
+        }
+        j = 1;
+        for (i = 1; i <= DANumber; i++) {
+            var Type = $("#M2TypeNameDropDownList2_" + i).val();
+            var Code = $("#M2DrugNameDropDownList2_" + i).val();
+            if (Code != "") {
+                var Value = Type + "," + Code;
+                $.ajax({
+                    url: "/DoctorHome/SetDrugData",
+                    type: "GET",
+                    dataType: "json",
+                    async: false,
+                    data: { PatientId: PatientId, CategoryCode: "M2", ItemCode: DiabetesDrugCode_2, ItemSeq: j, Value: Value, SortNo: j },  //输入参数
                     success: function (res) { }
                 });
                 j = j + 1;
@@ -550,59 +652,119 @@
     })
 
     //同步部分模块信息
-    $(".SynDetailInfoBtn").click(function () {
-        $.ajax({
-            url: "/DoctorHome/SynBasicInfoDetail",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: { PatientId: PatientId },  //输入参数
-            success: function (res) {
-                for (var item in res) {
-                    var TypeNameList = res[item];
-                    var Code = TypeNameList.split("|")[0];
-                    var Value = TypeNameList.split("|")[1];
-                    if (Code == "左心室肥大") {
-                        $("#M1001_09").val(Value);
+    function SynDetailInfo(Module) {
+        if(Module == 'M1'){
+            $.ajax({
+                url: "/DoctorHome/SynBasicInfoDetail",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: { PatientId: PatientId },  //输入参数
+                success: function (res) {
+                    for (var item in res) {
+                        var TypeNameList = res[item];
+                        var Code = TypeNameList.split("|")[0];
+                        var Value = TypeNameList.split("|")[1];
+                        if (Code == "左心室肥大") {
+                            $("#M1001_09").val(Value);
+                        }
+                        if (Code == "房颤") {
+                            $("#M1001_05").val(Value);
+                        }
+                        if (Code == "心脏瓣膜疾病") {
+                            $("#M1001_06").val(Value);
+                        }
+                        if (Code == "62.00028") {
+                            $("#M1006_10").val(Value);
+                        }
+                        if (Code == "62.2713") {
+                            $("#M1006_08").val(Value);
+                        }   
+                        if (Code == "62.63304") {
+                            $("#M1006_09").val(Value);
+                        }
+                        if (Code == "JY0277") {
+                            $("#M1006_11").val(Value);
+                        }
                     }
-                    if (Code == "房颤") {
-                        $("#M1001_05").val(Value);
+                    if (item != null) {
+                        $("#warningP").html("同步成功！");
+                        $('#integrateDiv').modal({
+                            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+                            containerId: 'alert-container',
+                            overlayClose: true     //点击蒙层关闭窗口
+                        });
                     }
-                    if (Code == "心脏瓣膜疾病") {
-                        $("#M1001_06").val(Value);
-                    }
-                    if (Code == "62.00028") {
-                        $("#M1006_10").val(Value);
-                    }
-                    if (Code == "62.2713") {
-                        $("#M1006_08").val(Value);
-                    }
-                    if (Code == "62.63304") {
-                        $("#M1006_09").val(Value);
-                    }
-                    if (Code == "JY0277") {
-                        $("#M1006_11").val(Value);
+                    else {
+                        $("#warningP").html("没有任何信息可以同步！");
+                        $('#integrateDiv').modal({
+                            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+                            containerId: 'alert-container',
+                            overlayClose: true     //点击蒙层关闭窗口
+                        });
                     }
                 }
-                if (item != null) {
-                    $("#warningP").html("同步成功！");
-                    $('#integrateDiv').modal({
-                        closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
-                        containerId: 'alert-container',
-                        overlayClose: true     //点击蒙层关闭窗口
-                    });
+            });
+        }
+        if (Module == 'M2') {
+            $.ajax({
+                url: "/DoctorHome/SynDiabetesInfoDetail",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: { PatientId: PatientId },  //输入参数
+                success: function (res) {
+                    $("#M2006_09").val("");
+                    for (var item in res) {
+                        var TypeNameList = res[item];
+                        var Code = TypeNameList.split("|")[0];
+                        var Value = TypeNameList.split("|")[1];
+                        if (Code == "62.2713")
+                            $("#M2006_16").val(Value);
+                        if (Code == "62.63304")
+                            $("#M2006_12").val(Value);
+                        if (Code == "62.00028")
+                            $("#M2006_13").val(Value);
+                        if (Code == "JY0277")
+                            $("#M2006_14").val(Value);
+                        if (Code == "JY2473")
+                            $("#M2006_11").val(Value);
+                        if (Code == "JY1131")
+                            $("#M2006_15").val(Value);
+                        if (Code == "69.TSH00")
+                            $("#M2006_18").val(Value);
+                        if (Code == "10200901")
+                            $("#M2006_19").val(Value);
+                        if (Code == "JY2701")
+                            $("#M2006_20").val(Value);
+                        if (Code == "61000102" || Code == "61000103" || Code == "61000202" || Code == "61000204") {
+                            var temp = $("#M2006_09").val();
+                            $("#M2006_09").val(temp + Value + " ; ");
+                        }
+                    }
+                    NDB = $("#M2006_19").val();
+                    NJG = $("#M2006_20").val();
+                    $("#M2006_21").val((NDB / NJG).toFixed(1));
+                    if (item != null) {
+                        $("#warningP").html("同步成功！");
+                        $('#integrateDiv').modal({
+                            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+                            containerId: 'alert-container',
+                            overlayClose: true     //点击蒙层关闭窗口
+                        });
+                    }
+                    else {
+                        $("#warningP").html("没有任何信息可以同步！");
+                        $('#integrateDiv').modal({
+                            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+                            containerId: 'alert-container',
+                            overlayClose: true     //点击蒙层关闭窗口
+                        });
+                    }
                 }
-                else {
-                    $("#warningP").html("没有任何信息可以同步！");
-                    $('#integrateDiv').modal({
-                        closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
-                        containerId: 'alert-container',
-                        overlayClose: true     //点击蒙层关闭窗口
-                    });
-                }
-            }
-        });
-    })
+            });
+        }
+    }
 
     $("#tabs li a").click(function () {
         $(this).attr("id", "current");
