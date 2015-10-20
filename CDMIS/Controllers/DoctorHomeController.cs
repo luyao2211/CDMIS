@@ -792,6 +792,16 @@ namespace CDMIS.Controllers
             //加载患者基本信息
             model.Patient = GetPatientBasicInfo(PatientId);
 
+            #region 修改说明
+            //1 获取患者已购买的模块
+            //2 获取患者未购买的模块
+            //3 之前已购买和未购买是分别调用Ps和Cm表的方法做的，现在可以都调用Ps表中的方法，获取问卷信息
+            //4 不同模块的问卷分别加载，不要一次性加载，这样可以不用在前端做不同模块信息的同步，用JsonResult实现
+            //5 把模块信息相关的三个页面用同一种方式实现，方便以后的维护
+            //6 高血压和糖尿病模块的问卷只有二级标题，心衰模块还有三级标题以及显示控制的条目，需要再做修改
+            #endregion
+
+            #region 需要修改的
             #region 从病人详细信息表中加载模块关注详细信息
             DataSet ItemInfoBoughtds = _ServicesSoapClient.GetPatBasicInfoDtlList(PatientId);
             List<List<PatientDetailInfo>> ItemInfoBought = new List<List<PatientDetailInfo>>();
@@ -960,6 +970,7 @@ namespace CDMIS.Controllers
                     model.DoctorList.Add(new SelectListItem { Text = DR["DoctorName"].ToString(), Value = DR["DoctorId"].ToString() });
                 }
             }
+            #endregion
             #endregion
 
             return View(model);

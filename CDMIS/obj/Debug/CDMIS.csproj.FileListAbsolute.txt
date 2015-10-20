@@ -114,3 +114,5 @@ C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
 C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
 C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
 C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
+F:\Work\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.csprojResolveAssemblyReference.cache
+F:\Work\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
