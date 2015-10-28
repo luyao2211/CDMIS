@@ -136,14 +136,7 @@ namespace CDMIS.Controllers
                     }
                 }
             }
-            if (flag == true)
-            {
-                Response.Write("<script>alert('模块信息修改成功');</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('模块信息修改失败');</script>");
-            }
+            model.ModuleDetailList = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, model.UserId, Category);
             return View(model);
         }
 
