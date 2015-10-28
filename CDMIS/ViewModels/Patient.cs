@@ -66,6 +66,10 @@ namespace CDMIS.ViewModels
         public List<List<PatientDetailInfo>> PatientDetailInfo { get; set; }          //CSQ 20141215
         public ArrayList moduleUnBoughtCode = new ArrayList();
         public ArrayList moduleUnBoughtName = new ArrayList();
+        public List<ModuleInfo> ModuleBoughtInfo = new List<ModuleInfo>();
+        public List<ModuleInfo> ModuleUnBoughtInfo = new List<ModuleInfo>();
+        public List<PatientDetailInfo> ModuleDetailList = new List<PatientDetailInfo>();
+        public bool InvalidFlag { get; set; }
 
          [RegularExpression(@"(^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$)|(^([0-9]{3,4}-)?[0-9]{7,8}$)", ErrorMessage = "联系方式输入不正确")]
         public string Phone { get; set; }
@@ -121,6 +125,8 @@ namespace CDMIS.ViewModels
     {
         public string UserId { get; set; }
         public List<List<PatientDetailInfo>> PatientDetailInfo { get; set; }  //模块信息、模块关注详细信息
+        public List<ModuleInfo> ModuleBoughtInfo = new List<ModuleInfo>();
+        public List<PatientDetailInfo> ModuleDetailList = new List<PatientDetailInfo>();
         public PatientDetailInfoViewModel()
         {
             PatientDetailInfo = new List<List<PatientDetailInfo>>();

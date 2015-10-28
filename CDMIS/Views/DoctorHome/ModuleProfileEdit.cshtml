@@ -128,7 +128,19 @@
                                                     @*@item.Content*@
                                                 </td>
                                             }
+<<<<<<< HEAD
                                             else if (item.ItemName == "BMI")
+=======
+                                            else if (item.ItemName == "尿白蛋白浓度" || item.ItemName == "尿肌酐")
+                                            {
+                                                <td width="20%" style="border: 0;">
+                                                    @Html.TextBox(item.ItemCode, item.Content, new { id = item.ItemCode, title = item.ItemName, style = "font-size:17px;", @class = "form-control", @onkeyup = "IsLegal(this.id);", @onchange = "KeepEqual(this.title, this.id);CalculateDGB(this.title, this.value);" })
+                                                    <p class="@item.ItemCode" style="font-size: 24px; color: Red"></p>
+                                                    @*@item.Content*@
+                                                </td>
+                                            }
+                                            else if (item.ItemName == "BMI" || item.ItemName == "尿白蛋白与尿肌酐的比值")
+>>>>>>> f4ca567ba63dd5f49a7daf8831a579a3c52ff93e
                                             {
                                                 <td width="20%" style="border: 0;">
                                                     @Html.TextBox(item.ItemCode, item.Content, new { id = item.ItemCode, title = item.ItemName, style = "font-size:17px;", @class = "form-control", @onkeyup = "IsLegal(this.id);", @readonly = "true" })
@@ -322,6 +334,11 @@
     var DrugDAValue = new Array();
     var height = $('*[title = "身高（cm）"]').val()
     var weight = $('*[title = "体重（kg）"]').val()
+<<<<<<< HEAD
+=======
+    var NDB = $('*[title = "尿白蛋白浓度"]').val();
+    var NJG = $('*[title = "尿肌酐"]').val();
+>>>>>>> f4ca567ba63dd5f49a7daf8831a579a3c52ff93e
 
     $(document).ready(function () {
         $("#menu a").attr("id", ""); //Reset id's 
@@ -351,6 +368,20 @@
             $('*[title="BMI"]').val("");
     }
 
+<<<<<<< HEAD
+=======
+    function CalculateDGB(ChangeType, ChangeValue) {
+        if (ChangeType == "尿白蛋白浓度")
+            NDB = ChangeValue;
+        else
+            NJG = ChangeValue
+        if (NJG != 0)
+            $('*[title="尿白蛋白与尿肌酐的比值"]').val((NDB / NJG).toFixed(1));
+        else
+            $('*[title="尿白蛋白与尿肌酐的比值"]').val();
+    }
+
+>>>>>>> f4ca567ba63dd5f49a7daf8831a579a3c52ff93e
     //得到药品清单
     function GetDrugTypeList() {
         while ($("#" + HypertensionDrugCode + HPNumber).length > 0) {

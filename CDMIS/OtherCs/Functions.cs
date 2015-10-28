@@ -385,72 +385,53 @@ namespace CDMIS.OtherCs
     {
 
         //个人信息（不可编辑）
-        public static List<List<PatientDetailInfo>> GetPatientDetailInfo(ServicesSoapClient _ServicesSoapClient, string UserId)
+        public static List<PatientDetailInfo> GetPatientDetailInfo(ServicesSoapClient _ServicesSoapClient, string UserId, string Category)
         {
-
-            DataSet set = _ServicesSoapClient.GetPatBasicInfoDtlList(UserId);  //获取关注的详细信息
-
-            List<List<PatientDetailInfo>> zong1 = new List<List<PatientDetailInfo>>();
-
-            foreach (DataTable ta in set.Tables)
+            List<PatientDetailInfo> ItemInfo = new List<PatientDetailInfo>();
+            DataSet ItemInfoSet = _ServicesSoapClient.GetItemInfoByPIdAndModule(UserId, Category);
+            foreach (DataTable item in ItemInfoSet.Tables)
             {
-                List<PatientDetailInfo> items1 = new List<PatientDetailInfo>();
-                foreach (System.Data.DataRow row in ta.Rows)
+                foreach (DataRow row in item.Rows)
                 {
-                    if (row[3].ToString() != "InvalidFlag")
+                    if (row[3].ToString() != "InvalidFlag" && row[3].ToString() != "Patient")
                     {
-                        PatientDetailInfo one = new PatientDetailInfo();
                         if (row[3].ToString() == "Doctor")
                         {
-                            one = new PatientDetailInfo
+                            PatientDetailInfo NewLine = new PatientDetailInfo()
                             {
-                                //PatientId = row[0].ToString(),
-                                // CategoryCode = row[1].ToString(),
+                                CategoryCode = row[1].ToString(),
                                 CategoryName = row[2].ToString(),
                                 ItemCode = row[3].ToString(),
                                 ItemName = row[4].ToString(),
                                 ParentCode = row[5].ToString(),
-                                ControlType = row[11].ToString(),
-                                // OptionCategory = row[12].ToString(),
-                                //OptionSelected = row[0].ToString(),
-                                //OptionList = row[0],
                                 ItemSeq = Convert.ToInt32(row[6]),
-                                //Value = row[7].ToString(),
+                                Value = row[7].ToString(),
                                 Content = _ServicesSoapClient.GetUserName(row[7].ToString())
-                                //Description = row[9].ToString()
                             };
+                            ItemInfo.Add(NewLine);
                         }
                         else
                         {
-                            one = new PatientDetailInfo
+                            PatientDetailInfo NewLine = new PatientDetailInfo()
                             {
-                                //PatientId = row[0].ToString(),
-                                // CategoryCode = row[1].ToString(),
-                                CategoryName = row[2].ToString(),
                                 ItemCode = row[3].ToString(),
                                 ItemName = row[4].ToString(),
                                 ParentCode = row[5].ToString(),
                                 ControlType = row[11].ToString(),
-                                // OptionCategory = row[12].ToString(),
-                                //OptionSelected = row[0].ToString(),
-                                //OptionList = row[0],
+                                OptionCategory = row[12].ToString(),
                                 ItemSeq = Convert.ToInt32(row[6]),
-                                //Value = row[7].ToString(),
+                                Value = row[7].ToString(),
                                 Content = row[8].ToString(),
-                                //Description = row[9].ToString()
+                                GroupHeaderFlag = Convert.ToInt32(row[13])
                             };
-
+                            if (NewLine.ControlType != "7")
+                                NewLine.OptionList = GetTypeList(_ServicesSoapClient, NewLine.OptionCategory, NewLine.Value);  //通过yesornoh和value，结合字典表，生成有值的下拉框
+                            ItemInfo.Add(NewLine);
                         }
-                        items1.Add(one);
                     }
-
-
                 }
-                zong1.Add(items1);
             }
-
-            return zong1;
-
+            return ItemInfo;
         }
 
         //个人信息（可编辑）
