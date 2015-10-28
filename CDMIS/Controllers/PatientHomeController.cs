@@ -79,7 +79,7 @@ namespace CDMIS.Controllers
 
         #region 详细信息
         //个人信息（不可编辑）
-        public ActionResult PatientDetailInfo(string UserId)
+        public ActionResult PatientDetailInfo(string UserId, string Category)
         {
             //UserId = "P4444";
             if (UserId == null)
@@ -87,10 +87,26 @@ namespace CDMIS.Controllers
                 var user = Session["CurrentUser"] as UserAndRole;
                 UserId = user.UserId;
             }
-            PatientDetailInfoViewModel ei = new PatientDetailInfoViewModel();
-            ei.UserId = UserId;
-            ei.PatientDetailInfo = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, UserId);
-            return View(ei);
+            PatientDetailInfoViewModel pbiModel = new PatientDetailInfoViewModel();
+            pbiModel.UserId = UserId;
+            List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
+            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(UserId);
+            foreach (DataTable item in ModulesInfo.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                    {
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            pbiModel.ModuleBoughtInfo = ModuleInfo;
+            pbiModel.ModuleDetailList = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, UserId, Category);
+            return View(pbiModel);
         }
 
         //个人信息（可编辑）

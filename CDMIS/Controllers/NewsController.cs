@@ -25,7 +25,6 @@ namespace CDMIS.Controllers
         #region <ActionResult>
         public ActionResult Index()
         {
-
             HealthEducationList HElist = new HealthEducationList();
             DataSet info = _ServicesSoapClient.GetAddressByTypeList(HElist.selectedModuleId, 5);
             foreach (DataRow row in info.Tables[0].Rows)
