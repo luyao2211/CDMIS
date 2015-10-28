@@ -63,7 +63,7 @@ namespace CDMIS.Controllers
 
         #region 详细信息
         //个人信息（不可编辑）
-        public ActionResult PatientDetailInfo(string PatientId)
+        public ActionResult PatientDetailInfo(string PatientId, string Category)
         {
             //PatientId = "P4444";
             if (PatientId == null)
@@ -76,11 +76,78 @@ namespace CDMIS.Controllers
             }
             PatientDetailInfoViewModel pbiModel = new PatientDetailInfoViewModel();
             pbiModel.UserId = PatientId;
-            pbiModel.PatientDetailInfo = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, PatientId);
+            List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
+            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
+            foreach (DataTable item in ModulesInfo.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                    {
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            pbiModel.ModuleBoughtInfo = ModuleInfo;
+            pbiModel.ModuleDetailList = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, PatientId, Category);
             return View(pbiModel);
         }
 
-        //个人信息（可编辑）
+        //保存编辑的信息
+        [HttpPost]
+        public ActionResult PatientDetailInfo(PatientDetailInfoViewModel model)
+        {
+            var user = Session["CurrentUser"] as UserAndRole;
+            string Category = Request.Form["ModuleDetailList[0].CategoryCode"];
+            List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
+            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(model.UserId);
+            foreach (DataTable item in ModulesInfo.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                    {
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            model.ModuleBoughtInfo = ModuleInfo;
+            List<PatientDetailInfo> ItemInfo = PDCHPFunctions.GetPatientDetailInfo(_ServicesSoapClient, model.UserId, Category);
+            bool flag = false;
+            foreach (PatientDetailInfo Row in ItemInfo)
+            {
+                if ((Row.ItemCode != "InvalidFlag") && (Row.ItemCode != "Doctor"))
+                {
+                    string CategoryCode = "M";  //主键  
+                    string Value = Request.Form[Row.ItemCode];   //只更改了Value
+                    if (Row.ControlType != "7")
+                    {
+                        flag = _ServicesSoapClient.SetPatBasicInfoDetail(model.UserId, CategoryCode, Row.ItemCode, Row.ItemSeq, Value, Row.Description, Row.ItemSeq, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    }
+                    if (flag == false)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (flag == true)
+            {
+                Response.Write("<script>alert('模块信息修改成功');</script>");
+            }
+            else
+            {
+                Response.Write("<script>alert('模块信息修改失败');</script>");
+            }
+            return View(model);
+        }
+
+        //个人信息（可编辑）（现在用不着了）
         public ActionResult PatientDetailInfoEdit(string PatientId)
         {
             var user = Session["CurrentUser"] as UserAndRole;
@@ -93,7 +160,7 @@ namespace CDMIS.Controllers
             return View(pbiModel);
         }
 
-        //个人信息（编辑提交）
+        //个人信息（编辑提交）（现在用不着了）
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "PatientDetailInfoEdit")]
         public ActionResult PatientDetailInfoEdit(PatientDetailInfoViewModel ei, FormCollection formCollection)
@@ -159,7 +226,7 @@ namespace CDMIS.Controllers
 
         }
 
-        //个人信息（编辑-取消）
+        //个人信息（编辑-取消）（现在用不着了）
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "EditCancel")]
         public ActionResult EditCancel(PatientDetailInfoViewModel ei, FormCollection formCollection)

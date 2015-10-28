@@ -780,7 +780,7 @@ namespace CDMIS.Controllers
         #endregion
 
         #region 建档--健康模块
-        public ActionResult ModuleProfile(string PatientId)
+        public ActionResult ModuleProfile(string PatientId, string Category)
         {
             var user = Session["CurrentUser"] as UserAndRole;
             string DoctorId = user.UserId;
@@ -792,178 +792,186 @@ namespace CDMIS.Controllers
             //加载患者基本信息
             model.Patient = GetPatientBasicInfo(PatientId);
 
-            #region 从病人详细信息表中加载模块关注详细信息
-            DataSet ItemInfoBoughtds = _ServicesSoapClient.GetPatBasicInfoDtlList(PatientId);
-            List<List<PatientDetailInfo>> ItemInfoBought = new List<List<PatientDetailInfo>>();
-            ArrayList modulesBoughtCode = new ArrayList();
-            ArrayList modulesBoughtName = new ArrayList();
+            #region 修改说明
+            //1 获取患者已购买的模块
+            //2 获取患者未购买的模块
+            //3 之前已购买和未购买是分别调用Ps和Cm表的方法做的，现在可以都调用Ps表中的方法，获取问卷信息
+            //4 不同模块的问卷分别加载，不要一次性加载，这样可以不用在前端做不同模块信息的同步，用JsonResult实现
+            //5 把模块信息相关的三个页面用同一种方式实现，方便以后的维护
+            //6 高血压和糖尿病模块的问卷只有二级标题，心衰模块还有三级标题以及显示控制的条目，需要再做修改
+            #endregion
 
-            if (ItemInfoBoughtds!=null)
+            List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
+            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
+            foreach (DataTable item in ModulesInfo.Tables)
             {
-                foreach (DataTable datatable in ItemInfoBoughtds.Tables)
+                foreach (DataRow row in item.Rows)
                 {
-                    List<PatientDetailInfo> items = new List<PatientDetailInfo>();
-
-                    foreach (DataRow row in datatable.Rows)
+                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
                     {
-                        if (row[3].ToString() != "InvalidFlag")
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            model.ModuleBoughtInfo = ModuleInfo;
+            ModuleInfo = new List<Models.ModuleInfo>();
+            ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(PatientId);
+            foreach (DataTable item in ModulesInfo.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                    {
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            model.ModuleUnBoughtInfo = ModuleInfo;
+            List<PatientDetailInfo> ItemInfo = new List<PatientDetailInfo>();
+            DataSet ItemInfoSet = _ServicesSoapClient.GetItemInfoByPIdAndModule(PatientId, Category);
+            bool InvalidFlag = false;
+            foreach (DataTable item in ItemInfoSet.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    if (row[3].ToString() != "InvalidFlag" && row[3].ToString() != "Patient")
+                    {
+                        if (row[3].ToString() == "Doctor")
                         {
-                            if (row[3].ToString() == "Doctor")
+                            PatientDetailInfo NewLine = new PatientDetailInfo()
                             {
-                                PatientDetailInfo item = new PatientDetailInfo()
-                                {
-                                    //PatientId = row[0].ToString(),
-                                    CategoryCode = row[1].ToString(),
-                                    CategoryName = row[2].ToString(),
-                                    ItemCode = row[3].ToString(),
-                                    ItemName = row[4].ToString(),
-                                    ParentCode = row[5].ToString(),
-                                    //ControlType = row[11].ToString(),
-                                    // OptionCategory = row[12].ToString(),
-                                    //OptionSelected = row[0].ToString(),
-                                    //OptionList = row[0],
-                                    ItemSeq = Convert.ToInt32(row[6]),
-                                    Value = row[7].ToString(),
-                                    //Content = row[9].ToString()
-                                    Content = _ServicesSoapClient.GetUserName(row[7].ToString())
-                                    //Description = row[9].ToString()
-                                };
-
-                                if (item.Value == DoctorId)
-                                {
-                                    item.EditDeleteFlag = "true";
-                                }
-                                else
-                                {
-                                    item.EditDeleteFlag = "false";
-                                }
-                                items.Add(item);
+                                CategoryCode = row[1].ToString(),
+                                CategoryName = row[2].ToString(),
+                                ItemCode = row[3].ToString(),
+                                ItemName = row[4].ToString(),
+                                ParentCode = row[5].ToString(),
+                                ItemSeq = Convert.ToInt32(row[6]),
+                                Value = row[7].ToString(),
+                                Content = _ServicesSoapClient.GetUserName(row[7].ToString())
+                            };
+                            if (NewLine.Value == DoctorId)
+                            {
+                                NewLine.EditDeleteFlag = "true";
                             }
                             else
                             {
-                                PatientDetailInfo item = new PatientDetailInfo()
-                                {
-                                    //PatientId = row[0].ToString(),
-                                    CategoryCode = row[1].ToString(),
-                                    CategoryName = row[2].ToString(),
-                                    ItemCode = row[3].ToString(),
-                                    ItemName = row[4].ToString(),
-                                    ParentCode = row[5].ToString(),
-                                    ControlType = row[11].ToString(),
-                                    OptionCategory = row[12].ToString(),
-                                    //OptionSelected = row[0].ToString(),
-                                    //OptionList = row[0],
-                                    ItemSeq = Convert.ToInt32(row[6]),
-                                    Value = row[7].ToString(),
-                                    Content = row[8].ToString()
-                                    //Description = row[9].ToString()
-                                };
-                                item.OptionList = GetTypeList(item.OptionCategory, item.Value);  //通过yesornoh和value，结合字典表，生成有值的下拉框
-                                items.Add(item);
+                                NewLine.EditDeleteFlag = "false";
                             }
-                        }
-                    }
-                    modulesBoughtCode.Add(items[0].CategoryCode);
-                    modulesBoughtName.Add(items[0].CategoryName);
-                    ItemInfoBought.Add(items);
-                }
-            }
-            model.PatientDetailInfo = ItemInfoBought;
-
-            #endregion
-
-            #region 从字典表中加载模块信息
-            //修改：只加载医生负责的模块&患者购买的模块
-            //DataTable Moduledt = _ServicesSoapClient.GetModuleList().Tables[0];
-            DataTable Moduledt = _ServicesSoapClient.GetDoctorModuleList(DoctorId).Tables[0];
-            int indicator = 0;
-            foreach (DataRow dr in Moduledt.Rows)
-            {
-                //string dictCode = dr["Code"].ToString();
-                //string dictName = dr["Name"].ToString();
-                string dictCode = dr["CategoryCode"].ToString();
-                string dictName = dr["CategoryName"].ToString();
-                foreach (string modulesBt in modulesBoughtCode)
-                {
-                    if (modulesBt == dictCode)
-                    {
-                        indicator = 1;                    //已购买
-                        break;
-                    }
-                }
-                if (indicator == 0)    //未购买
-                {
-                    model.moduleUnBoughtCode.Add(dictCode);
-                    model.moduleUnBoughtName.Add(dictName);
-                }
-                else
-                {
-                    indicator = 0;
-                }
-            }
-
-            DataTable dt = new DataTable();
-            DataTable docList = new DataTable();
-            //string selected="2";
-            foreach (string mubt in model.moduleUnBoughtCode)
-            {
-                List<InfoItem> list = new List<InfoItem>();
-                //code = mubt.CategoryCode;
-                //dt = _ServicesSoapClient.GetMstInfoItemByCategoryCode(mubt).Tables[0];
-                DataSet ds = _ServicesSoapClient.GetMstInfoItemByCategoryCode(mubt);
-                if (ds.Tables.Count > 0)
-                {
-                    dt = ds.Tables[0];
-                    foreach (DataRow InfoItemDr in dt.Rows)
-                    {
-                        InfoItem item = new InfoItem()
-                        {
-                            Code = InfoItemDr["Code"].ToString(),
-                            Name = InfoItemDr["Name"].ToString(),
-                            ParentCode = InfoItemDr["ParentCode"].ToString(),
-                            SortNo = Convert.ToInt32(InfoItemDr["SortNo"]),
-                            GroupHeaderFlag = Convert.ToInt32(InfoItemDr["GroupHeaderFlag"]),
-                            ControlType = InfoItemDr["ControlType"].ToString(),
-                            OptionCategory = InfoItemDr["OptionCategory"].ToString()
-                        };
-                        if (item.ControlType == "7")
-                        {
-                            if (item.OptionCategory == "Cm.MstHypertensionDrug")
-                            {
-                                //高血压药物
-                                item.OptionList = GetHypertensionDrugTypeNameList("");
-                            }
-                            if (item.OptionCategory == "Cm.MstDiabetesDrug")
-                            {
-                                //糖尿病药物
-                                item.OptionList = GetDiabetesDrugTypeNameList("");
-                            }
-                            if (item.OptionCategory == "")
-                            {
-                                //合并用药
-                                item.OptionList = GetTypeList(item.OptionCategory, "");  //通过yesornoh和value，结合字典表，生成有值的下拉框
-                            }
+                            ItemInfo.Add(NewLine);
                         }
                         else
                         {
-                            item.OptionList = GetTypeList(item.OptionCategory, "");  //通过yesornoh和value，结合字典表，生成有值的下拉框
+                            PatientDetailInfo NewLine = new PatientDetailInfo()
+                            {
+                                ItemCode = row[3].ToString(),
+                                ItemName = row[4].ToString(),
+                                ParentCode = row[5].ToString(),
+                                ControlType = row[11].ToString(),
+                                OptionCategory = row[12].ToString(),
+                                ItemSeq = Convert.ToInt32(row[6]),
+                                Value = row[7].ToString(),
+                                Content = row[8].ToString(),
+                                GroupHeaderFlag = Convert.ToInt32(row[13])
+                            };
+                            if (NewLine.ControlType != "7")
+                                NewLine.OptionList = GetTypeList(NewLine.OptionCategory, NewLine.Value);  //通过yesornoh和value，结合字典表，生成有值的下拉框
+                            ItemInfo.Add(NewLine);
                         }
-                        list.Add(item);
-
+                    }
+                    else
+                    {
+                        if (row[3].ToString() == "InvalidFlag")
+                            InvalidFlag = (row[7].ToString() != "");
                     }
                 }
-                model.InfoItemList.Add(list);
-
-                docList = _ServicesSoapClient.GetDoctorListByModule(mubt).Tables[0];
-                foreach (DataRow DR in docList.Rows)
-                {
-                    model.DoctorList.Add(new SelectListItem { Text = DR["DoctorName"].ToString(), Value = DR["DoctorId"].ToString() });
-                }
             }
-            #endregion
+            model.ModuleDetailList = ItemInfo;
+            model.InvalidFlag = InvalidFlag;
+            //#region 从病人详细信息表中加载模块关注详细信息
+            //DataSet ItemInfoBoughtds = _ServicesSoapClient.GetPatBasicInfoDtlList(PatientId);
+            //List<List<PatientDetailInfo>> ItemInfoBought = new List<List<PatientDetailInfo>>();
+            //ArrayList modulesBoughtCode = new ArrayList();
+            //ArrayList modulesBoughtName = new ArrayList();
 
+            //if (ItemInfoBoughtds!=null)
+            //{
+            //    foreach (DataTable datatable in ItemInfoBoughtds.Tables)
+            //    {
+            //        List<PatientDetailInfo> items = new List<PatientDetailInfo>();
+
+            //        foreach (DataRow row in datatable.Rows)
+            //        {
+            //            if (row[3].ToString() != "InvalidFlag" && row[3].ToString() != "Patient")
+            //            {
+            //                if (row[3].ToString() == "Doctor")
+            //                {
+            //                    PatientDetailInfo item = new PatientDetailInfo()
+            //                    {
+            //                        //PatientId = row[0].ToString(),
+            //                        CategoryCode = row[1].ToString(),
+            //                        CategoryName = row[2].ToString(),
+            //                        ItemCode = row[3].ToString(),
+            //                        ItemName = row[4].ToString(),
+            //                        ParentCode = row[5].ToString(),
+            //                        //ControlType = row[11].ToString(),
+            //                        // OptionCategory = row[12].ToString(),
+            //                        //OptionSelected = row[0].ToString(),
+            //                        //OptionList = row[0],
+            //                        ItemSeq = Convert.ToInt32(row[6]),
+            //                        Value = row[7].ToString(),
+            //                        //Content = row[9].ToString()
+            //                        Content = _ServicesSoapClient.GetUserName(row[7].ToString())
+            //                        //Description = row[9].ToString()
+            //                    };
+
+            //                    if (item.Value == DoctorId)
+            //                    {
+            //                        item.EditDeleteFlag = "true";
+            //                    }
+            //                    else
+            //                    {
+            //                        item.EditDeleteFlag = "false";
+            //                    }
+            //                    items.Add(item);
+            //                }
+            //                else
+            //                {
+            //                    PatientDetailInfo item = new PatientDetailInfo()
+            //                    {
+            //                        //PatientId = row[0].ToString(),
+            //                        CategoryCode = row[1].ToString(),
+            //                        CategoryName = row[2].ToString(),
+            //                        ItemCode = row[3].ToString(),
+            //                        ItemName = row[4].ToString(),
+            //                        ParentCode = row[5].ToString(),
+            //                        ControlType = row[11].ToString(),
+            //                        OptionCategory = row[12].ToString(),
+            //                        //OptionSelected = row[0].ToString(),
+            //                        //OptionList = row[0],
+            //                        ItemSeq = Convert.ToInt32(row[6]),
+            //                        Value = row[7].ToString(),
+            //                        Content = row[8].ToString()
+            //                        //Description = row[9].ToString()
+            //                    };
+            //                    item.OptionList = GetTypeList(item.OptionCategory, item.Value);  //通过yesornoh和value，结合字典表，生成有值的下拉框
+            //                    items.Add(item);
+            //                }
+            //            }
+            //        }
+            //        modulesBoughtCode.Add(items[0].CategoryCode);
+            //        modulesBoughtName.Add(items[0].CategoryName);
+            //        ItemInfoBought.Add(items);
+            //    }
+            //}
+            //model.PatientDetailInfo = ItemInfoBought;
+            //#endregion
             return View(model);
-
         }
 
         [HttpPost]
@@ -979,116 +987,135 @@ namespace CDMIS.Controllers
 
                 string UserId = model.Patient.UserId;
                 string UserName = model.Patient.UserName;
-
-
-                #region 从病人详细信息表中加载模块关注信息
-                DataSet ItemInfoBoughtds = _ServicesSoapClient.GetPatBasicInfoDtlList(UserId);
-                List<List<PatientDetailInfo>> ItemInfoBought = new List<List<PatientDetailInfo>>();
-                ArrayList modulesBoughtCode = new ArrayList();
-                ArrayList modulesBoughtName = new ArrayList();
-
-                if (ItemInfoBoughtds != null)
+                string CategoryCode = "";
+                CategoryCode = Request.Form["ModuleDetailList[0].CategoryCode"];
+                List<PatientDetailInfo> ItemInfo = new List<PatientDetailInfo>();
+                if (CategoryCode != null)
                 {
-                    foreach (DataTable datatable in ItemInfoBoughtds.Tables)
+                    DataSet ItemInfoSet = _ServicesSoapClient.GetItemInfoByPIdAndModule(UserId, CategoryCode);
+                    foreach (DataTable Item in ItemInfoSet.Tables)
                     {
-                        List<PatientDetailInfo> items = new List<PatientDetailInfo>();
-                        foreach (DataRow row in datatable.Rows)
+                        foreach (DataRow Row in Item.Rows)
                         {
-                            if (row[3].ToString() != "InvalidFlag")
+                            if (Row[3].ToString() != "InvalidFlag" && Row[3].ToString() != "Patient" && Row[3].ToString() != "Doctor")
                             {
-                                PatientDetailInfo item = new PatientDetailInfo
+                                PatientDetailInfo NewLine = new PatientDetailInfo
                                 {
-                                    //PatientId = row[0].ToString(),
-                                    CategoryCode = row[1].ToString(),
-                                    CategoryName = row[2].ToString(),
-                                    ItemCode = row[3].ToString(),
-                                    ItemName = row[4].ToString(),
-                                    ParentCode = row[5].ToString(),
-                                    //ControlType = row[11].ToString(),
-                                    // OptionCategory = row[12].ToString(),
-                                    //OptionSelected = row[0].ToString(),
-                                    //OptionList = row[0],
-                                    //ItemSeq = Convert.ToInt32(row[6]),
-                                    Value = row[7].ToString(),
-                                    Content = row[8].ToString(),
-                                    //Description = row[9].ToString()
+                                    ItemCode = Row[3].ToString(),
+                                    OptionCategory = Row[12].ToString()
                                 };
-                                items.Add(item);
+                                ItemInfo.Add(NewLine);
                             }
                         }
-                        modulesBoughtCode.Add(items[0].CategoryCode);
-                        modulesBoughtName.Add(items[0].CategoryName);
-                        ItemInfoBought.Add(items);
                     }
                 }
-                model.PatientDetailInfo = ItemInfoBought;
-                #endregion
+                //#region 从病人详细信息表中加载模块关注信息
+                //DataSet ItemInfoBoughtds = _ServicesSoapClient.GetPatBasicInfoDtlList(UserId);
+                //List<List<PatientDetailInfo>> ItemInfoBought = new List<List<PatientDetailInfo>>();
+                //ArrayList modulesBoughtCode = new ArrayList();
+                //ArrayList modulesBoughtName = new ArrayList();
 
-                #region 从字典表中加载模块信息
-                //修改：只加载医生负责的模块&患者购买的模块
-                //DataTable Moduledt = _ServicesSoapClient.GetModuleList().Tables[0];
-                DataTable Moduledt = _ServicesSoapClient.GetDoctorModuleList(DoctorId).Tables[0];
+                //if (ItemInfoBoughtds != null)
+                //{
+                //    foreach (DataTable datatable in ItemInfoBoughtds.Tables)
+                //    {
+                //        List<PatientDetailInfo> items = new List<PatientDetailInfo>();
+                //        foreach (DataRow row in datatable.Rows)
+                //        {
+                //            if (row[3].ToString() != "InvalidFlag")
+                //            {
+                //                PatientDetailInfo item = new PatientDetailInfo
+                //                {
+                //                    //PatientId = row[0].ToString(),
+                //                    CategoryCode = row[1].ToString(),
+                //                    CategoryName = row[2].ToString(),
+                //                    ItemCode = row[3].ToString(),
+                //                    ItemName = row[4].ToString(),
+                //                    ParentCode = row[5].ToString(),
+                //                    //ControlType = row[11].ToString(),
+                //                    // OptionCategory = row[12].ToString(),
+                //                    //OptionSelected = row[0].ToString(),
+                //                    //OptionList = row[0],
+                //                    //ItemSeq = Convert.ToInt32(row[6]),
+                //                    Value = row[7].ToString(),
+                //                    Content = row[8].ToString(),
+                //                    //Description = row[9].ToString()
+                //                };
+                //                items.Add(item);
+                //            }
+                //        }
+                //        modulesBoughtCode.Add(items[0].CategoryCode);
+                //        modulesBoughtName.Add(items[0].CategoryName);
+                //        ItemInfoBought.Add(items);
+                //    }
+                //}
+                //model.PatientDetailInfo = ItemInfoBought;
+                //#endregion
 
-                //ArrayList moduleUnBought = new ArrayList();
-                int indicator = 0;
-                foreach (DataRow dr in Moduledt.Rows)
-                {
-                    //string dictCode = dr["Code"].ToString();
-                    //string dictName = dr["Name"].ToString();
-                    string dictCode = dr["CategoryCode"].ToString();
-                    string dictName = dr["CategoryName"].ToString();
-                    foreach (string modulesBt in modulesBoughtCode)
-                    {
-                        if (modulesBt == dictCode)
-                        {
-                            indicator = 1;                    //已购买
-                            break;
-                        }
-                    }
-                    if (indicator == 0)    //未购买
-                    {
-                        //mubt.CategoryCode = dictCode;
-                        //mubt.CategoryName = dictName;
-                        //model.moduleUnBought.Add(mubt);
-                        model.moduleUnBoughtCode.Add(dictCode);
-                        model.moduleUnBoughtName.Add(dictName);
-                        //indicator = 1;
-                    }
-                    else
-                    {
-                        indicator = 0;
-                    }
-                }
+                //#region 从字典表中加载模块信息
+                ////修改：只加载医生负责的模块&患者购买的模块
+                ////DataTable Moduledt = _ServicesSoapClient.GetModuleList().Tables[0];
+                //DataTable Moduledt = _ServicesSoapClient.GetDoctorModuleList(DoctorId).Tables[0];
 
-                //string code = "";
-                DataTable dt = new DataTable();
-                //ArrayList selectedModule = new ArrayList();
-                //ViewBag.SelectedModule = selectedModule;
+                ////ArrayList moduleUnBought = new ArrayList();
+                //int indicator = 0;
                 //foreach (DataRow dr in Moduledt.Rows)
-                foreach (string mubt in model.moduleUnBoughtCode)
-                {
-                    List<InfoItem> list = new List<InfoItem>();
-                    //code = mubt.CategoryCode;
-                    dt = _ServicesSoapClient.GetMstInfoItemByCategoryCode(mubt).Tables[0];
-                    foreach (DataRow InfoItemDr in dt.Rows)
-                    {
-                        InfoItem item = new InfoItem();
-                        item.Code = InfoItemDr["Code"].ToString();
-                        item.Name = InfoItemDr["Name"].ToString();
-                        item.ParentCode = InfoItemDr["ParentCode"].ToString();
-                        item.SortNo = Convert.ToInt32(InfoItemDr["SortNo"]);
-                        item.GroupHeaderFlag = Convert.ToInt32(InfoItemDr["GroupHeaderFlag"]);
-                        item.ControlType = InfoItemDr["ControlType"].ToString();
-                        item.OptionCategory = InfoItemDr["OptionCategory"].ToString();
-                        list.Add(item);
+                //{
+                //    //string dictCode = dr["Code"].ToString();
+                //    //string dictName = dr["Name"].ToString();
+                //    string dictCode = dr["CategoryCode"].ToString();
+                //    string dictName = dr["CategoryName"].ToString();
+                //    foreach (string modulesBt in modulesBoughtCode)
+                //    {
+                //        if (modulesBt == dictCode)
+                //        {
+                //            indicator = 1;                    //已购买
+                //            break;
+                //        }
+                //    }
+                //    if (indicator == 0)    //未购买
+                //    {
+                //        //mubt.CategoryCode = dictCode;
+                //        //mubt.CategoryName = dictName;
+                //        //model.moduleUnBought.Add(mubt);
+                //        model.moduleUnBoughtCode.Add(dictCode);
+                //        model.moduleUnBoughtName.Add(dictName);
+                //        //indicator = 1;
+                //    }
+                //    else
+                //    {
+                //        indicator = 0;
+                //    }
+                //}
 
-                    }
-                    model.InfoItemList.Add(list);
-                }
-                #endregion
+                ////string code = "";
+                //DataTable dt = new DataTable();
+                ////ArrayList selectedModule = new ArrayList();
+                ////ViewBag.SelectedModule = selectedModule;
+                ////foreach (DataRow dr in Moduledt.Rows)
+                //foreach (string mubt in model.moduleUnBoughtCode)
+                //{
+                //    List<InfoItem> list = new List<InfoItem>();
+                //    //code = mubt.CategoryCode;
+                //    dt = _ServicesSoapClient.GetMstInfoItemByCategoryCode(mubt).Tables[0];
+                //    foreach (DataRow InfoItemDr in dt.Rows)
+                //    {
+                //        InfoItem item = new InfoItem();
+                //        item.Code = InfoItemDr["Code"].ToString();
+                //        item.Name = InfoItemDr["Name"].ToString();
+                //        item.ParentCode = InfoItemDr["ParentCode"].ToString();
+                //        item.SortNo = Convert.ToInt32(InfoItemDr["SortNo"]);
+                //        item.GroupHeaderFlag = Convert.ToInt32(InfoItemDr["GroupHeaderFlag"]);
+                //        item.ControlType = InfoItemDr["ControlType"].ToString();
+                //        item.OptionCategory = InfoItemDr["OptionCategory"].ToString();
+                //        list.Add(item);
+
+                //    }
+                //    model.InfoItemList.Add(list);
+                //}
+                //#endregion
 
                 string Patient = UserId;
-                string CategoryCode = "";
                 string ItemCode = "";
                 int ItemSeq = 1;
                 string Value = "";
@@ -1100,86 +1127,91 @@ namespace CDMIS.Controllers
 
 
                 #region 插入购买的模块关注详细信息
-                int i, j = 0;
-                for (i = 0; i < model.InfoItemList.Count; i++)
+                int j = 0;
+                if (CategoryCode != null)
                 {
-                    string abc = Request.Form["select" + model.moduleUnBoughtCode[i]];
-                    if (abc != null)
+                    //是否购买
+                    if (Request.Form["InvalidFlag"] == "False")
+                        //插入 医生详细信息表 负责患者信息
+                        flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    //插入 患者详细信息表 负责医生信息                           
+                    flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+
+                    for (j = 0; j < ItemInfo.Count; j++)
                     {
-                        string[] Array = abc.Split(',');
-                        string select = "false";
-                        for (int ii = 0; ii < Array.Length; ii++)
-                        {
-                            if (Array[ii] == "true")
-                            {
-                                select = Array[ii];
-                                break;
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        if (select == "true")
-                        {
-                            CategoryCode = model.moduleUnBoughtCode[i].ToString();
-                            //是否购买
-                            int DeleteFlag = 0;
-                            while (DeleteFlag == 0)
-                            {
-                                DeleteFlag = _ServicesSoapClient.DeleteModuleDetail(Patient, CategoryCode);
-                            }
-                            flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        ItemCode = ItemInfo[j].ItemCode;
+                        OptionCategory = ItemInfo[j].OptionCategory;
+                        Value = Request.Form[ItemInfo[j].ItemCode];
 
-                            //插入 医生详细信息表 负责患者信息
-                            flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                            //插入 患者详细信息表 负责医生信息                           
-                            flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-
-                            for (j = 0; j < model.InfoItemList[i].Count; j++)
-                            {
-                                ItemCode = model.InfoItemList[i][j].Code;
-                                OptionCategory = model.InfoItemList[i][j].OptionCategory;
-                                Value = Request.Form[model.InfoItemList[i][j].Code];
-                                //插入患者详细信息表中的模块关注详细信息
-                                if (OptionCategory != "Cm.MstHypertensionDrug" && OptionCategory != "Cm.MstDiabetesDrug")
-                                {
-                                    flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                                }
-                                //string[] Array = Value.Split(',');
-                                //if (Value ==null)
-                                //{
-                                    //插入患者详细信息表中的模块关注详细信息
-                                    //flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                           
-                                //}
-                                //else
-                                //{
-                                    //string[] values = Value.Split(',');
-                                    //int vLength = values.Length;
-                                    //if (vLength > 1)
-                                    //{
-                                        
-                                        //for (int vnum = 0; vnum < vLength; vnum++)
-                                        //{
-                                            //插入患者详细信息表中的模块关注详细信息
-                                            //flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, values[vnum].ToString(), Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                                            //SortNo++;
-                                            //ItemSeq++;
-                                        //}
-                                    //}
-                                    //else
-                                    //{
-                                        //插入患者详细信息表中的模块关注详细信息
-                                       // flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                                    //}
-                                //}
-                            }
+                        //插入患者详细信息表中的模块关注详细信息
+                        if (OptionCategory != "Cm.MstHypertensionDrug" && OptionCategory != "Cm.MstDiabetesDrug" && OptionCategory != "Cm.MstLipidDrug" && OptionCategory != "Cm.MstUricAcidReductionDrug")
+                        {
+                            flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, "M", ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                         }
+                        //string[] Array = Value.Split(',');
+                        //if (Value ==null)
+                        //{
+                        //插入患者详细信息表中的模块关注详细信息
+                        //flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+
+                        //}
+                        //else
+                        //{
+                        //string[] values = Value.Split(',');
+                        //int vLength = values.Length;
+                        //if (vLength > 1)
+                        //{
+
+                        //for (int vnum = 0; vnum < vLength; vnum++)
+                        //{
+                        //插入患者详细信息表中的模块关注详细信息
+                        //flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, values[vnum].ToString(), Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        //SortNo++;
+                        //ItemSeq++;
+                        //}
+                        //}
+                        //else
+                        //{
+                        //插入患者详细信息表中的模块关注详细信息
+                        // flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        //}
+                        //}
                     }
                 }
                 #endregion
-
+                List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
+                DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(Patient);
+                foreach (DataTable item in ModulesInfo.Tables)
+                {
+                    foreach (DataRow row in item.Rows)
+                    {
+                        if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                        {
+                            ModuleInfo NewLine = new Models.ModuleInfo();
+                            NewLine.Category = row[0].ToString();
+                            NewLine.ModuleName = row[1].ToString();
+                            ModuleInfo.Add(NewLine);
+                        }
+                    }
+                }
+                model.ModuleBoughtInfo = ModuleInfo;
+                ModuleInfo = new List<Models.ModuleInfo>();
+                ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(Patient);
+                foreach (DataTable item in ModulesInfo.Tables)
+                {
+                    foreach (DataRow row in item.Rows)
+                    {
+                        if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                        {
+                            ModuleInfo NewLine = new Models.ModuleInfo();
+                            NewLine.Category = row[0].ToString();
+                            NewLine.ModuleName = row[1].ToString();
+                            ModuleInfo.Add(NewLine);
+                        }
+                    }
+                }
+                model.ModuleUnBoughtInfo = ModuleInfo;
                 if (flag == true)
                 {
                     return RedirectToAction("HealthCoachManagement", "DoctorHome", new { PatientId = UserId });
@@ -1254,7 +1286,7 @@ namespace CDMIS.Controllers
             return res;
         }
 
-        //编辑
+        //编辑(现在用不着了)
         public ActionResult ModuleProfileEdit(string UserId)
         {
             var user = Session["CurrentUser"] as UserAndRole;
@@ -1346,7 +1378,7 @@ namespace CDMIS.Controllers
             return View(model);
         } 
 
-        [HttpPost]
+        [HttpPost]//现在用不着了
         public ActionResult ModuleProfileEdit(BasicProfileViewModel model, FormCollection formCollection)
         {
             string UserId = model.Patient.UserId;
@@ -2804,23 +2836,30 @@ namespace CDMIS.Controllers
         }
 
         //根据TypeName动态加载DrugNameList下拉框
-        public JsonResult GetListbyTypeName(string TypeSelected, int Category)
+        public JsonResult GetListbyTypeName(string TypeSelected, string Category)
         {
             var res = new JsonResult();
             List<string> DrugNameList = new List<string>();
             if (TypeSelected != "0")
             {
                 DataSet DrugNameDS = new DataSet();
-                if (Category == 1)
+                if (Category == "Cm.MstHypertensionDrug")
                 {
                     DrugNameDS = _ServicesSoapClient.GetHypertensionDrugNameList(TypeSelected);
                 }
-                if (Category == 2)
+                if (Category == "Cm.MstDiabetesDrug")
                 {
                     DrugNameDS = _ServicesSoapClient.GetDiabetesDrugNameList(TypeSelected);
                 }
+                if (Category == "Cm.MstLipidDrug")
+                {
+                    DrugNameDS = _ServicesSoapClient.GetLipidDrugNameList(TypeSelected);
+                }
+                if (Category == "Cm.MstUricAcidReductionDrug")
+                {
+                    DrugNameDS = _ServicesSoapClient.GetAcidDrugNameList(TypeSelected);
+                }
                 DataTable DrugNameDT = DrugNameDS.Tables[0];
-
                 foreach (DataRow DR in DrugNameDT.Rows)
                 {
                     DrugNameList.Add(DR["Name"].ToString() + "|" + DR["Code"].ToString());
@@ -2832,18 +2871,26 @@ namespace CDMIS.Controllers
         }
 
         //动态加载药物类型下拉框
-        public JsonResult GetTypeNameList(int Category)
+        public JsonResult GetTypeNameList(string Category)
         {
             var res = new JsonResult();
             List<string> TypeNameList = new List<string>();
             DataSet TypeNameDS = new DataSet();
-            if (Category == 1)
+            if (Category == "MstHypertensionDrug")
             {
                 TypeNameDS = _ServicesSoapClient.GetHypertensionDrugTypeNameList();
             }
-            if (Category == 2)
+            if (Category == "MstDiabetesDrug")
             {
                 TypeNameDS = _ServicesSoapClient.GetDiabetesDrugTypeNameList();
+            }
+            if (Category == "MstLipidDrug")
+            {
+                TypeNameDS = _ServicesSoapClient.GetLipidDrugTypeNameList();
+            }
+            if (Category == "MstUricAcidReductionDrug")
+            {
+                TypeNameDS = _ServicesSoapClient.GetUricAcidReductionDrugTypeNameList();
             }
             DataTable TypeNameDT = TypeNameDS.Tables[0];
             
@@ -2914,6 +2961,31 @@ namespace CDMIS.Controllers
             DataSet DS_SynDetail = new DataSet();
             DS_SynDetail = _ServicesSoapClient.SynBasicInfoDetailForM2(PatientId);
             DataTable SynDetailDT = DS_SynDetail.Tables[0];
+            foreach (DataRow DR_2 in SynDetailDT.Rows)
+            {
+                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
+            }
+            res.Data = SynDetailList;
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
+        //同步部分模块信息(心衰)
+        public JsonResult SynBasicInfoDetailForM3(string PatientId)
+        {
+            var res = new JsonResult();
+            List<string> SynDetailList = new List<string>();
+            DataSet DS_SynDetail = new DataSet();
+            DS_SynDetail = _ServicesSoapClient.SynBasicInfoDetailForM3(PatientId);
+            DataTable SynDetailDT = DS_SynDetail.Tables[0];
+            if (SynDetailDT.Rows.Count != 0)
+            {
+                DataRow DR_1 = SynDetailDT.Rows[0];
+                {
+                    SynDetailList.Add(DR_1["ItemCode"].ToString() + "|" + DR_1["Value"].ToString());
+                }
+            }
+            SynDetailDT = DS_SynDetail.Tables[1];
             foreach (DataRow DR_2 in SynDetailDT.Rows)
             {
                 SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
