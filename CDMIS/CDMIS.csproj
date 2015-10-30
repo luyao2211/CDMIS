@@ -338,6 +338,9 @@
     <None Include="Service References\ServiceReference\CDMIS.ServiceReference.PlanDeatil.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference\CDMIS.ServiceReference.TaskDetailInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceReference\CDMIS.ServiceReference.VitalSigns.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

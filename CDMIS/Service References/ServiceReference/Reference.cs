@@ -16,6 +16,18 @@ namespace CDMIS.ServiceReference {
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://bme319.org/", ConfigurationName="ServiceReference.ServicesSoap")]
     public interface ServicesSoap {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetMpLabSubItemCmp", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Data.DataSet GetMpLabSubItemCmp();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/SetLabSubItem", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        bool SetLabSubItem(string Code, string Name, int SortNo, string InputCode, string Description, int InvalidFlag);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetLabSubItemName", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string GetLabSubItemName(string Code);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetTmpExamItemByStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Data.DataSet GetTmpExamItemByStatus(int Status);
@@ -614,6 +626,18 @@ namespace CDMIS.ServiceReference {
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         int SetMstTask(string CategoryCode, string Code, string Name, string ParentCode, string Description, int StartDate, int EndDate, int GroupHeaderFlag, int ControlType, string OptionCategory, string revUserId, string TerminalName, string TerminalIP, int DeviceType);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/DeleteMstTask", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        int DeleteMstTask(string CategoryCode, string Code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetMstTaskByParentCode", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Data.DataSet GetMstTaskByParentCode(string ParentCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetCmTaskItemInfo", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        CDMIS.ServiceReference.TaskDetailInfo GetCmTaskItemInfo(string CategoryCode, string Code);
+        
         // CODEGEN: Parameter 'fs' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/UpLoadImage", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -718,18 +742,6 @@ namespace CDMIS.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/ChangeStatusForTmpLabSubItem", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         bool ChangeStatusForTmpLabSubItem(string HospitalCode, string Code, int Status);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetMpLabSubItemCmp", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Data.DataSet GetMpLabSubItemCmp();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/SetLabSubItem", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        bool SetLabSubItem(string Code, string Name, int SortNo, string InputCode, string Description, int InvalidFlag);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetLabSubItemName", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        string GetLabSubItemName(string Code);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://bme319.org/GetRoleList", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -4082,6 +4094,150 @@ namespace CDMIS.ServiceReference {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://bme319.org/")]
+    public partial class TaskDetailInfo : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string nameField;
+        
+        private string parentCodeField;
+        
+        private string descriptionField;
+        
+        private int groupHeaderFlagField;
+        
+        private int controlTypeField;
+        
+        private string optionCategoryField;
+        
+        private System.DateTime createDateTimeField;
+        
+        private string authorField;
+        
+        private string authorNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ParentCode {
+            get {
+                return this.parentCodeField;
+            }
+            set {
+                this.parentCodeField = value;
+                this.RaisePropertyChanged("ParentCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+                this.RaisePropertyChanged("Description");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int GroupHeaderFlag {
+            get {
+                return this.groupHeaderFlagField;
+            }
+            set {
+                this.groupHeaderFlagField = value;
+                this.RaisePropertyChanged("GroupHeaderFlag");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public int ControlType {
+            get {
+                return this.controlTypeField;
+            }
+            set {
+                this.controlTypeField = value;
+                this.RaisePropertyChanged("ControlType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string OptionCategory {
+            get {
+                return this.optionCategoryField;
+            }
+            set {
+                this.optionCategoryField = value;
+                this.RaisePropertyChanged("OptionCategory");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public System.DateTime CreateDateTime {
+            get {
+                return this.createDateTimeField;
+            }
+            set {
+                this.createDateTimeField = value;
+                this.RaisePropertyChanged("CreateDateTime");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string Author {
+            get {
+                return this.authorField;
+            }
+            set {
+                this.authorField = value;
+                this.RaisePropertyChanged("Author");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string AuthorName {
+            get {
+                return this.authorNameField;
+            }
+            set {
+                this.authorNameField = value;
+                this.RaisePropertyChanged("AuthorName");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://bme319.org/")]
     public partial class MstBloodPressure : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string codeField;
@@ -4640,6 +4796,18 @@ namespace CDMIS.ServiceReference {
         
         public ServicesSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+        
+        public System.Data.DataSet GetMpLabSubItemCmp() {
+            return base.Channel.GetMpLabSubItemCmp();
+        }
+        
+        public bool SetLabSubItem(string Code, string Name, int SortNo, string InputCode, string Description, int InvalidFlag) {
+            return base.Channel.SetLabSubItem(Code, Name, SortNo, InputCode, Description, InvalidFlag);
+        }
+        
+        public string GetLabSubItemName(string Code) {
+            return base.Channel.GetLabSubItemName(Code);
         }
         
         public System.Data.DataSet GetTmpExamItemByStatus(int Status) {
@@ -5240,6 +5408,18 @@ namespace CDMIS.ServiceReference {
             return base.Channel.SetMstTask(CategoryCode, Code, Name, ParentCode, Description, StartDate, EndDate, GroupHeaderFlag, ControlType, OptionCategory, revUserId, TerminalName, TerminalIP, DeviceType);
         }
         
+        public int DeleteMstTask(string CategoryCode, string Code) {
+            return base.Channel.DeleteMstTask(CategoryCode, Code);
+        }
+        
+        public System.Data.DataSet GetMstTaskByParentCode(string ParentCode) {
+            return base.Channel.GetMstTaskByParentCode(ParentCode);
+        }
+        
+        public CDMIS.ServiceReference.TaskDetailInfo GetCmTaskItemInfo(string CategoryCode, string Code) {
+            return base.Channel.GetCmTaskItemInfo(CategoryCode, Code);
+        }
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         CDMIS.ServiceReference.UpLoadImageResponse CDMIS.ServiceReference.ServicesSoap.UpLoadImage(CDMIS.ServiceReference.UpLoadImageRequest request) {
             return base.Channel.UpLoadImage(request);
@@ -5352,18 +5532,6 @@ namespace CDMIS.ServiceReference {
         
         public bool ChangeStatusForTmpLabSubItem(string HospitalCode, string Code, int Status) {
             return base.Channel.ChangeStatusForTmpLabSubItem(HospitalCode, Code, Status);
-        }
-        
-        public System.Data.DataSet GetMpLabSubItemCmp() {
-            return base.Channel.GetMpLabSubItemCmp();
-        }
-        
-        public bool SetLabSubItem(string Code, string Name, int SortNo, string InputCode, string Description, int InvalidFlag) {
-            return base.Channel.SetLabSubItem(Code, Name, SortNo, InputCode, Description, InvalidFlag);
-        }
-        
-        public string GetLabSubItemName(string Code) {
-            return base.Channel.GetLabSubItemName(Code);
         }
         
         public System.Data.DataSet GetRoleList() {

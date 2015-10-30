@@ -2,6 +2,56 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://bme319.org/" xmlns:s1="http://bme319.org/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://bme319.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://bme319.org/">
+      <s:element name="GetMpLabSubItemCmp">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetMpLabSubItemCmpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMpLabSubItemCmpResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetLabSubItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="SortNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InputCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InvalidFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetLabSubItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetLabSubItemResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabSubItemName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabSubItemNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLabSubItemNameResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetTmpExamItemByStatus">
         <s:complexType>
           <s:sequence>
@@ -2822,6 +2872,70 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="DeleteMstTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CategoryCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteMstTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DeleteMstTaskResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMstTaskByParentCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParentCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMstTaskByParentCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMstTaskByParentCodeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCmTaskItemInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CategoryCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCmTaskItemInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCmTaskItemInfoResult" type="tns:TaskDetailInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TaskDetailInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParentCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupHeaderFlag" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ControlType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OptionCategory" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CreateDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Author" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthorName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="UpLoadImage">
         <s:complexType>
           <s:sequence>
@@ -3353,56 +3467,6 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="ChangeStatusForTmpLabSubItemResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetMpLabSubItemCmp">
-        <s:complexType />
-      </s:element>
-      <s:element name="GetMpLabSubItemCmpResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetMpLabSubItemCmpResult">
-              <s:complexType>
-                <s:sequence>
-                  <s:element ref="s:schema" />
-                  <s:any />
-                </s:sequence>
-              </s:complexType>
-            </s:element>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="SetLabSubItem">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="SortNo" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="InputCode" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="InvalidFlag" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="SetLabSubItemResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="SetLabSubItemResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetLabSubItemName">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetLabSubItemNameResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetLabSubItemNameResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -8166,6 +8230,7 @@
       <s:element name="ArrayOfMstBloodPressure" nillable="true" type="tns:ArrayOfMstBloodPressure" />
       <s:element name="ArrayOfPlanDeatil" nillable="true" type="tns:ArrayOfPlanDeatil" />
       <s:element name="PlanDeatil" nillable="true" type="tns:PlanDeatil" />
+      <s:element name="TaskDetailInfo" nillable="true" type="tns:TaskDetailInfo" />
       <s:element name="ImplementationInfo" nillable="true" type="tns:ImplementationInfo" />
       <s:element name="ChartData" nillable="true" type="tns:ChartData" />
       <s:element name="PatientBasicInfo" nillable="true" type="tns:PatientBasicInfo" />
@@ -8190,6 +8255,24 @@
       </s:complexType>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="GetMpLabSubItemCmpSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMpLabSubItemCmp" />
+  </wsdl:message>
+  <wsdl:message name="GetMpLabSubItemCmpSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMpLabSubItemCmpResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemSoapIn">
+    <wsdl:part name="parameters" element="tns:SetLabSubItem" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemSoapOut">
+    <wsdl:part name="parameters" element="tns:SetLabSubItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLabSubItemName" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLabSubItemNameResponse" />
+  </wsdl:message>
   <wsdl:message name="GetTmpExamItemByStatusSoapIn">
     <wsdl:part name="parameters" element="tns:GetTmpExamItemByStatus" />
   </wsdl:message>
@@ -9036,6 +9119,24 @@
   <wsdl:message name="SetMstTaskSoapOut">
     <wsdl:part name="parameters" element="tns:SetMstTaskResponse" />
   </wsdl:message>
+  <wsdl:message name="DeleteMstTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteMstTask" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMstTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteMstTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMstTaskByParentCode" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMstTaskByParentCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCmTaskItemInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCmTaskItemInfoResponse" />
+  </wsdl:message>
   <wsdl:message name="UpLoadImageSoapIn">
     <wsdl:part name="parameters" element="tns:UpLoadImage" />
   </wsdl:message>
@@ -9191,24 +9292,6 @@
   </wsdl:message>
   <wsdl:message name="ChangeStatusForTmpLabSubItemSoapOut">
     <wsdl:part name="parameters" element="tns:ChangeStatusForTmpLabSubItemResponse" />
-  </wsdl:message>
-  <wsdl:message name="GetMpLabSubItemCmpSoapIn">
-    <wsdl:part name="parameters" element="tns:GetMpLabSubItemCmp" />
-  </wsdl:message>
-  <wsdl:message name="GetMpLabSubItemCmpSoapOut">
-    <wsdl:part name="parameters" element="tns:GetMpLabSubItemCmpResponse" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemSoapIn">
-    <wsdl:part name="parameters" element="tns:SetLabSubItem" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemSoapOut">
-    <wsdl:part name="parameters" element="tns:SetLabSubItemResponse" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameSoapIn">
-    <wsdl:part name="parameters" element="tns:GetLabSubItemName" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameSoapOut">
-    <wsdl:part name="parameters" element="tns:GetLabSubItemNameResponse" />
   </wsdl:message>
   <wsdl:message name="GetRoleListSoapIn">
     <wsdl:part name="parameters" element="tns:GetRoleList" />
@@ -10710,6 +10793,27 @@
   <wsdl:message name="GetModuleByDoctorIdSoapOut">
     <wsdl:part name="parameters" element="tns:GetModuleByDoctorIdResponse" />
   </wsdl:message>
+  <wsdl:message name="GetMpLabSubItemCmpHttpGetIn" />
+  <wsdl:message name="GetMpLabSubItemCmpHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemHttpGetIn">
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Name" type="s:string" />
+    <wsdl:part name="SortNo" type="s:string" />
+    <wsdl:part name="InputCode" type="s:string" />
+    <wsdl:part name="Description" type="s:string" />
+    <wsdl:part name="InvalidFlag" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameHttpGetIn">
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
   <wsdl:message name="GetTmpExamItemByStatusHttpGetIn">
     <wsdl:part name="Status" type="s:string" />
   </wsdl:message>
@@ -11946,6 +12050,26 @@
   <wsdl:message name="SetMstTaskHttpGetOut">
     <wsdl:part name="Body" element="tns:int" />
   </wsdl:message>
+  <wsdl:message name="DeleteMstTaskHttpGetIn">
+    <wsdl:part name="CategoryCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMstTaskHttpGetOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeHttpGetIn">
+    <wsdl:part name="ParentCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoHttpGetIn">
+    <wsdl:part name="CategoryCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoHttpGetOut">
+    <wsdl:part name="Body" element="tns:TaskDetailInfo" />
+  </wsdl:message>
   <wsdl:message name="UpLoadImageHttpGetIn">
     <wsdl:part name="fs" type="s1:StringArray" />
     <wsdl:part name="fileName" type="s:string" />
@@ -12143,27 +12267,6 @@
   </wsdl:message>
   <wsdl:message name="ChangeStatusForTmpLabSubItemHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
-  </wsdl:message>
-  <wsdl:message name="GetMpLabSubItemCmpHttpGetIn" />
-  <wsdl:message name="GetMpLabSubItemCmpHttpGetOut">
-    <wsdl:part name="Body" element="tns:DataSet" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemHttpGetIn">
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Name" type="s:string" />
-    <wsdl:part name="SortNo" type="s:string" />
-    <wsdl:part name="InputCode" type="s:string" />
-    <wsdl:part name="Description" type="s:string" />
-    <wsdl:part name="InvalidFlag" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemHttpGetOut">
-    <wsdl:part name="Body" element="tns:boolean" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameHttpGetIn">
-    <wsdl:part name="Code" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameHttpGetOut">
-    <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="GetRoleListHttpGetIn" />
   <wsdl:message name="GetRoleListHttpGetOut">
@@ -14268,6 +14371,27 @@
   <wsdl:message name="GetModuleByDoctorIdHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
+  <wsdl:message name="GetMpLabSubItemCmpHttpPostIn" />
+  <wsdl:message name="GetMpLabSubItemCmpHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemHttpPostIn">
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Name" type="s:string" />
+    <wsdl:part name="SortNo" type="s:string" />
+    <wsdl:part name="InputCode" type="s:string" />
+    <wsdl:part name="Description" type="s:string" />
+    <wsdl:part name="InvalidFlag" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetLabSubItemHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameHttpPostIn">
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLabSubItemNameHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
   <wsdl:message name="GetTmpExamItemByStatusHttpPostIn">
     <wsdl:part name="Status" type="s:string" />
   </wsdl:message>
@@ -15504,6 +15628,26 @@
   <wsdl:message name="SetMstTaskHttpPostOut">
     <wsdl:part name="Body" element="tns:int" />
   </wsdl:message>
+  <wsdl:message name="DeleteMstTaskHttpPostIn">
+    <wsdl:part name="CategoryCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMstTaskHttpPostOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeHttpPostIn">
+    <wsdl:part name="ParentCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMstTaskByParentCodeHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoHttpPostIn">
+    <wsdl:part name="CategoryCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCmTaskItemInfoHttpPostOut">
+    <wsdl:part name="Body" element="tns:TaskDetailInfo" />
+  </wsdl:message>
   <wsdl:message name="UpLoadImageHttpPostIn">
     <wsdl:part name="fs" type="s1:StringArray" />
     <wsdl:part name="fileName" type="s:string" />
@@ -15701,27 +15845,6 @@
   </wsdl:message>
   <wsdl:message name="ChangeStatusForTmpLabSubItemHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
-  </wsdl:message>
-  <wsdl:message name="GetMpLabSubItemCmpHttpPostIn" />
-  <wsdl:message name="GetMpLabSubItemCmpHttpPostOut">
-    <wsdl:part name="Body" element="tns:DataSet" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemHttpPostIn">
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Name" type="s:string" />
-    <wsdl:part name="SortNo" type="s:string" />
-    <wsdl:part name="InputCode" type="s:string" />
-    <wsdl:part name="Description" type="s:string" />
-    <wsdl:part name="InvalidFlag" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SetLabSubItemHttpPostOut">
-    <wsdl:part name="Body" element="tns:boolean" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameHttpPostIn">
-    <wsdl:part name="Code" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetLabSubItemNameHttpPostOut">
-    <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="GetRoleListHttpPostIn" />
   <wsdl:message name="GetRoleListHttpPostOut">
@@ -17827,6 +17950,21 @@
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:portType name="ServicesSoap">
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetMpLabSubItemCmpSoapIn" />
+      <wsdl:output message="tns:GetMpLabSubItemCmpSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetLabSubItemSoapIn" />
+      <wsdl:output message="tns:SetLabSubItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetLabSubItemNameSoapIn" />
+      <wsdl:output message="tns:GetLabSubItemNameSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpExamItemByStatus Table：Tmp.ExaminationItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetTmpExamItemByStatusSoapIn" />
@@ -18532,6 +18670,21 @@
       <wsdl:input message="tns:SetMstTaskSoapIn" />
       <wsdl:output message="tns:SetMstTaskSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Cm.MstTask删数据 Table: Cm.MstTask Author:LY  20151030</wsdl:documentation>
+      <wsdl:input message="tns:DeleteMstTaskSoapIn" />
+      <wsdl:output message="tns:DeleteMstTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据ParentCode获取任务信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetMstTaskByParentCodeSoapIn" />
+      <wsdl:output message="tns:GetMstTaskByParentCodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetCmTaskItemInfoSoapIn" />
+      <wsdl:output message="tns:GetCmTaskItemInfoSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <wsdl:input message="tns:UpLoadImageSoapIn" />
       <wsdl:output message="tns:UpLoadImageSoapOut" />
@@ -18660,21 +18813,6 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:ChangeStatusForTmpLabSubItemSoapIn" />
       <wsdl:output message="tns:ChangeStatusForTmpLabSubItemSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetMpLabSubItemCmpSoapIn" />
-      <wsdl:output message="tns:GetMpLabSubItemCmpSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetLabSubItemSoapIn" />
-      <wsdl:output message="tns:SetLabSubItemSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetLabSubItemNameSoapIn" />
-      <wsdl:output message="tns:GetLabSubItemNameSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -19928,6 +20066,21 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServicesHttpGet">
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetMpLabSubItemCmpHttpGetIn" />
+      <wsdl:output message="tns:GetMpLabSubItemCmpHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetLabSubItemHttpGetIn" />
+      <wsdl:output message="tns:SetLabSubItemHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetLabSubItemNameHttpGetIn" />
+      <wsdl:output message="tns:GetLabSubItemNameHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpExamItemByStatus Table：Tmp.ExaminationItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetTmpExamItemByStatusHttpGetIn" />
@@ -20633,6 +20786,21 @@
       <wsdl:input message="tns:SetMstTaskHttpGetIn" />
       <wsdl:output message="tns:SetMstTaskHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Cm.MstTask删数据 Table: Cm.MstTask Author:LY  20151030</wsdl:documentation>
+      <wsdl:input message="tns:DeleteMstTaskHttpGetIn" />
+      <wsdl:output message="tns:DeleteMstTaskHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据ParentCode获取任务信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetMstTaskByParentCodeHttpGetIn" />
+      <wsdl:output message="tns:GetMstTaskByParentCodeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetCmTaskItemInfoHttpGetIn" />
+      <wsdl:output message="tns:GetCmTaskItemInfoHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <wsdl:input message="tns:UpLoadImageHttpGetIn" />
       <wsdl:output message="tns:UpLoadImageHttpGetOut" />
@@ -20761,21 +20929,6 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpGetIn" />
       <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetMpLabSubItemCmpHttpGetIn" />
-      <wsdl:output message="tns:GetMpLabSubItemCmpHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetLabSubItemHttpGetIn" />
-      <wsdl:output message="tns:SetLabSubItemHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetLabSubItemNameHttpGetIn" />
-      <wsdl:output message="tns:GetLabSubItemNameHttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -22029,6 +22182,21 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServicesHttpPost">
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetMpLabSubItemCmpHttpPostIn" />
+      <wsdl:output message="tns:GetMpLabSubItemCmpHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetLabSubItemHttpPostIn" />
+      <wsdl:output message="tns:SetLabSubItemHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetLabSubItemNameHttpPostIn" />
+      <wsdl:output message="tns:GetLabSubItemNameHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpExamItemByStatus Table：Tmp.ExaminationItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetTmpExamItemByStatusHttpPostIn" />
@@ -22734,6 +22902,21 @@
       <wsdl:input message="tns:SetMstTaskHttpPostIn" />
       <wsdl:output message="tns:SetMstTaskHttpPostOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Cm.MstTask删数据 Table: Cm.MstTask Author:LY  20151030</wsdl:documentation>
+      <wsdl:input message="tns:DeleteMstTaskHttpPostIn" />
+      <wsdl:output message="tns:DeleteMstTaskHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据ParentCode获取任务信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetMstTaskByParentCodeHttpPostIn" />
+      <wsdl:output message="tns:GetMstTaskByParentCodeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
+      <wsdl:input message="tns:GetCmTaskItemInfoHttpPostIn" />
+      <wsdl:output message="tns:GetCmTaskItemInfoHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <wsdl:input message="tns:UpLoadImageHttpPostIn" />
       <wsdl:output message="tns:UpLoadImageHttpPostOut" />
@@ -22862,21 +23045,6 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpPostIn" />
       <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetMpLabSubItemCmpHttpPostIn" />
-      <wsdl:output message="tns:GetMpLabSubItemCmpHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetLabSubItem Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetLabSubItemHttpPostIn" />
-      <wsdl:output message="tns:SetLabSubItemHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetLabSubItemName Table：Cm.MstLabTestSubItems Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetLabSubItemNameHttpPostIn" />
-      <wsdl:output message="tns:GetLabSubItemNameHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -24131,6 +24299,33 @@
   </wsdl:portType>
   <wsdl:binding name="ServicesSoap" type="tns:ServicesSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <soap:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <soap:operation soapAction="http://bme319.org/SetLabSubItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <soap:operation soapAction="http://bme319.org/GetLabSubItemName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <soap:operation soapAction="http://bme319.org/GetTmpExamItemByStatus" style="document" />
       <wsdl:input>
@@ -25400,6 +25595,33 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <soap:operation soapAction="http://bme319.org/DeleteMstTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <soap:operation soapAction="http://bme319.org/GetMstTaskByParentCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <soap:operation soapAction="http://bme319.org/GetCmTaskItemInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <soap:operation soapAction="http://bme319.org/UpLoadImage" style="document" />
       <wsdl:input>
@@ -25627,33 +25849,6 @@
     </wsdl:operation>
     <wsdl:operation name="ChangeStatusForTmpLabSubItem">
       <soap:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <soap:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <soap:operation soapAction="http://bme319.org/SetLabSubItem" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <soap:operation soapAction="http://bme319.org/GetLabSubItemName" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -27914,6 +28109,33 @@
   </wsdl:binding>
   <wsdl:binding name="ServicesSoap12" type="tns:ServicesSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <soap12:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <soap12:operation soapAction="http://bme319.org/SetLabSubItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <soap12:operation soapAction="http://bme319.org/GetLabSubItemName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <soap12:operation soapAction="http://bme319.org/GetTmpExamItemByStatus" style="document" />
       <wsdl:input>
@@ -29183,6 +29405,33 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <soap12:operation soapAction="http://bme319.org/DeleteMstTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <soap12:operation soapAction="http://bme319.org/GetMstTaskByParentCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <soap12:operation soapAction="http://bme319.org/GetCmTaskItemInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <soap12:operation soapAction="http://bme319.org/UpLoadImage" style="document" />
       <wsdl:input>
@@ -29410,33 +29659,6 @@
     </wsdl:operation>
     <wsdl:operation name="ChangeStatusForTmpLabSubItem">
       <soap12:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <soap12:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <soap12:operation soapAction="http://bme319.org/SetLabSubItem" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <soap12:operation soapAction="http://bme319.org/GetLabSubItemName" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -31697,6 +31919,33 @@
   </wsdl:binding>
   <wsdl:binding name="ServicesHttpGet" type="tns:ServicesHttpGet">
     <http:binding verb="GET" />
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <http:operation location="/GetMpLabSubItemCmp" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <http:operation location="/SetLabSubItem" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <http:operation location="/GetLabSubItemName" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <http:operation location="/GetTmpExamItemByStatus" />
       <wsdl:input>
@@ -32964,6 +33213,33 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <http:operation location="/DeleteMstTask" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <http:operation location="/GetMstTaskByParentCode" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <http:operation location="/GetCmTaskItemInfo" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <http:operation location="/UpLoadImage" />
       <wsdl:input>
@@ -33179,33 +33455,6 @@
     </wsdl:operation>
     <wsdl:operation name="ChangeStatusForTmpLabSubItem">
       <http:operation location="/ChangeStatusForTmpLabSubItem" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <http:operation location="/GetMpLabSubItemCmp" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <http:operation location="/SetLabSubItem" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <http:operation location="/GetLabSubItemName" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -35466,6 +35715,33 @@
   </wsdl:binding>
   <wsdl:binding name="ServicesHttpPost" type="tns:ServicesHttpPost">
     <http:binding verb="POST" />
+    <wsdl:operation name="GetMpLabSubItemCmp">
+      <http:operation location="/GetMpLabSubItemCmp" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLabSubItem">
+      <http:operation location="/SetLabSubItem" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabSubItemName">
+      <http:operation location="/GetLabSubItemName" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTmpExamItemByStatus">
       <http:operation location="/GetTmpExamItemByStatus" />
       <wsdl:input>
@@ -36733,6 +37009,33 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteMstTask">
+      <http:operation location="/DeleteMstTask" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMstTaskByParentCode">
+      <http:operation location="/GetMstTaskByParentCode" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCmTaskItemInfo">
+      <http:operation location="/GetCmTaskItemInfo" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpLoadImage">
       <http:operation location="/UpLoadImage" />
       <wsdl:input>
@@ -36948,33 +37251,6 @@
     </wsdl:operation>
     <wsdl:operation name="ChangeStatusForTmpLabSubItem">
       <http:operation location="/ChangeStatusForTmpLabSubItem" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetMpLabSubItemCmp">
-      <http:operation location="/GetMpLabSubItemCmp" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetLabSubItem">
-      <http:operation location="/SetLabSubItem" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetLabSubItemName">
-      <http:operation location="/GetLabSubItemName" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
