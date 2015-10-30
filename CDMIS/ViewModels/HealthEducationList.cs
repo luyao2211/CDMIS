@@ -10,16 +10,16 @@ namespace CDMIS.ViewModels
     public class HealthEducationList
     {
         public string selectedModuleId { get; set; }
-        public List<SelectListItem> ModuleList()
-        {
-            return CommonVariables.GetModuleList();
-        }
+        public List<SelectListItem> ModuleList { get; set; }
+        //{
+        //    return CommonVariables.GetModuleList();
+        //}
 
         public List<HealthEducation> HEList { get; set; }
 
         public HealthEducationList()
         {
-            selectedModuleId = "M1";
+            selectedModuleId = "";
             HEList = new List<HealthEducation>();
         }
     }
@@ -27,15 +27,12 @@ namespace CDMIS.ViewModels
     public class NewHealthEducationFile
     {
         public string selectedModuleId { get; set; }
-        public List<SelectListItem> ModuleList()
-        {
-            return CommonVariables.GetModuleList();
-        }
+        public List<SelectListItem> ModuleList { get; set; }
 
         public HealthEducation news { get; set; }
         public NewHealthEducationFile()
         {
-            selectedModuleId = "M1";
+            selectedModuleId = "";
             news = new HealthEducation();
         }
     }
