@@ -23,24 +23,41 @@ namespace CDMIS.Controllers
         //
         // GET: /News/
         #region <ActionResult>
-        public ActionResult Index()
+        public ActionResult Index(string Module)
         {
             HealthEducationList HElist = new HealthEducationList();
-            DataSet info = _ServicesSoapClient.GetAddressByTypeList(HElist.selectedModuleId, 5);
+            if (Module != null)
+                HElist.selectedModuleId = Module;
+            HElist.ModuleList = new List<SelectListItem>();
+            DataSet ModuleInfo = _ServicesSoapClient.GetMstTaskByParentCode("TD0000");
+            foreach (DataRow Row in ModuleInfo.Tables[0].Rows)
+            {
+                SelectListItem NewLine = new SelectListItem();
+                NewLine.Value = Row[1].ToString();
+                NewLine.Text = Row[2].ToString() + "模块";
+                HElist.ModuleList.Add(NewLine);
+            }
+            if (HElist.selectedModuleId == "")
+            {
+                HElist.selectedModuleId = "TD0001";
+            }
+            DataSet info = _ServicesSoapClient.GetMstTaskByParentCode(HElist.selectedModuleId);
+            SelectListItem SelectedModule = HElist.ModuleList.Find(
+                delegate(SelectListItem x)
+                {
+                    return x.Value == HElist.selectedModuleId;
+                });
             foreach (DataRow row in info.Tables[0].Rows)
             {
                 HealthEducation news = new HealthEducation();
-                news.Module = row[0].ToString();
-                news.ModuleName = row[1].ToString();
-                news.Id = row[2].ToString();
-                news.Type = Convert.ToInt32(row[3].ToString());
-                news.FileName = row[5].ToString();
-                news.Path = row[6].ToString();
-                news.Title = row[7].ToString();
-                news.CreateDateTime = row[8].ToString();
-                news.Author = row[9].ToString();
-                news.AuthorName = row[10].ToString();
-
+                news.Module = HElist.selectedModuleId;
+                news.ModuleName = SelectedModule.Text;
+                news.Id = row[1].ToString();
+                news.Path = row[9].ToString();
+                news.Title = row[2].ToString();
+                news.CreateDateTime = row[10].ToString();
+                news.Author = row[11].ToString();
+                news.AuthorName = row[12].ToString();
                 HElist.HEList.Add(news);
             }
             return View(HElist);
@@ -49,6 +66,16 @@ namespace CDMIS.Controllers
         public ActionResult Create()
         {
             NewHealthEducationFile nhe = new NewHealthEducationFile();
+            nhe.selectedModuleId = "TD0001";
+            nhe.ModuleList = new List<SelectListItem>();
+            DataSet ModuleInfo = _ServicesSoapClient.GetMstTaskByParentCode("TD0000");
+            foreach (DataRow Row in ModuleInfo.Tables[0].Rows)
+            {
+                SelectListItem NewLine = new SelectListItem();
+                NewLine.Value = Row[1].ToString();
+                NewLine.Text = Row[2].ToString() + "模块";
+                nhe.ModuleList.Add(NewLine);
+            }
             return View(nhe);
         }
 
@@ -57,12 +84,12 @@ namespace CDMIS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string dir = Server.MapPath("/") + "HealthEducation\\";
+                string dir = Server.MapPath("/");
                 var user = Session["CurrentUser"] as UserAndRole;
                 string servertime = _ServicesSoapClient.GetServerTime();
-                newhe.news.FileName = newhe.selectedModuleId + "_" + servertime.Replace(':', '_') + ".html";
+                newhe.news.Path = "/HealthEducation/" + newhe.selectedModuleId + "_" + servertime.Replace(':', '_') + ".html";
                 //newhe.news.Path = dir + newhe.news.FileName;
-                StreamReader sr = new StreamReader(dir + "head.txt", Encoding.Default);
+                StreamReader sr = new StreamReader(dir + "HealthEducation\\head.txt", Encoding.Default);
                 string head, temp;
                 head = "";
                 while ((temp = sr.ReadLine()) != null)
@@ -72,7 +99,7 @@ namespace CDMIS.Controllers
                 temp = head + newhe.news.htmlContent + "</body></html>";
                 sr.Close();
 
-                System.IO.File.WriteAllText(dir + newhe.news.FileName, temp, Encoding.GetEncoding("GB2312"));
+                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("GB2312"));
                 newhe.news.Author = user.UserId;
                 //
 
@@ -84,15 +111,14 @@ namespace CDMIS.Controllers
                 }
                 hostport = Request.ServerVariables.Get("Server_Port").ToString();
                 //newhe.news.Path = "http://" + hostAddress + ":" + hostport + "/HealthEducation/" + newhe.news.FileName;
-                newhe.news.Path = "/HealthEducation/" + newhe.news.FileName;
                 if (newhe.news.Title == null || newhe.news.Title == "")
                 {
                     newhe.news.Title = "无主题";
                 }
-                bool flag = _ServicesSoapClient.SetHealthEducation(newhe.selectedModuleId, "0", 5, newhe.news.FileName, newhe.news.Path, newhe.news.Title, servertime, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
-                if (flag)
+                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), "", newhe.news.Title, newhe.selectedModuleId, "", 0, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
+                if (flag == 1)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { Module = newhe.selectedModuleId });
                 }
                 else
                 {
@@ -104,38 +130,41 @@ namespace CDMIS.Controllers
 
         public ActionResult Edit(string Module, string Id)
         {
-            DataSet info = _ServicesSoapClient.GetAll(Module, Id);
+            TaskDetailInfo info = _ServicesSoapClient.GetCmTaskItemInfo(Module.Substring(0, 2), Id);
             HealthEducation news = new HealthEducation();
-            if (info.Tables[0].Rows.Count > 0)
+            news.Module = Module;
+            news.Id = Id;
+            news.Path = info.OptionCategory;
+            news.Title = info.Name;
+            news.CreateDateTime = info.CreateDateTime.ToString();
+            news.Author = info.Author;
+            news.AuthorName = info.AuthorName;
+
+            string dir = Server.MapPath("/");
+            StreamReader sr = new StreamReader(dir + news.Path.Substring(1).Replace("/","\\"), Encoding.GetEncoding("GB2312"));
+
+            string temp;
+            news.htmlContent = "";
+            if ((temp = sr.ReadLine()) != null)
             {
-                DataRow row = info.Tables[0].Rows[0];
-                news.Module = Module;
-                news.Id = Id;
-                news.Type = Convert.ToInt32(row[2].ToString());
-                news.FileName = row[4].ToString();
-                news.Path = row[5].ToString();
-                news.Title = row[6].ToString();
-                news.CreateDateTime = row[7].ToString();
-                news.Author = row[8].ToString();
-                news.AuthorName = row[9].ToString();
-
-                string dir = Server.MapPath("/") + "HealthEducation\\";
-                StreamReader sr = new StreamReader(dir + news.FileName, Encoding.GetEncoding("GB2312"));
-
-                string temp;
-                news.htmlContent = "";
-                if ((temp = sr.ReadLine()) != null)
-                {
-                    Regex reg = new Regex(@"<body>([\s\S]*)</body>", RegexOptions.IgnoreCase);
-                    MatchCollection mc = reg.Matches(temp);
-                    news.htmlContent = mc[0].Value;
-                    news.htmlContent = news.htmlContent.Substring(6, news.htmlContent.Length - 13);
-                }
-                sr.Close();
+                Regex reg = new Regex(@"<body>([\s\S]*)</body>", RegexOptions.IgnoreCase);
+                MatchCollection mc = reg.Matches(temp);
+                news.htmlContent = mc[0].Value;
+                news.htmlContent = news.htmlContent.Substring(6, news.htmlContent.Length - 13);
             }
+            sr.Close();
             NewHealthEducationFile nhe = new NewHealthEducationFile();
             nhe.selectedModuleId = Module;
             nhe.news = news;
+            nhe.ModuleList = new List<SelectListItem>();
+            DataSet ModuleInfo = _ServicesSoapClient.GetMstTaskByParentCode("TD0000");
+            foreach (DataRow Row in ModuleInfo.Tables[0].Rows)
+            {
+                SelectListItem NewLine = new SelectListItem();
+                NewLine.Value = Row[1].ToString();
+                NewLine.Text = Row[2].ToString() + "模块";
+                nhe.ModuleList.Add(NewLine);
+            }
             return View(nhe);
         }
 
@@ -144,12 +173,12 @@ namespace CDMIS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string dir = Server.MapPath("/") + "HealthEducation\\";
+                string dir = Server.MapPath("/");
                 var user = Session["CurrentUser"] as UserAndRole;
                 string servertime = _ServicesSoapClient.GetServerTime();
                 //newhe.news.FileName = newhe.selectedModuleId + "_" + servertime + ".html";
                 //newhe.news.Path = dir + newhe.news.FileName;
-                StreamReader sr = new StreamReader(dir + "head.txt", Encoding.Default);
+                StreamReader sr = new StreamReader(dir + "HealthEducation\\head.txt", Encoding.Default);
                 string head, temp;
                 head = "";
                 while ((temp = sr.ReadLine()) != null)
@@ -159,12 +188,12 @@ namespace CDMIS.Controllers
                 temp = head + newhe.news.htmlContent + "</body></html>";
                 sr.Close();
 
-                if (System.IO.File.Exists(dir + newhe.news.FileName))
+                if (System.IO.File.Exists(dir + newhe.news.Path.Substring(1).Replace("/", "\\")))
                 {
-                    System.IO.File.Delete(dir + newhe.news.FileName);
+                    System.IO.File.Delete(dir + newhe.news.Path.Substring(1).Replace("/", "\\"));
                 }
 
-                System.IO.File.WriteAllText(dir + newhe.news.FileName, temp, Encoding.GetEncoding("GB2312"));
+                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("GB2312"));
                 newhe.news.Author = user.UserId;
                 //
                 //保存数据
@@ -175,15 +204,14 @@ namespace CDMIS.Controllers
                 }
                 hostport = Request.ServerVariables.Get("Server_Port").ToString();
                 //newhe.news.Path = "http://" + hostAddress + ":" + hostport + "/HealthEducation/" + newhe.news.FileName;
-                newhe.news.Path = "/HealthEducation/" + newhe.news.FileName;
                 if (newhe.news.Title == null || newhe.news.Title == "")
                 {
                     newhe.news.Title = "无主题";
                 }
-                bool flag = _ServicesSoapClient.SetHealthEducation(newhe.selectedModuleId, newhe.news.Id, 5, newhe.news.FileName, newhe.news.Path, newhe.news.Title, servertime, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
-                if (flag)
+                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), newhe.news.Id, newhe.news.Title, newhe.selectedModuleId, "", 0, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
+                if (flag == 1)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { Module = newhe.selectedModuleId });
                 }
                 else
                 {
@@ -196,7 +224,7 @@ namespace CDMIS.Controllers
         public JsonResult DeleteHealthEducation(string Module, string Id)
         {
             var res = new JsonResult();
-            int flag = _ServicesSoapClient.DeleteHealthEducationInfo(Module, Id);
+            int flag = _ServicesSoapClient.DeleteMstTask(Module.Substring(0, 2), Id);
             if (flag == 1)
             {
                 res.Data = true;
