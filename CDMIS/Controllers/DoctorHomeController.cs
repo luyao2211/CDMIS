@@ -10,9 +10,11 @@ using CDMIS.WebReferenceJC;
 using System.Data;
 using System.Collections;
 using CDMIS.OtherCs;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     [UserAuthorize]
     public class DoctorHomeController : Controller
     {

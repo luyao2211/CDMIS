@@ -8,10 +8,12 @@ using CDMIS.Models;
 using System.Data;
 using CDMIS.ServiceReference;
 using CDMIS.OtherCs;
+using CDMIS.CommonLibrary;
 
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     [UserAuthorize]
     public class PatientInfoController : Controller
     {

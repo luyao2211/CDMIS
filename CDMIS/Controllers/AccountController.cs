@@ -13,9 +13,11 @@ using CDMIS.ServiceReference;
 using System.Net;
 using System.Web.Security;
 using System.Text.RegularExpressions;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+     [StatisticsTracker]
     public class AccountController : Controller
     {
         #region <" 私有变量 ">

@@ -8,9 +8,11 @@ using CDMIS.ViewModels;
 using CDMIS.Models;
 using CDMIS.ServiceReference;
 using CDMIS.OtherCs;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     [UserAuthorize]
     public class DictController : Controller
     {

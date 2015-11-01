@@ -9,9 +9,11 @@ using System.Data;
 using CDMIS.Models;
 using System.IO;
 using CDMIS.OtherCs;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     [UserAuthorize]
     public class ManagementController : Controller
     {

@@ -114,12 +114,14 @@ C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
 C:\慢病管理\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
 C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
 C:\慢病管理\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
-F:\Work\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\CDMIS.dll
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\CDMIS.pdb
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\EntityFramework.dll
+F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\log4net.dll
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.dll
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\EntityFramework.xml
+F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\log4net.xml
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
 F:\Work\chronic disease management\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
 F:\Work\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
+F:\Work\chronic disease management\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb

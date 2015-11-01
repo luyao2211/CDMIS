@@ -12,10 +12,11 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Data;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
-   
+   [StatisticsTracker]
     public class PersonalController : Controller
     {
         //

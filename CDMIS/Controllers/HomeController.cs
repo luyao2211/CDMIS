@@ -9,9 +9,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Drawing.Imaging;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     public class HomeController : Controller
     {
         //

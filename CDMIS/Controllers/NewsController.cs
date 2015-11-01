@@ -11,9 +11,11 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using CDMIS.OtherCs;
+using CDMIS.CommonLibrary;
 
 namespace CDMIS.Controllers
 {
+    [StatisticsTracker]
     [UserAuthorize]
     public class NewsController : Controller
     {
