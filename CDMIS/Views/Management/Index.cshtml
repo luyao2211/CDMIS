@@ -1019,6 +1019,7 @@
         for (var j = 0; j < strlist.options.length; j++) {
             strlist.options[j].hidden = false;
         }
+        $('*[title="Close"]').click();
     });
 
     $("#Save").bind('click', function (event) {
@@ -1115,7 +1116,7 @@
                                 }
 
                                 setDocDetailInfo(userId, userClassCode, UnitName, Dept, JobTitle, strValue);
-    
+
                                 location.reload();
                             }
 
@@ -1150,15 +1151,15 @@
 
 
             }
-            else if ((PhoneNo != OriPhoneNo) &&(Flag == "0")){
-                
-                    //0代表手机号已存在
-                    var Text = "手机号已存在，请更换！";
+            else if ((PhoneNo != OriPhoneNo) && (Flag == "0")) {
 
-                    $('#phoneWrn').html(Text);
-                    $('#phoneWrn').css("display", "block");
+                //0代表手机号已存在
+                var Text = "手机号已存在，请更换！";
 
-   
+                $('#phoneWrn').html(Text);
+                $('#phoneWrn').css("display", "block");
+
+
             }
             else {
                 var SetMstUserFlag = false;
@@ -1182,7 +1183,7 @@
 
 
 
-                   
+
                     $.ajax({
                         url: "/Management/setCmMstUser",
                         type: "GET",
@@ -1194,7 +1195,7 @@
                             //                alert(res);
                         }
                     });
-                   
+
                     if (SetMstUserFlag == 1) {
                         if ((userClassCode == "Administrator") || (userClassCode == "Patient")) {
                             location.reload();
@@ -1232,7 +1233,7 @@
                         }
 
                     }
-                    
+
                 }
             }
         }
