@@ -810,23 +810,26 @@ namespace CDMIS.Controllers
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
-                    {
-                        ModuleInfo NewLine = new Models.ModuleInfo();
-                        NewLine.Category = row[0].ToString();
-                        NewLine.ModuleName = row[1].ToString();
-                        ModuleInfo.Add(NewLine);
-                    }
+                    ModuleInfo NewLine = new Models.ModuleInfo();
+                    NewLine.Category = row[0].ToString();
+                    NewLine.ModuleName = row[1].ToString();
+                    ModuleInfo.Add(NewLine);
                 }
             }
             model.ModuleBoughtInfo = ModuleInfo;
             ModuleInfo = new List<Models.ModuleInfo>();
             ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(PatientId);
+            DataSet DoctorModule = _ServicesSoapClient.GetDoctorModuleList(DoctorId);
+            List<string> DoctorModules = new List<string>();
+            foreach (DataRow item in DoctorModule.Tables[0].Rows)
+            {
+                DoctorModules.Add(item[0].ToString());
+            }
             foreach (DataTable item in ModulesInfo.Tables)
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                    if (DoctorModules.IndexOf(row[0].ToString()) != -1)
                     {
                         ModuleInfo NewLine = new Models.ModuleInfo();
                         NewLine.Category = row[0].ToString();
@@ -1021,23 +1024,26 @@ namespace CDMIS.Controllers
                 {
                     foreach (DataRow row in item.Rows)
                     {
-                        if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
-                        {
-                            ModuleInfo NewLine = new Models.ModuleInfo();
-                            NewLine.Category = row[0].ToString();
-                            NewLine.ModuleName = row[1].ToString();
-                            ModuleInfo.Add(NewLine);
-                        }
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
                     }
                 }
                 model.ModuleBoughtInfo = ModuleInfo;
                 ModuleInfo = new List<Models.ModuleInfo>();
                 ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(UserId);
+                DataSet DoctorModule = _ServicesSoapClient.GetDoctorModuleList(DoctorId);
+                List<string> DoctorModules = new List<string>();
+                foreach (DataRow item in DoctorModule.Tables[0].Rows)
+                {
+                    DoctorModules.Add(item[0].ToString());
+                }
                 foreach (DataTable item in ModulesInfo.Tables)
                 {
                     foreach (DataRow row in item.Rows)
                     {
-                        if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
+                        if (DoctorModules.IndexOf(row[0].ToString()) != -1)
                         {
                             ModuleInfo NewLine = new Models.ModuleInfo();
                             NewLine.Category = row[0].ToString();
@@ -1174,8 +1180,22 @@ namespace CDMIS.Controllers
                         return x.Category == CategoryCode;
                     });
                     if (ModuleFind == null)
+                    {
                         //插入 医生详细信息表 负责患者信息
                         flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        model.ModuleBoughtInfo.Add(new ModuleInfo
+                        {
+                            Category = CategoryCode,
+                            ModuleName = model.ModuleUnBoughtInfo.Find(delegate(ModuleInfo x)
+                            {
+                                return x.Category == CategoryCode;
+                            }).ModuleName
+                        });
+                        model.ModuleUnBoughtInfo.Remove(model.ModuleUnBoughtInfo.Find(delegate(ModuleInfo x)
+                        {
+                            return x.Category == CategoryCode;
+                        }));
+                    }
                     flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                     //插入 患者详细信息表 负责医生信息                           
                     flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);

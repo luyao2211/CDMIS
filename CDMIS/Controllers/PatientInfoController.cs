@@ -84,13 +84,10 @@ namespace CDMIS.Controllers
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
-                    {
-                        ModuleInfo NewLine = new Models.ModuleInfo();
-                        NewLine.Category = row[0].ToString();
-                        NewLine.ModuleName = row[1].ToString();
-                        ModuleInfo.Add(NewLine);
-                    }
+                    ModuleInfo NewLine = new Models.ModuleInfo();
+                    NewLine.Category = row[0].ToString();
+                    NewLine.ModuleName = row[1].ToString();
+                    ModuleInfo.Add(NewLine);
                 }
             }
             pbiModel.ModuleBoughtInfo = ModuleInfo;
@@ -110,13 +107,10 @@ namespace CDMIS.Controllers
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (Convert.ToInt32(row[0].ToString().Substring(1)) < 4)
-                    {
-                        ModuleInfo NewLine = new Models.ModuleInfo();
-                        NewLine.Category = row[0].ToString();
-                        NewLine.ModuleName = row[1].ToString();
-                        ModuleInfo.Add(NewLine);
-                    }
+                    ModuleInfo NewLine = new Models.ModuleInfo();
+                    NewLine.Category = row[0].ToString();
+                    NewLine.ModuleName = row[1].ToString();
+                    ModuleInfo.Add(NewLine);
                 }
             }
             model.ModuleBoughtInfo = ModuleInfo;
