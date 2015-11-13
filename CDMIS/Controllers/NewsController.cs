@@ -171,6 +171,7 @@ namespace CDMIS.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Edit(NewHealthEducationFile newhe)
         {
             if (ModelState.IsValid)
