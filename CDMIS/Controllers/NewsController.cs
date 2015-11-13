@@ -171,6 +171,7 @@ namespace CDMIS.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Edit(NewHealthEducationFile newhe)
         {
             if (ModelState.IsValid)
@@ -195,7 +196,7 @@ namespace CDMIS.Controllers
                     System.IO.File.Delete(dir + newhe.news.Path.Substring(1).Replace("/", "\\"));
                 }
 
-                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("GB2312"));
+                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("UTF-8"));
                 newhe.news.Author = user.UserId;
                 //
                 //保存数据
