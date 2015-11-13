@@ -1182,7 +1182,7 @@ namespace CDMIS.Controllers
                     if (ModuleFind == null)
                     {
                         //插入 医生详细信息表 负责患者信息
-                        flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, 0, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                         model.ModuleBoughtInfo.Add(new ModuleInfo
                         {
                             Category = CategoryCode,
