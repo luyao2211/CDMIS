@@ -82,6 +82,7 @@ namespace CDMIS.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Create(NewHealthEducationFile newhe)
         {
             if (ModelState.IsValid)
@@ -101,7 +102,7 @@ namespace CDMIS.Controllers
                 temp = head + newhe.news.htmlContent + "</body></html>";
                 sr.Close();
 
-                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("GB2312"));
+                System.IO.File.WriteAllText(dir + newhe.news.Path.Substring(1).Replace("/", "\\"), temp, Encoding.GetEncoding("UTF-8"));
                 newhe.news.Author = user.UserId;
                 //
 

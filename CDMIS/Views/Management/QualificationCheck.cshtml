@@ -1,7 +1,7 @@
 ﻿@model CDMIS.ViewModels.QualiCheckViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.Title = "资质审核";
+    ViewBag.Title = "用户资质审核";
 }
 <link href="../../Content/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/simpleModal.css" rel="stylesheet" type="text/css" />
@@ -160,7 +160,7 @@
 
     $(document).ready(function () {
         $("#menu a").attr("id", ""); //Reset id's 
-        $("#menu li:eq(3) a").attr("id", "current");
+        $("#menu li:eq(2) a").attr("id", "current");
     });
 
     //表格样式

@@ -50,6 +50,10 @@ namespace CDMIS.ViewModels
         public string EmergencyContact { get; set; }            //紧急联系人
         public string EmergencyContactPhoneNumber { get; set; } //紧急联系人手机号码
         public string PhotoAddress { get; set; }                //头像存放地址
+        public string UnitName { get; set; }                    //医生单位
+        public string JobTitle { get; set; }                    //医生职称
+        public string Level { get; set; }                       //医生级别
+        public string Dept { get; set; }                        //医生科室
     }
 
     //信箱母版 GL 2014-12-09

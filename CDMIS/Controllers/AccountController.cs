@@ -211,66 +211,17 @@ namespace CDMIS.Controllers
         {
             try
             {
-                var UserId = VerificationModel.UserId;
                 var piPhoneNumber = VerificationModel.PhoneNumber;
-
-                if (UserId == null)
-                {
-                    ModelState.AddModelError("errorUserId", "用户ID为空，请输入用户ID");
-                    return View();
-                }
-                else if (piPhoneNumber == null)
+                if (piPhoneNumber == null)
                 {
                     ModelState.AddModelError("errorPhoneNo", "手机号码为空,请输入手机号码");
                     return View();
                 }
                 else
                 {
-                    var UserExistFlag = _ServicesSoapClient.CheckUserExist(UserId);
-                    if (UserExistFlag == true)
-                    {
-                        var Role = _ServicesSoapClient.GetClassByUserId(UserId);
-                        if (Role == "Doctor" || Role == "Administrator")
-                        {
-                            var CheckDoctorPhoneNumber = _ServicesSoapClient.CheckDoctorPhoneNumber(UserId, piPhoneNumber);
-                            if (CheckDoctorPhoneNumber == 1)
-                            {
-                                return RedirectToAction("ResetPassword", "Account", new { UserId = UserId });
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("errorPhoneNo", "输入的手机号码错误");
-                                return View();
-                            }
-                        }
-                        else if (Role == "Patient")
-                        {
-                            var CheckPatientPhoneNumber = _ServicesSoapClient.CheckPatientPhoneNumber(UserId, piPhoneNumber);
-                            if (CheckPatientPhoneNumber == 1)
-                            {
-                                return RedirectToAction("ResetPassword", "Account", new { UserId = UserId });
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("errorPhoneNo", "输入的手机号码错误");
-                                return View();
-                            }
-                        }
-                        else
-                        {
-                            return View();
-                        }
-
-                    }
-
-                    else
-                    {
-                        ModelState.AddModelError("errorUserId", "该用户不存在");
-                        return View();
-                    }
-
+                    string UserId = _ServicesSoapClient.GetIDByInput("PhoneNo", piPhoneNumber);
+                    return RedirectToAction("ResetPassword", "Account", new { UserId = UserId });
                 }
-
             }
             catch (Exception)
             {
@@ -607,19 +558,13 @@ namespace CDMIS.Controllers
             return res;
         }
 
-        public JsonResult CheckValidateCode2(string ValidateCode)
+        public JsonResult CheckValidateCode2(string PhoneNo, string ValidateCode)
         {
             var res = new JsonResult();
-            if (ValidateCode != null)
+            int ret = _ServicesSoapClient.checkverification(PhoneNo, "verification", ValidateCode);
+            if (ret == 1)
             {
-                if (ValidateCode == _validateCode2)
-                {
-                    res.Data = true;
-                }
-                else
-                {
-                    res.Data = false;
-                }
+                res.Data = true;
             }
             else
             {
@@ -629,9 +574,13 @@ namespace CDMIS.Controllers
             return res;
         }
 
-
-
-
+        public JsonResult SendSMS(string PhoneNo)
+        {
+            var res = new JsonResult();
+            res.Data = _ServicesSoapClient.sendSMS(PhoneNo, "verification","");
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
 
         /// 生成验证码
         /// </summary>
