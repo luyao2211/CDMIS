@@ -173,6 +173,14 @@ namespace CDMIS.Controllers
                         PersonalHomepageModel.PhotoAddress = "http://" + hostAddress + "/PersonalPhoto/" + DetailInfo.PhotoAddress;
                         //PersonalHomepageModel.PhotoAddress = "CDFiles\\PersonalPhoto\\Doctor\\" + DetailInfo.PhotoAddress; 
                     }
+                    if (PersonalHomepageModel.Role == "Doctor")
+                    {
+                        var DoctorDetail = _ServicesSoapClient.GetDoctorDetailInfo(UserId);
+                        PersonalHomepageModel.UnitName = DoctorDetail.UnitName;
+                        PersonalHomepageModel.JobTitle = DoctorDetail.JobTitle;
+                        PersonalHomepageModel.Level = DoctorDetail.Level;
+                        PersonalHomepageModel.Dept = DoctorDetail.Dept;
+                    }
                     
                 }
             }
@@ -277,6 +285,22 @@ namespace CDMIS.Controllers
                 var SetDoctorECPNFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact002_4", ItemSeq, EmergencyContactPhoneNumber, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                 var SetDoctorPhotoFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_4", ItemSeq, avatarPath, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                 var SetDoctorIDNoFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_1", ItemSeq, IDNo, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                if (user.Role == "Doctor")
+                {
+                    var SetDoctorUnitName = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_5", ItemSeq, PersonalHomepageModel.UnitName, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    var SetDoctorJobTitle = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_6", ItemSeq, PersonalHomepageModel.JobTitle, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    var SetDoctorLevel = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_7", ItemSeq, PersonalHomepageModel.Level, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    var SetDoctorDept = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_8", ItemSeq, PersonalHomepageModel.Dept, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    if (SetDoctorUnitName == true && SetDoctorJobTitle == true && SetDoctorLevel == true && SetDoctorDept == true)
+                    {
+                        setSuccessFlag = 1;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "数据库连接失败");
+                        return 0;
+                    }
+                }
                 SetDoctorPhoneNumberFlag = _ServicesSoapClient.SetPhoneNo(UserId, "PhoneNo", PhoneNumber, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) == 1? true: false;
                 if (SetDoctorBasicFlag == true && SetDoctorPhoneNumberFlag == true && SetDoctorHomeAddressFlag == true && SetDoctorOccupationFlag == true && SetDoctorNationalityFlag == true && SetDoctorECFlag == true && SetDoctorECPNFlag == true && SetDoctorPhotoFlag == true && SetDoctorIDNoFlag == true)
                 {
