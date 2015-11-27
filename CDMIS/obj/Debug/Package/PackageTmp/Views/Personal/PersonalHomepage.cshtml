@@ -63,7 +63,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align: left">
                 身份证号码：</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 @Html.TextBoxFor(model => model.IDNO, new { @readonly = "readonly", @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.IDNO)
             </div>
@@ -110,36 +110,6 @@
                 @Html.TextBoxFor(model => model.EmergencyContactPhoneNumber, new { @readonly = "readonly", onkeyup = "Flag()", @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.EmergencyContactPhoneNumber)
                 <p id="EmergencyPhoneEditWarning" style="font-size: 14px; color: #FF0000; font-weight: bold;"></p>
-            </div>
-        </div>
-        <div id="doctordetail" title="@Model.Role" style="display: none;">
-            <div class="form-group">
-                <label class="col-sm-2 control-label" style="text-align: justify">
-                    工作单位：</label>
-                <div class="col-sm-4">
-                    @Html.TextBoxFor(model => model.UnitName, new { @readonly = "readonly", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UnitName)
-                </div>
-                <label class="col-sm-2 control-label" style="text-align: justify">
-                    职称：</label>
-                <div class="col-sm-4">
-                    @Html.TextBoxFor(model => model.JobTitle, new { @readonly = "readonly", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.JobTitle)
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" style="text-align: justify">
-                    级别：</label>
-                <div class="col-sm-4">
-                    @Html.TextBoxFor(model => model.Level, new { @readonly = "readonly", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Level)
-                </div>
-                <label class="col-sm-2 control-label" style="text-align: justify">
-                    科室：</label>
-                <div class="col-sm-4">
-                    @Html.TextBoxFor(model => model.Dept, new { @readonly = "readonly", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Dept)
-                </div>
             </div>
         </div>
     </div>
@@ -237,8 +207,6 @@
     }
 
     $(document).ready(function () {
-        if ($("#doctordetail").attr("title") == "Doctor")
-            $("#doctordetail").removeAttr("style");
         if (document.getElementById("PhoneNumber").value == "") {
             document.getElementById("PhoneNumber").value = "请输入有效手机号码";
             document.getElementById("PhoneNumber").style.color = "gray";
@@ -260,7 +228,7 @@
             if (file.size / 1024 > 1024) { //单位KB
                 alert("请选择1MB以下的图片文件!");
                 return 0;
-            }
+            } 
             fileReader.readAsDataURL(file); //从指定url读入文件
             fileReader.onload = function () {
                 $("#img0").attr("src", this.result);
@@ -279,10 +247,6 @@
         document.getElementById("Nationality").readOnly = false;
         document.getElementById("EmergencyContact").readOnly = false;
         document.getElementById("EmergencyContactPhoneNumber").readOnly = false;
-        document.getElementById("UnitName").readOnly = false;
-        document.getElementById("JobTitle").readOnly = false;
-        document.getElementById("Level").readOnly = false;
-        document.getElementById("Dept").readOnly = false;
         document.getElementById("fileUpload").disabled = false;
         document.getElementById("DatePicker").style.display = "block";
         document.getElementById("btEdit").value = "保存信息";
@@ -304,10 +268,6 @@
         document.getElementById("Nationality").readOnly = false;
         document.getElementById("EmergencyContact").readOnly = false;
         document.getElementById("EmergencyContactPhoneNumber").readOnly = false;
-        document.getElementById("UnitName").readOnly = false;
-        document.getElementById("JobTitle").readOnly = false;
-        document.getElementById("Level").readOnly = false;
-        document.getElementById("Dept").readOnly = false;
         document.getElementById("fileUpload").disabled = false;
         document.getElementById("DatePicker").style.display = "block";
         document.getElementById("btEdit").value = "保存信息";

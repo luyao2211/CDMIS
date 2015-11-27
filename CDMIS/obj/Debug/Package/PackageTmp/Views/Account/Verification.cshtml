@@ -14,6 +14,15 @@
     <div style="width: 600px; height: 280px; float: left; margin-left: 350px; margin-top: 40px">
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align: justify">
+                用户ID：</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UserId)
+                @Html.ValidationMessage("errorUserId")
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" style="text-align: justify">
                 手机号码：</label>
             <div class="col-sm-4">
                 @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
@@ -22,7 +31,7 @@
             </div>
             <div class="col-sm-2 ">
                 <input type="button" name="GetValidateCode" class="btn btn-primary" id="GetValidateCode"
-                    value="获取验证码" onclick="SubmitForm1();" />
+                    value="获取验证码" onclick="SubmitForm1('GetValidateCode', 'valiCode'); Time()" />
             </div>
         </div>
         <div class="form-group">
@@ -30,12 +39,20 @@
                 验证码：</label>
             <div class="col-sm-4">
                 <input id="ValidateCode" type="text" class="form-control" name="ValidateCode" data-val-required="请输入验证码"
-                    data-val="true" />
+                    data-val="true" onkeyup="Flag()" />
+            </div>
+            <div class="col-sm-2">
+                <img id="valiCode" style="height: 30px; display: none" src="/Account/GetValidateCode2"
+                    alt="验证码" />
+            </div>
+            <div class="col-sm-1" style="margin-left: 20px">
+                <img id="ValidCodeFlag" style="display: block;" src="" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3">
-                <button type="button" class="btn btn-primary" id="Nextbtn" onclick="SubmitForm2();">
+                <button type="button" class="btn btn-primary" id="Nextbtn" onclick="SubmitForm2();"
+                    disabled="disabled">
                     下一步</button>
                 @Html.ValidationMessage("errorConnection")
             </div>
@@ -77,32 +94,59 @@
     //            this.src = "/Account/GetValidateCode?time=" + (new Date()).getTime();
     //        });
     //    })
-    function SubmitForm1() {
-        var PhoneNo = $("#PhoneNumber").val();
-        $.ajax({
-            url: "/Account/SendSMS",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: { PhoneNo: PhoneNo },
-            success: function (res) {
-                if (res == "系统中不存在该手机号码") {
-                    alert(res);
-                    return;
-                }
-                alert("验证码短信已发送，3分钟内有效");
-                Time();
-            }
-        });
+    function SubmitForm1(GetValidateCode, valiCode) {
+
+        var target = document.getElementById(GetValidateCode);
+        var aa = document.getElementById(valiCode);
+        aa.src = "/Account/GetValidateCode2?time=" + (new Date()).getTime();
+
+        if (aa.style.display == "none") {
+
+            aa.style.display = "block";
+
+        }
+        else {
+            aa.style.display = "block";
+        }
     };
 
-    var wait = 180;
+    function Flag() {
+        var aa = document.getElementById("ValidCodeFlag");
+        var validateCode = document.getElementById("ValidateCode").value;
+        if (document.getElementById("ValidateCode").value.length > 5) {
+            $.ajax({
+                url: "/Account/CheckValidateCode2",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: { ValidateCode: validateCode },
+                success: function (res) {
+                    if (res == true) {
+                        aa.style.display = "block";
+                        aa.src = "../../Content/Image/correct.png";
+                        $('#Nextbtn').removeAttr('disabled');
+                    }
+                    else {
+                        aa.style.display = "block";
+                        aa.src = "../../Content/Image/wrong.png";
+                        $('#Nextbtn').attr('disabled', "disabled");
+                    }
+                }
+            });
+        }
+        else {
+            aa.style.display = "none";
+        }
+
+    }
+
+    var wait = 60;
     function Time() {
         document.getElementById("GetValidateCode").disabled = false;
         if (wait == 0) {
             document.getElementById("GetValidateCode").disabled = false;
             document.getElementById("GetValidateCode").value = "获取验证码";
-            wait = 180;
+            wait = 60;
 
         }
         else {
@@ -115,24 +159,24 @@
     }
 
     function SubmitForm2() {
-        if ($("#PhoneNumber").val() != "" && $("#ValidateCode").val() != "") {
-            var phoneNo = document.getElementById("PhoneNumber").value;
+        if ($("#UserId").val() != "" && $("#PhoneNumber").val() != "" && $("#ValidateCode").val() != "") {
             var validateCode = document.getElementById("ValidateCode").value;
             $.ajax({
                 url: "/Account/CheckValidateCode2",
                 type: "GET",
                 dataType: "json",
                 async: false,
-                data: { PhoneNo: phoneNo, ValidateCode: validateCode },
+                data: { ValidateCode: validateCode },
                 success: function (res) {
                     if (res == true) {
                         var form1 = document.getElementById("Form2");
                         form1.submit();
                     }
-                    else
-                        alert("验证码输入错误");
                 }
             });
+        }
+        else if ($("#UserId").val() == "") {
+            alert("用户ID为空，请输入用户ID");
         }
         else if ($("#PhoneNumber").val() == "") {
             alert("手机号码为空，请输入手机号码");

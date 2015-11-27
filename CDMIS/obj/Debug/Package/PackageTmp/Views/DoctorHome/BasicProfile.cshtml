@@ -103,7 +103,7 @@
             @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.Patient.UserId }, new { target = "_self" })</li>
     </ul>
 </div>
-@using (Html.BeginForm("BasicProfile", "DoctorHome", FormMethod.Post, new { id = "Form1", enctype = "multipart/form-data", onkeydown = "Enter()" }))
+@using (Html.BeginForm("BasicProfile", "DoctorHome", FormMethod.Post, new { id = "Form1", enctype = "multipart/form-data" }))
 {
     //个人信息
     <div class="personalInfoDiv">
@@ -124,7 +124,7 @@
                             手机号码输入有误！</p>
                         @*  <p id="PhoneNoValid" style="display: none; color: green">
                             手机号码可以使用！</p>*@
-                        <input type="button" value="确定" style="display: none;" class="btn btn-primary validatePhoneNo" id="validatePhoneNo"/>
+                        <input type="button" value="确定" style="display: none;" class="btn btn-primary validatePhoneNo" />
                         <p id="PhoneNoTip" style="display: none; color: red">
                             请确认手机号！</p>
                     </div>
@@ -396,13 +396,6 @@
                 $("#PhoneNoError").hide();
                 $(".validatePhoneNo").show();
             }
-        }
-    }
-
-    function Enter() {
-        if (event.keyCode == 13) {
-            document.getElementById("validatePhoneNo").click();
-            return false;
         }
     }
 

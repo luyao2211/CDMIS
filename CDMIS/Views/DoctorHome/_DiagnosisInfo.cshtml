@@ -355,10 +355,8 @@
             "bFilter": true,
             "aaSorting": [[8, "desc"]],
             "columnDefs": [{ "bSortable": false, "aTargets": [9]}] //禁止某些列的排序功能
-   
         });
         $("#DiagnosisInfoList").attr("width", "auto");
-
 
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
@@ -583,8 +581,6 @@
                             document.getElementById("RecordDateInput").value = "";
                             document.getElementById("DescriptionInput").value = "";
                             $("#cancel").click();
-                         
-                        
                         }
                         else {
                             alert("数据插入失败，请重新输入！");
