@@ -1,0 +1,420 @@
+
+ 
+记录时间：2015-11-13 10:23:22,892 
+线程ID:[28] 
+日志级别：  ERROR 
+错误描述：在执行 controller[PatientInfoController] 的 action[GetImplementationForWebFirst] 时产生异常
+ 
+System.ServiceModel.FaultException: 服务器无法处理请求。 ---> 不知道这样的主机。
+
+Server stack trace: 
+   在 System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   在 System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   在 System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   在 System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   在 System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   在 System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   在 CDMIS.ServiceReference.ServicesSoap.GetImplementationForWebFirst(String PatientId, String Module)
+   在 CDMIS.ServiceReference.ServicesSoapClient.GetImplementationForWebFirst(String PatientId, String Module) 位置 E:\Program\task\github\CDMIS\CDMIS\Service References\ServiceReference\Reference.cs:行号 5462
+   在 CDMIS.Controllers.PatientInfoController.GetImplementationForWebFirst(String PatientId, String Module) 位置 E:\Program\task\github\CDMIS\CDMIS\Controllers\PatientInfoController.cs:行号 405
+   在 lambda_method(Closure , ControllerBase , Object[] )
+   在 System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   在 System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<InvokeActionMethodWithFilters>b__12()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 10:24:41,595 
+线程ID:[36] 
+日志级别：  ERROR 
+错误描述：在执行 controller[PatientInfoController] 的 action[GetImplementationForWebFirst] 时产生异常
+ 
+System.ServiceModel.FaultException: 服务器无法处理请求。 ---> 不知道这样的主机。
+
+Server stack trace: 
+   在 System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   在 System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   在 System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   在 System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   在 System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   在 System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   在 CDMIS.ServiceReference.ServicesSoap.GetImplementationForWebFirst(String PatientId, String Module)
+   在 CDMIS.ServiceReference.ServicesSoapClient.GetImplementationForWebFirst(String PatientId, String Module) 位置 E:\Program\task\github\CDMIS\CDMIS\Service References\ServiceReference\Reference.cs:行号 5462
+   在 CDMIS.Controllers.PatientInfoController.GetImplementationForWebFirst(String PatientId, String Module) 位置 E:\Program\task\github\CDMIS\CDMIS\Controllers\PatientInfoController.cs:行号 405
+   在 lambda_method(Closure , ControllerBase , Object[] )
+   在 System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   在 System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<InvokeActionMethodWithFilters>b__12()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:03:09,131 
+线程ID:[140] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<meta http-equiv="Co...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:03:46,800 
+线程ID:[139] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<meta http-equiv="Co...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:04:25,826 
+线程ID:[27] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:05:20,432 
+线程ID:[78] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:05:27,266 
+线程ID:[13] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:07:32,385 
+线程ID:[139] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:11:33,044 
+线程ID:[12] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:11:53,020 
+线程ID:[14] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:24:06,685 
+线程ID:[10] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:45:32,944 
+线程ID:[50] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:46:12,927 
+线程ID:[12] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p style="line-heigh...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:47:33,031 
+线程ID:[6] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:50:15,504 
+线程ID:[12] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p style="line-heigh...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:50:34,099 
+线程ID:[14] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p style="line-heigh...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 14:55:01,837 
+线程ID:[15] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.Web.HttpRequestValidationException (0x80004005): 从客户端(news.htmlContent="<p><span style="font...")中检测到有潜在危险的 Request.Form 值。
+   在 System.Web.HttpRequest.ValidateString(String value, String collectionKey, RequestValidationSource requestCollection)
+   在 System.Web.HttpRequest.<>c__DisplayClass5.<ValidateHttpValueCollection>b__3(String key, String value)
+   在 System.Web.HttpValueCollection.EnsureKeyValidated(String key)
+   在 System.Web.HttpValueCollection.Get(String name)
+   在 System.Collections.Specialized.NameValueCollection.get_Item(String name)
+   在 CDMIS.CommonLibrary.MonitorLog.GetCollections(NameValueCollection Collections) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 109
+   在 CDMIS.CommonLibrary.MonitorLog.GetLoginfo(MonitorType mtype) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\MonitorLog.cs:行号 83
+   在 CDMIS.CommonLibrary.StatisticsTrackerAttribute.OnActionExecuted(ActionExecutedContext filterContext) 位置 E:\Program\task\github\CDMIS\CDMIS\CommonLibrary\StatisticsTrackerAttribute.cs:行号 32
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+
+ 
+记录时间：2015-11-13 19:58:52,059 
+线程ID:[22] 
+日志级别：  ERROR 
+错误描述：在执行 controller[NewsController] 的 action[Edit] 时产生异常
+ 
+System.IO.FileNotFoundException: 未能找到文件“E:\Program\task\github\CDMIS\CDMIS\HealthEducation\M1_2015-05-18 16_23_35.html”。
+文件名:“E:\Program\task\github\CDMIS\CDMIS\HealthEducation\M1_2015-05-18 16_23_35.html”
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   在 System.IO.StreamReader..ctor(String path, Encoding encoding)
+   在 CDMIS.Controllers.NewsController.Edit(String Module, String Id) 位置 E:\Program\task\github\CDMIS\CDMIS\Controllers\NewsController.cs:行号 146
+   在 lambda_method(Closure , ControllerBase , Object[] )
+   在 System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   在 System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<InvokeActionMethodWithFilters>b__12()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   在 System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<>c__DisplayClass17.<InvokeActionMethodWithFilters>b__14()
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)

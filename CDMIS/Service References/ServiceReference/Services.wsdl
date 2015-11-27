@@ -807,6 +807,38 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="sendSMS">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="smsType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="content" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendSMSResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkverification">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="smsType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verification" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkverificationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="checkverificationResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SetPatBasicInfoDetail">
         <s:complexType>
           <s:sequence>
@@ -8525,6 +8557,18 @@
   <wsdl:message name="GetMpDiagnosisCmpSoapOut">
     <wsdl:part name="parameters" element="tns:GetMpDiagnosisCmpResponse" />
   </wsdl:message>
+  <wsdl:message name="sendSMSSoapIn">
+    <wsdl:part name="parameters" element="tns:sendSMS" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSoapOut">
+    <wsdl:part name="parameters" element="tns:sendSMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationSoapIn">
+    <wsdl:part name="parameters" element="tns:checkverification" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationSoapOut">
+    <wsdl:part name="parameters" element="tns:checkverificationResponse" />
+  </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailSoapIn">
     <wsdl:part name="parameters" element="tns:SetPatBasicInfoDetail" />
   </wsdl:message>
@@ -11152,6 +11196,22 @@
   <wsdl:message name="GetMpDiagnosisCmpHttpGetIn" />
   <wsdl:message name="GetMpDiagnosisCmpHttpGetOut">
     <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSHttpGetIn">
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="smsType" type="s:string" />
+    <wsdl:part name="content" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationHttpGetIn">
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="smsType" type="s:string" />
+    <wsdl:part name="verification" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationHttpGetOut">
+    <wsdl:part name="Body" element="tns:int" />
   </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailHttpGetIn">
     <wsdl:part name="Patient" type="s:string" />
@@ -14731,6 +14791,22 @@
   <wsdl:message name="GetMpDiagnosisCmpHttpPostOut">
     <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
+  <wsdl:message name="sendSMSHttpPostIn">
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="smsType" type="s:string" />
+    <wsdl:part name="content" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationHttpPostIn">
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="smsType" type="s:string" />
+    <wsdl:part name="verification" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="checkverificationHttpPostOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailHttpPostIn">
     <wsdl:part name="Patient" type="s:string" />
     <wsdl:part name="CategoryCode" type="s:string" />
@@ -18175,6 +18251,16 @@
       <wsdl:input message="tns:GetMpDiagnosisCmpSoapIn" />
       <wsdl:output message="tns:GetMpDiagnosisCmpSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">发送短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:sendSMSSoapIn" />
+      <wsdl:output message="tns:sendSMSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:checkverificationSoapIn" />
+      <wsdl:output message="tns:checkverificationSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
       <wsdl:input message="tns:SetPatBasicInfoDetailSoapIn" />
@@ -20291,6 +20377,16 @@
       <wsdl:input message="tns:GetMpDiagnosisCmpHttpGetIn" />
       <wsdl:output message="tns:GetMpDiagnosisCmpHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">发送短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:sendSMSHttpGetIn" />
+      <wsdl:output message="tns:sendSMSHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:checkverificationHttpGetIn" />
+      <wsdl:output message="tns:checkverificationHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
       <wsdl:input message="tns:SetPatBasicInfoDetailHttpGetIn" />
@@ -22406,6 +22502,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpDiagnosisCmp Table：Mp.DiagnosisCmp Author:WF  2015-07-07</wsdl:documentation>
       <wsdl:input message="tns:GetMpDiagnosisCmpHttpPostIn" />
       <wsdl:output message="tns:GetMpDiagnosisCmpHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">发送短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:sendSMSHttpPostIn" />
+      <wsdl:output message="tns:sendSMSHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
+      <wsdl:input message="tns:checkverificationHttpPostIn" />
+      <wsdl:output message="tns:checkverificationHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
@@ -24697,6 +24803,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetMpDiagnosisCmp">
       <soap:operation soapAction="http://bme319.org/GetMpDiagnosisCmp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <soap:operation soapAction="http://bme319.org/sendSMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <soap:operation soapAction="http://bme319.org/checkverification" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -28514,6 +28638,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <soap12:operation soapAction="http://bme319.org/sendSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <soap12:operation soapAction="http://bme319.org/checkverification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <soap12:operation soapAction="http://bme319.org/SetPatBasicInfoDetail" style="document" />
       <wsdl:input>
@@ -32324,6 +32466,24 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <http:operation location="/sendSMS" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <http:operation location="/checkverification" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <http:operation location="/SetPatBasicInfoDetail" />
       <wsdl:input>
@@ -36113,6 +36273,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetMpDiagnosisCmp">
       <http:operation location="/GetMpDiagnosisCmp" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <http:operation location="/sendSMS" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkverification">
+      <http:operation location="/checkverification" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
