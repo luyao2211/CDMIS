@@ -32,6 +32,28 @@ namespace CDMIS.Models
         public int SortNo { get; set; }
     }
 
+    public class Insurance
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string InputCode { get; set; }
+        public string Redundance { get; set; }
+        public int InvalidFlag { get; set; }
+    }
+    public class MstTask
+    {
+        public string CategoryCode { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string ParentCode { get; set; }
+        public string Description { get; set; }
+        public int StartDate { get; set; }
+        public int EndDate { get; set; }
+        public int GroupHeaderFlag { get; set; }
+        public int ControlType { get; set; }
+        public string OptionCategory { get; set; }
+
+    }
     //public class Hospital
     //{
     //    public int Type { get; set; }

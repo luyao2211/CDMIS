@@ -342,6 +342,9 @@ namespace CDMIS.ViewModels
             DictList.Add(new SelectListItem { Text = "生活方式详细字典表", Value = "17" });
             DictList.Add(new SelectListItem { Text = "手术字典表", Value = "18" });
             DictList.Add(new SelectListItem { Text = "药物字典表", Value = "19" });
+            DictList.Add(new SelectListItem { Text = "医保类别字典表", Value = "20" });
+            DictList.Add(new SelectListItem { Text = "任务字典表", Value = "21" });
+            //DictList.Add(new SelectListItem { Text = "任务子项目字典表", Value = "22" });
             return DictList;
         }
 
