@@ -304,7 +304,11 @@ namespace CDMIS.Controllers
 
         public DataTable SelectPatientsfuzzy(DataTable dt, string patientId, string patientName, string genderText, int careLevel, int alertStatus)
         {
-            DataTable dt_SelectedPatients = dt.Clone();
+            DataTable dt_SelectedPatients = new DataTable();
+            if (dt != null)
+            {
+                dt_SelectedPatients = dt.Clone();
+            }
             //Operator LIKE is used to include only values that match a pattern with wildcards. Wildcard character is * or %.
             string filterExpression = "";
             filterExpression += "PatientId LIKE \'%" + patientId + "%'";
@@ -328,13 +332,16 @@ namespace CDMIS.Controllers
                     filterExpression += "AND AlertNumber = 0";
                 }
             }
-
-            DataRow[] drArr = dt.Select(filterExpression);
-            //DataRow[] drArr = dt.Select("PatientId LIKE \'" + patientId + "%' AND PatientName LIKE \'%" + patientName + "%'");
-            for (int i = 0; i < drArr.Length; i++)
+            DataRow[] drArr = null;
+            if (dt != null)
             {
-                dt_SelectedPatients.ImportRow(drArr[i]);
+                drArr = dt.Select(filterExpression);
+                for (int i = 0; i < drArr.Length; i++)
+                {
+                    dt_SelectedPatients.ImportRow(drArr[i]);
+                }
             }
+            //DataRow[] drArr = dt.Select("PatientId LIKE \'" + patientId + "%' AND PatientName LIKE \'%" + patientName + "%'");
             return dt_SelectedPatients;
         }
 

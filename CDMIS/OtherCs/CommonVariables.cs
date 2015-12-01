@@ -977,5 +977,32 @@ namespace CDMIS.ViewModels
         }
         #endregion
 
+        #region "LY"
+
+        public static List<SelectListItem> GetJobTitleList()
+        {
+            DataSet JobTitleInfo = _ServicesSoapClient.GetTypeList("JobTitle");
+            List<SelectListItem> JobTitleList = new List<SelectListItem>();
+            JobTitleList.Add(new SelectListItem { Text = "---请选择---", Value = "0" });
+            foreach (DataRow row in JobTitleInfo.Tables[0].Rows)
+            {
+                JobTitleList.Add(new SelectListItem { Text = row["Name"].ToString().Trim(), Value = row["Type"].ToString().Trim() });
+            }
+            return JobTitleList;
+        }
+
+        public static List<SelectListItem> GetLevelList()
+        {
+            DataSet LevelInfo = _ServicesSoapClient.GetTypeList("TitleLevel");
+            List<SelectListItem> LevelList = new List<SelectListItem>();
+            LevelList.Add(new SelectListItem { Text = "---请选择---", Value = "0" });
+            foreach (DataRow row in LevelInfo.Tables[0].Rows)
+            {
+                LevelList.Add(new SelectListItem { Text = row["Name"].ToString().Trim(), Value = row["Type"].ToString().Trim() });
+            }
+            return LevelList;
+        }
+
+        #endregion
     }
 }
