@@ -154,6 +154,48 @@ namespace CDMIS.Controllers
             return View(basictype);
         }
 
+        //医保类别字典表
+        public ActionResult Insurance()
+        {
+            List<Insurance> insurance = new List<Insurance>();
+            DataSet info = _ServicesSoapClient.GetInsurance();
+            foreach (DataRow row in info.Tables[0].Rows)
+            {
+                Insurance insuranceinfo = new Insurance();
+
+                insuranceinfo.Code = row[0].ToString();
+                insuranceinfo.Name = row[1].ToString();
+                insuranceinfo.InputCode = row[2].ToString();
+                insuranceinfo.Redundance = row[3].ToString();
+                insuranceinfo.InvalidFlag = Convert.ToInt32(row[4]);
+
+                insurance.Add(insuranceinfo);
+            }
+            return View(insurance);
+        }
+
+        //任务字典表
+        public ActionResult Task()
+        {
+            List<MstTask> tasks = new List<MstTask>();
+            DataSet info = _ServicesSoapClient.GetTasks();
+            foreach (DataRow row in info.Tables[0].Rows)
+            {
+                MstTask task = new MstTask();
+
+                task.CategoryCode = row[0].ToString();
+                task.Code = row[1].ToString();
+                task.Name = row[2].ToString();
+                task.ParentCode = row[3].ToString();
+                task.Description = row[4].ToString();
+                task.GroupHeaderFlag = Convert.ToInt32(row[5]);
+                task.ControlType = Convert.ToInt32(row[6]);
+                task.OptionCategory = row[7].ToString();
+
+                tasks.Add(task);
+            }
+            return View(tasks);
+        }
         //警戒字典表
         public ActionResult BasicAlert()
         {
@@ -619,6 +661,85 @@ namespace CDMIS.Controllers
             return res;
         }
 
+        //医保类别字典表数据插入
+        public JsonResult InsuranceEdit(string Code, string Name, string InputCode, string Redundance, string InvalidFlag)
+        {
+            //var user = Session["CurrentUser"] as UserAndRole;
+            var res = new JsonResult();
+            int InvalidFlag1 = Convert.ToInt32(InvalidFlag);
+            bool flag = _ServicesSoapClient.SetInsurance(Code, Name, InputCode, Redundance, InvalidFlag1);
+            if (flag)
+            {
+                res.Data = true;
+            }
+            else
+            {
+                res.Data = false;
+            }
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
+        //医保类别字典表数据删除
+        public JsonResult InsuranceDelete(string Code)
+        {
+            var res = new JsonResult();
+            bool flag = _ServicesSoapClient.DeleteInsurance(Code);
+            if (flag == true)
+            {
+                res.Data = true;
+            }
+            else
+            {
+                res.Data = false;
+            }
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
+        //任务字典表数据插入
+        public JsonResult TaskEdit(string CategoryCode, string Code, string Name, string ParentCode, string Description, string StartDate, string EndDate, int GroupHeaderFlag, int ControlType, string OptionCategory)
+        {
+            var user = Session["CurrentUser"] as UserAndRole;
+            var res = new JsonResult();
+            int flag = 0;
+            if (StartDate != "")
+            {
+                flag = _ServicesSoapClient.SetMstTask(CategoryCode, Code, Name, ParentCode, Description, -1, 99999999, GroupHeaderFlag, ControlType, OptionCategory, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+            }
+            else 
+            {
+                flag = _ServicesSoapClient.SetMstTask(CategoryCode, Code, Name, ParentCode, Description,-2,99999999, GroupHeaderFlag, ControlType, OptionCategory, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+            }
+            
+            if (flag==1)
+            {
+                res.Data = true;
+            }
+            else
+            {
+                res.Data = false;
+            }
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
+        //任务字典表数据删除
+        public JsonResult TaskDelete(string CategoryCode, string Code)
+        {
+            var res = new JsonResult();
+            int flag = _ServicesSoapClient.DeleteMstTask(CategoryCode,Code);
+            if (flag == 1)
+            {
+                res.Data = true;
+            }
+            else
+            {
+                res.Data = false;
+            }
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
 
 
         //诊断字典表数据删除

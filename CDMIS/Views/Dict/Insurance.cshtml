@@ -1,9 +1,8 @@
-﻿@model IEnumerable<CDMIS.Models.InfoItemCategory>
+﻿@model IEnumerable<CDMIS.Models.Insurance>
 
 @{
-    ViewBag.Title = "InfoItemCategory";
+    ViewBag.Title = "Insurance";
 }
-
 <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
 <link href="../../Content/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/simpleModal.css" rel="stylesheet" type="text/css" />
@@ -14,10 +13,11 @@
 
 <style type="text/css">
     #simplemodal-container {height:400px; width:400px;}
-    #delete-container {height:260px; width:400px;}
+    #delete-container {height:450px; width:400px;}
 </style>
+
 <div style="text-align: right;">
-    <input type="button" value="新增数据" class="btn btn-primary insertBtn" style="margin-right: 10px" disabled="disabled"/>
+    <input type="button" value="新增数据" class="btn btn-primary insertBtn" style="margin-right: 10px"/>
 </div>
 <div id="tableContainer1" class="tableContainer" style="margin-top: 5px" >
     <table width="100%" id="DataTable" class="display">
@@ -30,13 +30,13 @@
                     名称
                 </th>
                 <th align="left">
-                    序列号
+                    拼音简写
                 </th>
                 <th align="left">
-                    有效期：起
+                    冗余字段
                 </th>
                 <th align="left">
-                    有效期：止
+                    有效标记
                 </th>
                 <th align="left">
                     操作
@@ -44,23 +44,22 @@
             </tr>
         </thead>
         <tbody id="TableBody">
-             @foreach (var item in Model)
-            {
+            @foreach (var item in Model) {
                 <tr>
-                    <td>
+                    <td style="border: 0;">
                         @Html.DisplayFor(modelItem => item.Code)
                     </td>
-                    <td>
+                    <td style="border: 0;">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SortNo)
+                    <td style="border: 0;">
+                        @Html.DisplayFor(modelItem => item.InputCode)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
+                    <td style="border: 0;">
+                        @Html.DisplayFor(modelItem => item.Redundance)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
+                    <td style="border: 0;">
+                        @Html.DisplayFor(modelItem => item.InvalidFlag)
                     </td>
                     <td>
                         <input type="button" value="编辑" class="btn btn-primary editBtn" /> |
@@ -75,7 +74,7 @@
 @*编辑页面弹框*@
 <div id="addDataDiv" style="display: none;">
     <div class="modalHeader">
-        <span>用户信息表编辑</span>
+        <span>医保类别字典表编辑</span>
     </div>
     <div class="modalContent">
         <form class="form-horizontal" role="form">
@@ -84,39 +83,39 @@
                     编码
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="Code" readonly="readonly">
+                    <input type="text" class="form-control" id="Code" readonly="readonly" onkeyup="IsLegal(this.id);">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group">@* style="display: none;"*@
                 <label for="Name" class="col-sm-3 control-label">
                     名称
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="Name" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="Name" onkeyup="IsLegal(this.id);">@* readonly="readonly"*@
                 </div>
             </div>
             <div class="form-group">
-                <label for="SortNo" class="col-sm-3 control-label" id="SortNoLabel">
-                    序列号
+                <label for="InputCode" class="col-sm-3 control-label">
+                    拼音简写
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="SortNo" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="InputCode" onkeyup="IsLegal(this.id);">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="StartDate" class="col-sm-3 control-label">
-                    有效期:起
+            <div class="form-group">@* style="display: none;"*@
+                <label for="Redundance" class="col-sm-3 control-label" >
+                    冗余字段
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="StartDate" readonly="readonly">
+                    <input type="text" class="form-control" id="Redundance" >@*onkeyup="IsLegal(this.id);"*@
                 </div>
             </div>
-            <div class="form-group">
-                <label for="EndDate" class="col-sm-3 control-label" id="EndDateLabel">
-                    有效期:止
+            <div class="form-group">@* style="display: none;"*@
+                <label for="InvalidFlag" class="col-sm-3 control-label">
+                    有效标记
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="EndDate" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="InvalidFlag" onkeyup="IsLegal(this.id);">
                 </div>
             </div>
             <div class="form-group">
@@ -134,7 +133,7 @@
 @*删除页面弹框*@
 <div id="deleteDataDiv" style="display: none;">
     <div class="modalHeader">
-        <span>用户信息表删除</span>
+        <span>医保类别字典表删除</span>
     </div>
     <div class="modalContent">
         <p style="font-size: 16px; color:#EE9A00; font-weight:bold">
@@ -142,15 +141,47 @@
         </p>
         <form class="form-horizontal" role="form">
             <div class="form-group">
-                <label for="Code_del" class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label">
                     编码
                 </label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" id="Code_del" readonly="readonly">
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    名称
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="Name_del" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    拼音简写
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="InputCode_del" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    冗余字段
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="Redundance_del" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    有效标记
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="InvalidFlag_del" readonly="readonly">
+                </div>
+            </div>
             <p style="font-size: 16px; color:#EE9A00; font-weight:bold">
-                的整个模块（删除操作将永久删除多条数据）
+                的这条数据（删除操作将永久删除该条数据）
             </p>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-7">
@@ -165,9 +196,10 @@
 </div>
 
 <script type="text/javascript">
+    var CodeFlag = 0;
     var NameFlag = 0;
-    var SortNoFlag = 0;
-    var EndDateFlag = 0; //编辑弹框输入合法性标志位 0 不合法 1 合法
+    var InputCodeFlag = 0; 
+    var InvalidFlagFlag = 0; 
     var trSeq = -1; //选定的行标
     var editType = 0; //编辑类型，0：无  1：编辑  2：新增
     $(document).ready(function () {
@@ -177,76 +209,87 @@
             },
             "bPaginate": true,  //是否分页。
             "sScrollY": "420px",
-            "iDisplayLength": 8,
             "bLengthChange": false,
+            "iDisplayLength": 8,
             "bFilter": true
         });
+    });
 
         //编辑按钮触发
         $(".editBtn").click(function () {
-            NameFlag = 1;
-            SortNoFlag = 1;
-            EndDateFlag = 1;
             editType = 1;
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var Code = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var Name = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
-            var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text().trim();
-            var StartDate = $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text().trim();
-            var EndDate = $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text().trim();
-            EditData(Code, Name, SortNo, StartDate, EndDate);
+            var InputCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text().trim();
+            var Redundance = $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text().trim();
+            var InvalidFlag = $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text().trim();
+            EditData(Code, Name, InputCode, Redundance, InvalidFlag);
         });
 
         //新增按钮触发
-        //        $(".insertBtn").click(function () {
-        //            editType = 2;
-        //            InsertData();
-        //        });
+        $(".insertBtn").click(function () {
+            editType = 2;
+            InsertData();
+        });
 
         //删除按钮触发
         $(".deleteBtn").click(function () {
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var Code = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
-            DeleteData(Code);
+            var Name = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
+            var InputCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text().trim();
+            var Redundance = $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text().trim();
+            var InvalidFlag = $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text().trim();
+            DeleteData(Code, Name, InputCode, Redundance, InvalidFlag);
         });
-    });
+
 
     //编辑数据
-    function EditData(Code, Name, SortNo, StartDate, EndDate) {
+    function EditData(Code, Name, InputCode, Redundance, InvalidFlag) {
+        CodeFlag = 1;
+        NameFlag = 1;
+        InputCodeFlag = 1; 
+        InvalidFlagFlag = 1; 
         document.getElementById("Code").value = Code;
         document.getElementById("Name").value = Name;
-        document.getElementById("SortNo").value = SortNo;
-        document.getElementById("StartDate").value = StartDate;
-        document.getElementById("EndDate").value = EndDate;
+        document.getElementById("InputCode").value = InputCode;
+        document.getElementById("Redundance").value = Redundance;
+        document.getElementById("InvalidFlag").value = InvalidFlag;
         $('.save').removeAttr('disabled');
         $('#Code').attr('readonly',"readonly");
-        $('#StartDate').attr('readonly',"readonly");
+        //$('#Type').attr('readonly',"readonly");
         $('#addDataDiv').modal({
             closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+            containerId: 'simplemodal-container',
             overlayClose: true     //点击蒙层关闭窗口
         });
     }
 
     //新增数据
-//    function InsertData(){
-//        document.getElementById("Type").value = "";
-//        document.getElementById("Code").value = "";
-//        document.getElementById("Name").value = "";
-//        document.getElementById("SortNo").value = "";
-//        document.getElementById("StartDate").value = "";
-//        document.getElementById("EndDate").value = "";
-//        $('#Type').removeAttr('readonly');
-//        $('#Code').removeAttr('readonly');
-//        $('#StartDate').removeAttr('readonly');
-//        $('#addDataDiv').modal({
-//            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
-//            overlayClose: true     //点击蒙层关闭窗口
-//        });
-//    }
+    function InsertData(){
+        document.getElementById("Code").value = "";
+        document.getElementById("Name").value = "";
+        document.getElementById("InputCode").value = "";
+        document.getElementById("Redundance").value = "";
+        document.getElementById("InvalidFlag").value = "";
+        $('#Code').removeAttr('readonly');
+        //$('#Type').removeAttr('readonly');
+        $('.save').attr('disabled',"disabled");
+        $('#addDataDiv').modal({
+            closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+            containerId: 'simplemodal-container',
+            overlayClose: true     //点击蒙层关闭窗口
+        });
+    }
 
     //删除数据
-    function DeleteData(Code){
+    function DeleteData(Code, Name, InputCode, Redundance, InvalidFlag){
         document.getElementById("Code_del").value = Code;
+        document.getElementById("Name_del").value = Name;
+        document.getElementById("InputCode_del").value = InputCode;
+        document.getElementById("Redundance_del").value = Redundance;
+        document.getElementById("InvalidFlag_del").value = InvalidFlag;
         $('#deleteDataDiv').modal({
             closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
             containerId: 'delete-container',
@@ -258,7 +301,7 @@
     function DeleteDataFromDB(){
         var Code = document.getElementById("Code_del").value;
         $.ajax({
-            url: "/Dict/InfoItemCategoryDelete",
+            url: "/Dict/InsuranceDelete",
             type: "GET",
             dataType: "json",
             async: false,
@@ -280,35 +323,32 @@
     function AddDataToDB() {
         var Code = document.getElementById("Code").value;
         var Name = document.getElementById("Name").value;
-        var SortNo = document.getElementById("SortNo").value;
-        var StartDate = document.getElementById("StartDate").value;
-        var EndDate = document.getElementById("EndDate").value;
+        var InputCode = document.getElementById("InputCode").value;
+        var Redundance = document.getElementById("Redundance").value;
+        var InvalidFlag = document.getElementById("InvalidFlag").value;
         $.ajax({
-            url: "/Dict/InfoItemCategoryEdit",
+            url: "/Dict/InsuranceEdit",
             type: "GET",
             dataType: "json",
             async: false,
             data: { Code: Code,
                     Name: Name,
-                    SortNo: SortNo,
-                    StartDate: StartDate,
-                    EndDate: EndDate
+                    InputCode: InputCode,
+                    Redundance: Redundance,
+                    InvalidFlag: InvalidFlag
              },  //输入参数
             success: function (res) {
                 if (res == true) {
+                    editType = 0;
+                    CodeFlag = 0;
+                    NameFlag = 0;
+                    InputCodeFlag = 0;
+                    InvalidFlagFlag = 0; 
+
                     if (editType == 1){
-                        editType = 0;
                         trSeq = -1;
-                        NameFlag = 0;
-                        SortNoFlag = 0;
-                        EndDateFlag = 0;
                     }
-                    if (editType == 2){
-                        editType = 0;
-                        NameFlag = 0;
-                        SortNoFlag = 0;
-                        EndDateFlag = 0;
-                    }
+
                     notice();
                 }
                 else {
@@ -319,56 +359,46 @@
     }
 
     //验证输入合法性
-    function IsLegal(o) {
-        if (document.getElementById(o).value == "") {
-            $('.save').attr('disabled', "disabled");
-            switch (o) {
+    function IsLegal(o)
+    {          
+        if (document.getElementById(o).value == "")
+        {
+            $('.save').attr('disabled',"disabled");
+            switch(o)
+            {
+                case "Code":
+                    CodeFlag = 0;
+                    break;
                 case "Name":
                     NameFlag = 0;
                     break;
-                case "EndDate":
-                    EndDateFlag = 0;
+                case "InputCode":
+                    InputCodeFlag = 0;
                     break;
-                case "SortNo":
-                    SortNoFlag = 0;
+                case "InvalidFlag":
+                    InvalidFlagFlag = 0;
                     break;
             }
         }
-        else {
-            switch (o) {
+        else
+        {
+            switch(o)
+            {
+                case "Code":
+                    CodeFlag = 1;
+                    break;
                 case "Name":
                     NameFlag = 1;
                     break;
-                case "EndDate":
-                    var re = /^\d{8}$/;
-                    if (re.test(document.getElementById(o).value)) {
-                        document.getElementById("EndDateLabel").style.color = "#333";
-                        $('.notice').text("");
-                        EndDateFlag = 1;
-                    }
-                    else {
-                        document.getElementById("EndDateLabel").style.color = "red";
-                        $('.notice').text("输入格式有误！");
-                        EndDateFlag = 0;
-                        $('.save').attr('disabled', "disabled");
-                    }
+                case "InputCode":
+                    InputCodeFlag = 1;
                     break;
-                case "SortNo":
-                    var re = /^\d+$/;
-                    if (re.test(document.getElementById(o).value)) {
-                        document.getElementById("SortNoLabel").style.color = "#333";
-                        $('.notice').text("");
-                        SortNoFlag = 1;
-                    }
-                    else {
-                        document.getElementById("SortNoLabel").style.color = "red";
-                        $('.notice').text("输入格式有误！");
-                        SortNoFlag = 0;
-                        $('.save').attr('disabled', "disabled");
-                    }
+                case "InvalidFlag":
+                    InvalidFlagFlag = 1;
                     break;
             }
-            if (NameFlag * EndDateFlag * SortNoFlag == 1) {
+            if (CodeFlag*NameFlag*InputCodeFlag*InvalidFlagFlag == 1)
+            {
                 $('.save').removeAttr('disabled');
             }
         }
@@ -394,5 +424,5 @@
     {
         return this.replace(/(^\s*)|(\s*$)/g, "");
     }
-
 </script>
+
