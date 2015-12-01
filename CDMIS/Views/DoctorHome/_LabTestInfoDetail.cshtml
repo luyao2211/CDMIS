@@ -196,7 +196,7 @@
                 <div class="col-sm-offset-5 col-sm-12">
                     <input type="button" class="btn btn-primary saveLabTestDetailBtn" value="保存" />
                     <input type="button" class="btn btn-default simplemodal-close" id="cancelDetail"
-                        value="取消" />
+                        value="取消" onclick="$('#editLabDetailDataDiv').hide();"/>
                 </div>
             </div>
             </form>
@@ -214,7 +214,7 @@
                 <div class="col-sm-12">
                     <input type="button" class="btn btn-primary sureLabTestDetailBtn" value="确定" />
                     <input type="button" class="btn btn-default simplemodal-close" id="cancelDeleteDtl"
-                        value="取消" />
+                        value="取消" onclick="$('#DeleteLabDetailDataDiv').hide();"/>
                 </div>
             </div>
             <p align="center" style="color:red" class="notice">
@@ -224,56 +224,68 @@
     </div>
 </div>
 <script type="text/javascript">
+    var table6 = $("#LabTestDtlInfoList").DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "200px",
+        "bFilter": false,
+        "columnDefs": [{
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [5],
+            "visible": false,
+            "searchable": false
+        }]
+    });
+    $("#LabTestDtlInfoList").attr("width", "auto");
+
     $(document).ready(function () {
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
         var SortNo = "@Model.LabTestInfo.SortNo";
         var trDetailSeq;
+        var dataindex = 0;
 
         $("#DetailTableBody tr").each(function () {
             var SubCode = $(this).find("td").eq(0).html().trim();
             $("#DtlItemNameDropDownList option[value='" + SubCode + "']").remove();   //删除Select中Value=SubCode的Option
         })
-        //alert("@ViewBag.operationFlag");
+
         if ("@ViewBag.operationFlag" == "true") {
-            //alert("1");
-            //$(".addLabTestDtlInfo").attr("disabled", "");
         }
         else {
             $(".addLabTestDtlInfo").attr("disabled", "disabled");
         }
-
-        var table6 = $("#LabTestDtlInfoList").DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "200px",
-            "bFilter": false
-            //"aaSorting": [[0, "desc"]]
-        });
-        $("#LabTestDtlInfoList").attr("width", "auto");
 
         $(".addLabTestDtlInfo").click(function () {
             $("#addDataDiv").show();
             $("#editLabDetailDataDiv").hide();
             $('#DtlItemNameDropDownList').chosen({
                 no_results_text: "没有找到相应的选项",
-                placeholder_text: "请选择"
+                placeholder_text: "请选择",
             });
         })
 
         $(document).on("click", ".editLabTestDetailInfoBtn", function () {
             $("#addDataDiv").hide();
-
+            dataindex = table6.row($(this).parent().parent()).index();
+            table6.column(0).visible(true);
+            table6.column(3).visible(true);
+            table6.column(5).visible(true);
             trDetailSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var Code = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(0)").text().trim();
             var Value = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(2)").text().trim();
             var Unit = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(3)").text().trim();
             var IsAbnormal = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(5)").text().trim();
-
+            table6.column(0).visible(false);
+            table6.column(3).visible(false);
+            table6.column(5).visible(false);
             EditData(Code, Value, Unit, IsAbnormal);
         });
 
@@ -308,19 +320,19 @@
                 data: { UserId: UserId, VisitId: VisitId, SortNo: SortNo, Code: Code, Value: Value, UnitCode: UnitCode, IsAbnormalCode: IsAbnormalCode },  //输入参数
                 success: function (res) {
                     if (res == true) {
-                        //$("#cancelDetail").click();
-                        //alert(trDetailSeq);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(0)").text(Code);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(1)").text(ItemName);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(2)").text(Value);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(3)").text(UnitCode);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(4)").text(Unit);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(5)").text(IsAbnormalCode);
-                        $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(6)").text(IsAbnormal);
-
+                        table6.row(dataindex).remove().draw();
+                        table6.row.add({
+                            "0": Code,
+                            "1": ItemName,
+                            "2": Value,
+                            "3": UnitCode,
+                            "4": Unit,
+                            "5": IsAbnormalCode,
+                            "6": IsAbnormal,
+                            "7": "<input type='button' value='编辑' class='btn btn-primary editLabTestDetailInfoBtn' />|<input type='button' value='删除' class='btn btn-primary deleteLabTestDetailInfoBtn' />"
+                        }).draw();
                         $("#editLabDetailDataDiv").hide();
                         $("#addDataDiv").show();
-
                     }
                     else {
                         alert("数据修改失败，请重新输入！");
@@ -362,34 +374,23 @@
                 data: { UserId: UserId, VisitId: VisitId, SortNo: SortNo, SubCode: SubCode, Value: Value, UnitCode: UnitCode, IsAbnormalCode: IsAbnormalCode },  //输入参数
                 success: function (res) {
                     if (res == true) {
-
-                        //self.location.reload();
-                        var tr = tbody.insertRow();
-                        var td0 = document.createElement("td");
-                        td0.setAttribute("style", "display:none");
-                        td0.innerHTML = SubCode;
-                        tr.appendChild(td0);
-                        tr.insertCell(1).innerHTML = Name;
-                        tr.insertCell(2).innerHTML = Value;
-
-                        var td3 = document.createElement("td");
-                        td3.setAttribute("style", "display:none");
-                        td3.innerHTML = UnitCode;
-                        tr.appendChild(td3);
-                        tr.insertCell(4).innerHTML = Unit;
-                        var td5 = document.createElement("td");
-                        td5.setAttribute("style", "display:none");
-                        td5.innerHTML = IsAbnormalCode;
-                        tr.appendChild(td5);
-                        tr.insertCell(6).innerHTML = IsAbnormal;
-                        tr.insertCell(7).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editLabTestDetailInfoBtn' /><input type='button' value='删除' class='btn btn-primary deleteLabTestDetailInfoBtn' />";
-                        //tr.insertCell(8).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteLabTestDetailInfoBtn' />";
+                        table6.row.add({
+                            "0": SubCode,
+                            "1": Name,
+                            "2": Value,
+                            "3": UnitCode,
+                            "4": Unit,
+                            "5": IsAbnormalCode,
+                            "6": IsAbnormal,
+                            "7": "<input type='button' value='编辑' class='btn btn-primary editLabTestDetailInfoBtn' />|<input type='button' value='删除' class='btn btn-primary deleteLabTestDetailInfoBtn' />"
+                        }).draw();
                         document.getElementById("DtlItemNameDropDownList").value = "";
                         document.getElementById("DtlItemValue").value = "";
                         document.getElementById("DtlItemUnitDropDownList").value = "";
                         document.getElementById("DtlIsAbnormalDropDownList").value = "";
+                        table6.column(0).visible(false);
                         $("#DtlItemNameDropDownList option[value='" + SubCode + "']").remove();
-                        //$("#editLabDetailDataDiv").hide();
+                        $("#DtlItemNameDropDownList").trigger('chosen:updated');
                     }
                     else {
                         alert("数据插入失败，请重新输入！");
@@ -402,8 +403,8 @@
             $("#addDataDiv").hide();
             $("#editLabDetailDataDiv").hide();
 
+            dataindex = table6.row($(this).parent().parent()).index();
             trDetailSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
-            var Code = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(0)").text().trim();
             $('#DeleteLabDetailDataDiv').show();
             //            $('#DeleteLabDetailDataDiv').modal({
             //                closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -412,7 +413,7 @@
         });
 
         $(".sureLabTestDetailBtn").click(function () {
-            //var trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
+            table6.column(0).visible(true);
             var Code = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(0)").text().trim();
             var Name = $("#DetailTableBody tr:eq(" + trDetailSeq + ") td:eq(1)").text().trim();
 
@@ -426,15 +427,14 @@
                     if (res == true) {
                         $('.notice').text("操作成功！");
                         setTimeout(function () {
-                            $("#cancelDeleteDtl").click();
                             var tbody = document.getElementById("DetailTableBody");
                             tbody.deleteRow(trDetailSeq);
                             $("#DtlItemNameDropDownList").append("<option value='" + Code + "'>" + Name + "</option>");
+                            $("#DtlItemNameDropDownList").trigger('chosen:updated');
                             $('.notice').text("");
                             $('#DeleteLabDetailDataDiv').hide();
+                            table6.row(dataindex).remove().draw();
                         }, 1500);
-
-
                     }
                     else {
                         $('.notice').text("数据删除失败，请重试！");
@@ -442,10 +442,10 @@
                             $('.notice').text("");
                             $('#DeleteLabDetailDataDiv').hide();
                         }, 1500);
-
                     }
                 }
             })
+            table6.column(0).visible(false);
         })
     })
 

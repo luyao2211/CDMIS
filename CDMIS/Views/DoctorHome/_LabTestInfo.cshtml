@@ -261,7 +261,7 @@
         <span>化验参数信息</span>
     </div>
     <div class="modalContent">
-        <iframe id="iframe_ClinicDetail" src="" width="100%" height="500px" style="background: #FFF;"
+        <iframe id="iframe_ClinicDetail" src="" width="100%" height="600px" style="background: #FFF;"
             scrolling="no" frameborder="no"></iframe>
         <input id="closePop" type="button" class="simplemodal-close" value="关闭" style="display: none;" />
     </div>
@@ -375,30 +375,52 @@
     </ul>
 </div>
 <script type="text/javascript">
+    var table4 = $("#LabTestInfoList").DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "300px",
+        "bFilter": true,
+        "aaSorting": [[5, "desc"]],
+        "columnDefs": [{
+            "bSortable": false, "aTargets": [9, 10, 11]
+        }, {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [1],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [8],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [12],
+            "visible": false,
+            "searchable": false
+        }]
+    });
+    $("#LabTestInfoList").attr("width", "auto");
+
     $(document).ready(function () {
         document.getElementById("LabItemTypeNameListDropDownList").value = "";
         document.getElementById("StatusListDropDownList").value = "";
         document.getElementById("DeptListDropDownList").value = "";
 
-        var table4 = $("#LabTestInfoList").DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "300px",
-            "bFilter": true,
-            "aaSorting": [[5, "desc"]],
-            "columnDefs": [{ "bSortable": false, "aTargets": [9, 10, 11]}] //禁止某些列的排序功能
-        });
-        $("#LabTestInfoList").attr("width", "auto");
-
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
         var trSeq;
+        var dataindex = 0;
 
-        var addNo = 0;
         var deleteDetailNo = 0;
 
         $(".addLabTestInfo").click(function () {
@@ -426,17 +448,18 @@
         //$(".readLabTestSubInfoBtn").click(function () {
         $(document).on("click", ".readLabTestSubInfoBtn", function () {
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
-
+            table4.column(0).visible(true);
+            table4.column(1).visible(true);
+            table4.column(3).visible(true);
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
-            //alert(SortNo);
             var LabItemType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
             var LabItemCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text().trim();
-
+            table4.column(0).visible(false);
+            table4.column(1).visible(false);
+            table4.column(3).visible(false);
             //1:可编辑  0:不可编辑
             var operationFlag = $(this).parent().next().find("input").length;
-            //alert(operationFlag);
             $("#iframe_ClinicDetail").attr('src', "/DoctorHome/LabTestInfoDetail?UserId=" + UserId + "&VisitId=" + VisitId + "&SortNo=" + SortNo + "&LabItemType=" + LabItemType + "&LabItemCode=" + LabItemCode + "&operationFlag=" + operationFlag);
-
             $('#LabTestDetails').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
                 containerId: 'LabDtl-container',
@@ -447,8 +470,13 @@
 
 
         $(document).on("click", ".editLabTestInfoBtn", function () {
+            dataindex = table4.row($(this).parent().parent()).index();
+            table4.column(0).visible(true);
+            table4.column(1).visible(true);
+            table4.column(3).visible(true);
+            table4.column(8).visible(true);
+            table4.column(12).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
-
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var LabItemType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
             var LabItemTypeName = $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text().trim();
@@ -459,7 +487,11 @@
             var ReportDate = $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text().trim();
             var StatusCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text().trim();
             var DeptCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text().trim();
-
+            table4.column(0).visible(false);
+            table4.column(1).visible(false);
+            table4.column(3).visible(false);
+            table4.column(8).visible(false);
+            table4.column(12).visible(false);
             EditData(SortNo, LabItemType, LabItemTypeName, LabItemCode, LabItemName, ExamDate, Status, ReportDate, StatusCode, DeptCode);
 
             $('#LabItemTypeName').chosen({
@@ -555,22 +587,23 @@
                     data: { UserId: UserId, VisitId: VisitId, SortNo: SortNo, LabItemType: LabItemType, LabItemCode: LabItemCode, ExamDate: ExamDate, Status: Status, ReportDate: ReportDate, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            // $.modal.close();
                             $("#cancel").click();
-                            //location = "/DoctorHome/ClinicalProfile";
-                            //$("#ShowClinicalProfileInfo").html();
-
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(SortNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(LabItemType);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(LabItemTypeName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(LabItemCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(LabItemName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(ExamDate);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(StatusText);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(ReportDate);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text(Status);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text(DeptCode);
-
+                            table4.row(dataindex).remove().draw();
+                            table4.row.add({
+                                "0": SortNo,
+                                "1": LabItemType,
+                                "2": LabItemTypeName,
+                                "3": LabItemCode,
+                                "4": LabItemName,
+                                "5": ExamDate,
+                                "6": StatusText,
+                                "7": ReportDate,
+                                "8": Status,
+                                "9": "<input type='button' value='参数信息' class='btn btn-primary readLabTestSubInfoBtn' />",
+                                "10": "<input type='button' value='编辑' class='btn btn-primary editLabTestInfoBtn' />",
+                                "11": "<input type='button' value='删除' class='btn btn-primary deleteLabTestInfoBtn' />",
+                                "12": DeptCode
+                            }).draw();
                         }
                         else {
                             alert("数据编辑失败，请重新输入！");
@@ -594,7 +627,7 @@
                 //alert("12");
             }
 
-            var SortNo = parseInt($("#MaxSortNo").val()) + addNo + 1;
+            var SortNo = parseInt($("#MaxSortNo").val()) + 1;
             var LabItemType = document.getElementById("LabItemTypeNameListDropDownList").value;
             var LabItemCode = document.getElementById("LabItemNameListDropDownList").value;
             var ExamDate = document.getElementById("ExamDateInput").value;
@@ -628,45 +661,22 @@
                     data: { UserId: UserId, VisitId: VisitId, LabItemType: LabItemType, LabItemCode: LabItemCode, ExamDate: ExamDate, Status: Status, ReportDate: ReportDate, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            addNo++;
-                            var tr = document.getElementById("TableBody").insertRow();
-                            var td0 = document.createElement("td");
-                            td0.setAttribute("style", "display:none");
-                            td0.innerHTML = SortNo;
-                            tr.appendChild(td0);
-
-                            var td1 = document.createElement("td");
-                            td1.setAttribute("style", "display:none");
-                            td1.innerHTML = LabItemType;
-                            tr.appendChild(td1);
-                            //tr.insertCell().innerHTML = LabItemTypeName;
-                            //tr.insertCell().innerHTML = VisitTypeName;   
-                            tr.insertCell(2).innerHTML = document.getElementById("LabItemTypeNameListDropDownList").options[document.getElementById("LabItemTypeNameListDropDownList").selectedIndex].text;
-                            var td3 = document.createElement("td");
-                            td3.setAttribute("style", "display:none");
-                            td3.innerHTML = LabItemCode;
-                            tr.appendChild(td3);
-                            tr.insertCell(4).innerHTML = document.getElementById("LabItemNameListDropDownList").options[document.getElementById("LabItemNameListDropDownList").selectedIndex].text;
-                            //tr.insertCell().innerHTML = document.getElementById("LabItemNameListDropDownList").options[LabItemName - 1].text;
-                            tr.insertCell(5).innerHTML = ExamDate;
-
-                            tr.insertCell(6).innerHTML = document.getElementById("StatusListDropDownList").options[document.getElementById("StatusListDropDownList").selectedIndex].text;
-                            tr.insertCell(7).innerHTML = ReportDate;
-                            //                        tr.insertCell().innerHTML = "<input type='button' value='参数信息' class='btn btn-primary editLabTestInfoBtn' />";
-                            var td8 = document.createElement("td");
-                            td8.setAttribute("style", "display:none");
-                            td8.innerHTML = Status;
-                            tr.appendChild(td8);
-                            //tr.insertCell(9).innerHTML = "<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#LabTestDetails' href='/DoctorHome/LabTestInfoDetail?UserId=" + UserId + "&amp;VisitId=" + VisitId + "&amp;SortNo=" + SortNo + "&amp;LabItemCode=" + LabItemCode + "' onclick='addLabTestDivHide()'>详细</a>";
-                            tr.insertCell(9).innerHTML = '<input type="button" value="参数信息" class="btn btn-primary readLabTestSubInfoBtn" />';
-
-
-                            tr.insertCell(10).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editLabTestInfoBtn' />";
-                            tr.insertCell(11).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteLabTestInfoBtn' />";
-                            var td12 = document.createElement("td");
-                            td12.setAttribute("style", "display:none");
-                            td12.innerHTML = DeptCode;
-                            tr.appendChild(td12);
+                            $("#MaxSortNo").attr("value", SortNo);
+                            table4.row.add({
+                                "0": SortNo,
+                                "1": LabItemType,
+                                "2": document.getElementById("LabItemTypeNameListDropDownList").options[document.getElementById("LabItemTypeNameListDropDownList").selectedIndex].text,
+                                "3": LabItemCode,
+                                "4": document.getElementById("LabItemNameListDropDownList").options[document.getElementById("LabItemNameListDropDownList").selectedIndex].text,
+                                "5": ExamDate,
+                                "6": document.getElementById("StatusListDropDownList").options[document.getElementById("StatusListDropDownList").selectedIndex].text,
+                                "7": ReportDate,
+                                "8": Status,
+                                "9": "<input type='button' value='参数信息' class='btn btn-primary readLabTestSubInfoBtn' />",
+                                "10": "<input type='button' value='编辑' class='btn btn-primary editLabTestInfoBtn' />",
+                                "11": "<input type='button' value='删除' class='btn btn-primary deleteLabTestInfoBtn' />",
+                                "12": DeptCode
+                            }).draw();
                             document.getElementById("LabItemTypeNameListDropDownList").value = "";
                             document.getElementById("LabItemNameListDropDownList").value = "";
                             document.getElementById("StatusListDropDownList").value = "";
@@ -674,8 +684,6 @@
                             document.getElementById("ReportDateInput").value = "";
                             document.getElementById("DeptListDropDownList").value = "";
                             $("#cancel").click();
-
-
                         }
                         else {
                             alert("数据插入失败，请重新输入！");
@@ -686,8 +694,8 @@
         })
 
         $(document).on("click", ".deleteLabTestInfoBtn", function () {
+            dataindex = table4.row($(this).parent().parent()).index();
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
-
             $('#DeleteDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
                 containerId: 'delete-container',
@@ -696,8 +704,8 @@
         });
 
         $(".sureDeleteBtn").click(function () {
+            table4.column(0).visible(true);
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
-
             $.ajax({
                 url: "/DoctorHome/LabTestInfoDelete",
                 type: "GET",
@@ -706,19 +714,26 @@
                 data: { UserId: UserId, VisitId: VisitId, SortNo: SortNo },  //输入参数
                 success: function (res) {
                     if (res == true) {
-
                         $("#cancelDelete").click();
                         var tbody = document.getElementById("TableBody");
                         tbody.deleteRow(trSeq);
                         $("#addLabTestDiv").show();
                         $("#LabTestDetails").hide();
+                        table4.row(dataindex).remove().draw();
                     }
                     else {
                         alert("数据删除失败，请重试！");
                     }
                 }
-
             })
+            var max = 0;
+            for (i = 0; i < table4.column(0).data().length; i++) {
+                if (max < parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim())) {
+                    max = parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim());
+                }
+            }
+            $("#MaxSortNo").attr("value", max);
+            table4.column(0).visible(false);
         })
     });
 

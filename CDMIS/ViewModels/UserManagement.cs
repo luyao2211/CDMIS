@@ -54,10 +54,10 @@ namespace CDMIS.ViewModels
         {
             return CommonVariables.GetDeptList();
         }
-        //public List<SelectListItem> JobTitleList()                    //JobTitle
-        //{
-        //    return CommonVariables.GetUserClassList();
-        //}
+        public List<SelectListItem> JobTitleList()                    //JobTitle
+        {
+            return CommonVariables.GetJobTitleList();
+        }
         public int RowCount { get; set; }
         public UserViewModel()
         {

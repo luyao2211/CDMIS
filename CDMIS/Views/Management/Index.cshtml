@@ -259,7 +259,7 @@
                         <label class="col-sm-4 control-label">
                             职务</label>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(m => m.JobTitle, new { id = "JobTitle", @class = "form-control" })
+                            @Html.DropDownListFor(m => m.JobTitle, Model.JobTitleList(), new { id = "JobTitle", @class = "form-control" })
                         </div>
                     </div>
                 </div>

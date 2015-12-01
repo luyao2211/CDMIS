@@ -8,6 +8,13 @@
 <link href="../../Content/simpleModal.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../Scripts/jquery.simplemodal.1.4.4.min.js"></script>
 <script type="text/javascript" src="../../Scripts/jquery.dataTables.js"></script>
+<style type="text/css">
+    #alert-container
+    {
+        height: 160px;
+        width: 300px;
+    }
+</style>
 @using (Html.BeginForm("Verification", "Account", FormMethod.Post, new { id = "Form2", @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
@@ -16,12 +23,12 @@
             <label class="col-sm-2 control-label" style="text-align: justify">
                 手机号码：</label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @onkeyup = "IsLegal(this.id);", @onmouseup = "IsLegal(this.id);" })
                 @Html.ValidationMessageFor(m => m.PhoneNumber)
                 @Html.ValidationMessage("errorPhoneNo")
             </div>
             <div class="col-sm-2 ">
-                <input type="button" name="GetValidateCode" class="btn btn-primary" id="GetValidateCode"
+                <input type="button" name="GetValidateCode" class="btn btn-primary" id="GetValidateCode" disabled="disabled"
                     value="获取验证码" onclick="SubmitForm1();" />
             </div>
         </div>
@@ -41,7 +48,17 @@
             </div>
         </div>
     </div>
-   
+    <div id="integrateDiv" style="display: none;">
+        <div class="modalHeader">
+            <span>提示框</span></div>
+        <div class="modalContent">
+            <center>
+                <h4 id="warningP">
+                </h4>
+                <input type="button" class="btn btn-primary Sure" value="确定" />
+            </center>
+        </div>
+    </div>
 @*                                <script type="text/javascript">
                                     var wait = 60;
                                     document.getElementById("btn").disabled = false;
@@ -87,10 +104,20 @@
             data: { PhoneNo: PhoneNo },
             success: function (res) {
                 if (res == "系统中不存在该手机号码") {
-                    alert(res);
+                    $("#warningP").html(res);
+                    $('#integrateDiv').modal({
+                        closeHTML: "<a href='#' id='Close' class='modal-close'>x</a>",
+                        containerId: 'alert-container',
+                        overlayClose: true     //点击蒙层关闭窗口
+                    });
                     return;
                 }
-                alert("验证码短信已发送，3分钟内有效");
+                $("#warningP").html("验证码短信已发送，3分钟内有效");
+                $('#integrateDiv').modal({
+                    closeHTML: "<a href='#' id='Close' class='modal-close'>x</a>",
+                    containerId: 'alert-container',
+                    overlayClose: true     //点击蒙层关闭窗口
+                });
                 Time();
             }
         });
@@ -129,18 +156,50 @@
                         var form1 = document.getElementById("Form2");
                         form1.submit();
                     }
-                    else
-                        alert("验证码输入错误");
+                    else {
+                        $("#warningP").html("验证码输入错误");
+                        $('#integrateDiv').modal({
+                            closeHTML: "<a href='#' id='Close' class='modal-close'>x</a>",
+                            containerId: 'alert-container',
+                            overlayClose: true     //点击蒙层关闭窗口
+                        });
+                    }
                 }
             });
         }
         else if ($("#PhoneNumber").val() == "") {
-            alert("手机号码为空，请输入手机号码");
+            $("#warningP").html("手机号码为空，请输入手机号码");
+            $('#integrateDiv').modal({
+                closeHTML: "<a href='#' id='Close' class='modal-close'>x</a>",
+                containerId: 'alert-container',
+                overlayClose: true     //点击蒙层关闭窗口
+            });
         }
         else if ($("#ValidateCode").val() == "") {
-            alert("验证码为空，请输入验证码");
+            $("#warningP").html("验证码为空，请输入验证码");
+            $('#integrateDiv').modal({
+                closeHTML: "<a href='#' id='Close' class='modal-close'>x</a>",
+                containerId: 'alert-container',
+                overlayClose: true     //点击蒙层关闭窗口
+            });
         }
 
     }
+
+    function IsLegal(o) {
+        if (document.getElementById(o).value != "") {
+            var re = /^1[3|4|5|7|8][0-9]\d{8}$/;
+            if (!re.test(document.getElementById(o).value)) {
+                $("#GetValidateCode").attr("disabled", "disabled");
+            }
+            else {
+                $("#GetValidateCode").removeAttr("disabled");
+            }
+        }
+    }
+
+    $(".Sure").click(function () {
+        $("#Close").click();
+    })
 
 </script>

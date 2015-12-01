@@ -368,7 +368,6 @@
         });
     }
 
-
     $(document).ready(function () {
         //鼠标移动到行变色,单独建立css类hover
         //tr:gt(0):表示获取大于 tr index 为0 的所有tr，即不包括表头
@@ -380,34 +379,48 @@
             $(this).removeClass("tdhover")
         })
 
-        var table1 = $('#SymptomsInfoList').DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "300px",
-            "bFilter": true,
-            "aaSorting": [[6, "desc"],[7, "desc"]],
-            "columnDefs": [{ "bSortable": false, "aTargets": [8,9]}] //禁止某些列的排序功能
-        });
-
         $("#SymptomsInfoList").attr("width", "auto");
         $("input[type=search]").val("disabled");
     });
 
 </script>
 <script type="text/javascript">
+    var table1 = $('#SymptomsInfoList').DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "300px",
+        "bFilter": true,
+        "aaSorting": [[6, "desc"], [7, "desc"]],
+        "columnDefs": [{
+            "bSortable": false, "aTargets": [8, 9]
+        }, {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [1],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }]
+    });
+
     $(document).ready(function () {
         document.getElementById("SymptomsTypeListDropDownList").value = "0";
         document.getElementById("SymptomsNameListDropDownList").value = "";
 
+        var dataindex = 0;
         var UserId = "@Model.UserId";
         var VisitId = "@Model.VisitId";
 
         var trSeq;
-        var addNo = 0;
 
         $(".addSymptomInfo").click(function () {
             $('#addDataDiv').modal({
@@ -431,14 +444,14 @@
             //                tbody.removeChild(tr);
             //            }
 
-            var SynptomsNo = parseInt(document.getElementById("MaxSynptomsNo").value) + addNo + 1;
+            var SynptomsNo = parseInt(document.getElementById("MaxSynptomsNo").value) + 1;
             var SymptomsType = document.getElementById("SymptomsTypeListDropDownList").value;
             var SymptomsCode = document.getElementById("SymptomsNameListDropDownList").value;
             var Description = document.getElementById("DescriptionInput").value;
             var RecordDateInput = document.getElementById("RecordDateInput").value;
             var RecordDate = RecordDateInput.substr(0, 10);
             var RecordTime = RecordDateInput.substr(11);
-           
+
 
             if (SymptomsType == "0" || SymptomsCode == "" || RecordDateInput == "") {
                 var Text = "";
@@ -446,17 +459,17 @@
                 if (SymptomsCode == "") { Text = Text + "症状名称 "; }
                 if (RecordDateInput == "") { Text = Text + "记录时间 "; }
                 Text = Text + "不能为空！";
-               
+
 
                 $("#SymptomInfoWarning").html(Text);
                 $('#alertSymptomInfoDiv').show();
 
                 //alert(Text);
-//                $('#alertDiv').modal({
-//                    closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
-//                    containerId: 'alert-container',
-//                    overlayClose: true     //点击蒙层关闭窗口
-//                });
+                //                $('#alertDiv').modal({
+                //                    closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
+                //                    containerId: 'alert-container',
+                //                    overlayClose: true     //点击蒙层关闭窗口
+                //                });
             }
             else {
                 $.ajax({
@@ -467,30 +480,19 @@
                     data: { UserId: UserId, VisitId: VisitId, SymptomsType: SymptomsType, SymptomsCode: SymptomsCode, Description: Description, RecordDate: RecordDate, RecordTime: RecordTime },  //输入参数                                   
                     success: function (res) {
                         if (res == true) {
-                            addNo++;
-                            var tr = document.getElementById("TableBody").insertRow();
-
-                            var td0 = document.createElement("td");
-                            td0.setAttribute("style", "display:none");
-                            td0.innerHTML = SynptomsNo;
-                            tr.appendChild(td0);
-
-                            var td1 = document.createElement("td");
-                            td1.setAttribute("style", "display:none");
-                            td1.innerHTML = SymptomsType;
-                            tr.appendChild(td1);
-                            tr.insertCell(2).innerHTML = document.getElementById("SymptomsTypeListDropDownList").options[document.getElementById("SymptomsTypeListDropDownList").selectedIndex].text;
-                            var td3 = document.createElement("td");
-                            td3.setAttribute("style", "display:none");
-                            td3.innerHTML = SymptomsCode;
-                            tr.appendChild(td3);
-                            tr.insertCell(4).innerHTML = document.getElementById("SymptomsNameListDropDownList").options[document.getElementById("SymptomsNameListDropDownList").selectedIndex].text;
-                            tr.insertCell(5).innerHTML = Description;
-                            tr.insertCell(6).innerHTML = RecordDate;
-                            tr.insertCell(7).innerHTML = RecordTime;
-
-                            tr.insertCell(8).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editSymptomInfoBtn' />";
-                            tr.insertCell(9).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteSymptomInfoBtn' />";
+                            $("#MaxSynptomsNo").attr("value", SynptomsNo);
+                            table1.row.add({
+                                "0": SynptomsNo,
+                                "1": SymptomsType,
+                                "2": document.getElementById("SymptomsTypeListDropDownList").options[document.getElementById("SymptomsTypeListDropDownList").selectedIndex].text,
+                                "3": SymptomsCode,
+                                "4": document.getElementById("SymptomsNameListDropDownList").options[document.getElementById("SymptomsNameListDropDownList").selectedIndex].text,
+                                "5": Description,
+                                "6": RecordDate,
+                                "7": RecordTime,
+                                "8": "<input type='button' value='编辑' class='btn btn-primary editSymptomInfoBtn' />",
+                                "9": "<input type='button' value='删除' class='btn btn-primary deleteSymptomInfoBtn' />"
+                            }).draw();
                             document.getElementById("SymptomsTypeListDropDownList").value = "";
                             document.getElementById("SymptomsNameListDropDownList").value = "";
                             document.getElementById("RecordDateInput").value = "";
@@ -506,6 +508,10 @@
         })
 
         $(document).on("click", ".editSymptomInfoBtn", function () {
+            dataindex = table1.row($(this).parent().parent()).index();
+            table1.column(0).visible(true);
+            table1.column(1).visible(true);
+            table1.column(3).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var SynptomsNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var SymptomsType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
@@ -515,7 +521,9 @@
             var Description = $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text().trim();
             var RecordDate = $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text().trim();
             var RecordTime = $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text().trim();
-
+            table1.column(0).visible(false);
+            table1.column(1).visible(false);
+            table1.column(3).visible(false);
             EditData(SynptomsNo, SymptomsType, SymptomsTypeName, SymptomsCode, SymptomsName, Description, RecordDate, RecordTime);
         });
 
@@ -590,14 +598,19 @@
                     success: function (res) {
                         if (res == true) {
                             $("#cancel").click();
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(SynptomsNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(SymptomsType);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(SymptomsTypeName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(SymptomsCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(SymptomsName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(Description);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(RecordDate.replace(/\-/g, ""));
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(RecordTime.replace(/\-/g, ""));
+                            table1.row(dataindex).remove().draw();
+                            table1.row.add({
+                                "0": SynptomsNo,
+                                "1": SymptomsType,
+                                "2": SymptomsTypeName,
+                                "3": SymptomsCode,
+                                "4": SymptomsName,
+                                "5": Description,
+                                "6": RecordDate,
+                                "7": RecordTime,
+                                "8": "<input type='button' value='编辑' class='btn btn-primary editSymptomInfoBtn' />",
+                                "9": "<input type='button' value='删除' class='btn btn-primary deleteSymptomInfoBtn' />"
+                            }).draw();
                         }
                         else {
                             alert("数据插入失败，请重新输入！");
@@ -609,6 +622,7 @@
 
         var trSeq;
         $(document).on("click", ".deleteSymptomInfoBtn", function () {
+            dataindex = table1.row($(this).parent().parent()).index();
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             $('#DeleteDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -618,9 +632,8 @@
         });
 
         $(".sureDeleteBtn").click(function () {
-
+            table1.column(0).visible(true);
             var SynptomsNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
-
             $.ajax({
                 url: "/DoctorHome/SymptomInfoDelete",
                 type: "GET",
@@ -632,13 +645,21 @@
                         $("#cancelDelete").click();
                         var tbody = document.getElementById("TableBody");
                         tbody.deleteRow(trSeq);
+                        table1.row(dataindex).remove().draw();
                     }
                     else {
                         alert("数据删除失败，请重试！");
                     }
                 }
-
             })
+            var max = 0;
+            for (i = 0; i < table1.column(0).data().length; i++) {
+                if (max < parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim())) {
+                    max = parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim());
+                }
+            }
+            $("#MaxSynptomsNo").attr("value", max);
+            table1.column(0).visible(false);
         })
     });
 </script>

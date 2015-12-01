@@ -625,8 +625,11 @@
     //删除药品
     function DeleteDrugInfo(Category, ItemCode, ItemSeq) {
         var Seq = parseInt(ItemSeq);
-        if (Seq == "1")
+        if (Seq == "1") {
+            $("#" + ItemCode + ItemSeq).val("");
+            DrugTypeChanged("Cm." + Category, ItemCode, ItemSeq);
             return;
+        }
         else {
             $("#" + ItemCode + ItemSeq).remove();
             $("#" + ItemSeq + ItemCode).remove();

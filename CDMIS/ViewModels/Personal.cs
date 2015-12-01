@@ -54,6 +54,22 @@ namespace CDMIS.ViewModels
         public string JobTitle { get; set; }                    //医生职称
         public string Level { get; set; }                       //医生级别
         public string Dept { get; set; }                        //医生科室
+        public List<SelectListItem> GetHospitalList()                    //GetHospitalList
+        {
+            return CommonVariables.GetHospitalList();
+        }
+        public List<SelectListItem> GetDeptList()                    //GetDeptList
+        {
+            return CommonVariables.GetDeptList();
+        }
+        public List<SelectListItem> GetJobTitleList()                    //JobTitle
+        {
+            return CommonVariables.GetJobTitleList();
+        }
+        public List<SelectListItem> GetLevelList()                    //Level
+        {
+            return CommonVariables.GetLevelList();
+        }
     }
 
     //信箱母版 GL 2014-12-09

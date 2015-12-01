@@ -615,31 +615,72 @@
     </ul>
 </div>
 <script type="text/javascript">
+    var table3 = $('#ExaminationInfoList').DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "300px",
+        "bFilter": true,
+        "aaSorting": [[5, "desc"]],
+        "columnDefs": [{
+            "bSortable": false, "aTargets": [15, 16, 17]
+        }, {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [1],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [9],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [10],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [11],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [12],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [13],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [14],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [18],
+            "visible": false,
+            "searchable": false
+        }] //禁止某些列的排序功能
+    });
+    $("#ExaminationInfoList").attr("width", "auto");
+
     $(document).ready(function () {
         document.getElementById("ExamTypeListDropDownList").value = "";
         document.getElementById("StatusInput").value = "";
         document.getElementById("IsAbnormalInput").value = "";
         document.getElementById("DeptListDropDownList").value = "";
 
-        var table3 = $('#ExaminationInfoList').DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "300px",
-            "bFilter": true,
-            "aaSorting": [[5, "desc"]],
-            "columnDefs": [{ "bSortable": false, "aTargets": [15, 16, 17]}] //禁止某些列的排序功能
-        });
-        $("#ExaminationInfoList").attr("width", "auto");
-
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
-
+        var dataindex = 0;
         var trSeq;
-        var addNo = 0;
 
         $(".addExaminationInfo").click(function () {
             $('#addDataDiv').modal({
@@ -655,6 +696,16 @@
 
         //20150617
         $(document).on("click", ".readExaminationInfoBtn", function () {
+            table3.column(0).visible(true);
+            table3.column(1).visible(true);
+            table3.column(3).visible(true);
+            table3.column(9).visible(true);
+            table3.column(10).visible(true);
+            table3.column(11).visible(true);
+            table3.column(12).visible(true);
+            table3.column(13).visible(true);
+            table3.column(14).visible(true);
+            table3.column(18).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var ExamType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
@@ -670,7 +721,16 @@
             var Impression = $("#TableBody tr:eq(" + trSeq + ") td:eq(11)").text().trim();
             var Recommendation = $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text().trim();
             var DeptCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(18)").text().trim();
-
+            table3.column(0).visible(false);
+            table3.column(1).visible(false);
+            table3.column(3).visible(false);
+            table3.column(9).visible(false);
+            table3.column(10).visible(false);
+            table3.column(11).visible(false);
+            table3.column(12).visible(false);
+            table3.column(13).visible(false);
+            table3.column(14).visible(false);
+            table3.column(18).visible(false);
             ReadData(SortNo, ExamType, ExamTypeName, ItemCode, ExamName, ExamDate, Status, IsAbnormal, ReportDate, ExamPara, Description, Impression, Recommendation, DeptCode);
         });
 
@@ -719,6 +779,17 @@
         }
 
         $(document).on("click", ".editExaminationInfoBtn", function () {
+            dataindex = table3.row($(this).parent().parent()).index();
+            table3.column(0).visible(true);
+            table3.column(1).visible(true);
+            table3.column(3).visible(true);
+            table3.column(9).visible(true);
+            table3.column(10).visible(true);
+            table3.column(11).visible(true);
+            table3.column(12).visible(true);
+            table3.column(13).visible(true);
+            table3.column(14).visible(true);
+            table3.column(18).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var ExamType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
@@ -734,7 +805,16 @@
             var Impression = $("#TableBody tr:eq(" + trSeq + ") td:eq(11)").text().trim();
             var Recommendation = $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text().trim();
             var DeptCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(18)").text().trim();
-
+            table3.column(0).visible(false);
+            table3.column(1).visible(false);
+            table3.column(3).visible(false);
+            table3.column(9).visible(false);
+            table3.column(10).visible(false);
+            table3.column(11).visible(false);
+            table3.column(12).visible(false);
+            table3.column(13).visible(false);
+            table3.column(14).visible(false);
+            table3.column(18).visible(false);
             EditData(SortNo, ExamType, ExamTypeName, ItemCode, ExamName, ExamDate, Status, IsAbnormal, ReportDate, ExamPara, Description, Impression, Recommendation, DeptCode);
 
             $('#DeptCode').chosen({
@@ -836,28 +916,29 @@
                     data: { UserId: UserId, VisitId: VisitId, SortNo: SortNo, ExamType: ExamType, ItemCode: ItemCode, ExamDate: ExamDate, Status: Status, IsAbnormal: IsAbnormal, ReportDate: ReportDate, ExamPara: ExamPara, Description: Description, Impression: Impression, Recommendation: Recommendation, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            // $.modal.close();
                             $("#cancel").click();
-                            //location = "/DoctorHome/ClinicalProfile";
-                            //$("#ShowClinicalProfileInfo").html();
-
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(SortNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(ExamType);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(ExamTypeName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(ItemCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(ExamName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(ExamDate);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(StatusText);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(IsAbnormalText);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text(ReportDate);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(9)").text(ExamPara);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(10)").text(Description);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(11)").text(Impression);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text(Recommendation);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(13)").text(Status);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(14)").text(IsAbnormal);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(18)").text(DeptCode);
-
+                            table3.row(dataindex).remove().draw();
+                            table3.row.add({
+                                "0": SortNo,
+                                "1": ExamType,
+                                "2": ExamTypeName,
+                                "3": ItemCode,
+                                "4": ExamName,
+                                "5": ExamDate,
+                                "6": StatusText,
+                                "7": IsAbnormalText,
+                                "8": ReportDate,
+                                "9": ExamPara,
+                                "10": Description,
+                                "11": Impression,
+                                "12": Recommendation,
+                                "13": Status,
+                                "14": IsAbnormal,
+                                "15": "<input type='button' value='详细' class='btn btn-primary readExaminationInfoBtn' />",
+                                "16": "<input type='button' value='编辑' class='btn btn-primary editExaminationInfoBtn' />",
+                                "17": "<input type='button' value='删除' class='btn btn-primary deleteExaminationInfoBtn' />",
+                                "18": DeptCode
+                            }).draw();
                         }
                         else {
                             alert("数据编辑失败，请重新输入！");
@@ -882,7 +963,7 @@
                 //alert("12");
             }
 
-            var SortNo = parseInt(document.getElementById("MaxSortNo").value) + addNo + 1;
+            var SortNo = parseInt(document.getElementById("MaxSortNo").value) + 1;
             var ExamType = document.getElementById("ExamTypeListDropDownList").value;
             var ItemCode = document.getElementById("ExamNameListDropDownList").value;
             var ExamDate = document.getElementById("ExamDateInput").value;
@@ -926,76 +1007,40 @@
                     data: { UserId: UserId, VisitId: VisitId, ExamType: ExamType, ExamDate: ExamDate, ItemCode: ItemCode, ExamPara: ExamPara, Description: Description, Impression: Impression, Recommendation: Recommendation, IsAbnormal: IsAbnormal, Status: Status, ReportDate: ReportDate, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            addNo++;
-                            var tr = document.getElementById("TableBody").insertRow();
-
-
-                            var td0 = document.createElement("td");
-                            td0.setAttribute("style", "display:none");
-                            td0.innerHTML = SortNo;
-                            tr.appendChild(td0);
-
-                            var td1 = document.createElement("td");
-                            td1.setAttribute("style", "display:none");
-                            td1.innerHTML = ExamType;
-                            tr.appendChild(td1);
-                            tr.insertCell(2).innerHTML = document.getElementById("ExamTypeListDropDownList").options[document.getElementById("ExamTypeListDropDownList").selectedIndex].text;
-                            var td3 = document.createElement("td");
-                            td3.setAttribute("style", "display:none");
-                            td3.innerHTML = ItemCode;
-                            tr.appendChild(td3);
-                            tr.insertCell(4).innerHTML = document.getElementById("ExamNameListDropDownList").options[document.getElementById("ExamNameListDropDownList").selectedIndex].text;
-                            tr.insertCell(5).innerHTML = ExamDate;
-
+                            $("#MaxSortNo").attr("value", SortNo);
                             if (Status != "0") {
-                                tr.insertCell(6).innerHTML = document.getElementById("StatusInput").options[document.getElementById("StatusInput").selectedIndex].text;
+                                var Data_6 = document.getElementById("StatusInput").options[document.getElementById("StatusInput").selectedIndex].text;
                             }
                             else {
-                                tr.insertCell(6).innerHTML = "";
+                                var Data_6 = "";
                             }
-
                             if (IsAbnormal != "0") {
-                                tr.insertCell(7).innerHTML = document.getElementById("IsAbnormalInput").options[document.getElementById("IsAbnormalInput").selectedIndex].text;
+                                var Data_7 = document.getElementById("IsAbnormalInput").options[document.getElementById("IsAbnormalInput").selectedIndex].text;
                             }
                             else {
-                                tr.insertCell(7).innerHTML = "";
+                                var Data_7 = "";
                             }
-
-                            tr.insertCell(8).innerHTML = ReportDate;
-                            var td9 = document.createElement("td");
-                            td9.setAttribute("style", "display:none");
-                            td9.innerHTML = ExamPara;
-                            tr.appendChild(td9);
-                            var td10 = document.createElement("td");
-                            td10.setAttribute("style", "display:none");
-                            td10.innerHTML = Description;
-                            tr.appendChild(td10);
-                            var td11 = document.createElement("td");
-                            td11.setAttribute("style", "display:none");
-                            td11.innerHTML = Impression;
-                            tr.appendChild(td11);
-                            var td12 = document.createElement("td");
-                            td12.setAttribute("style", "display:none");
-                            td12.innerHTML = Recommendation;
-                            tr.appendChild(td12);
-                            var td13 = document.createElement("td");
-                            td13.setAttribute("style", "display:none");
-                            td13.innerHTML = Status;
-                            tr.appendChild(td13);
-                            var td14 = document.createElement("td");
-                            td14.setAttribute("style", "display:none");
-                            td14.innerHTML = IsAbnormal;
-                            tr.appendChild(td14);
-
-                            //tr.insertCell(15).innerHTML = "<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#ExamDetails' href='/DoctorHome/ExaminationInfoDetail?UserId=" + UserId + "&amp;VisitId=" + VisitId + "&amp;SortNo=" + SortNo + "&amp;ItemCode=" + ItemCode + "' onclick='addExamInfoDivHide()'>详细</a>";
-                            tr.insertCell(15).innerHTML = '<input type="button" value="详细" class="btn btn-primary readExaminationInfoBtn" />';
-                            tr.insertCell(16).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editExaminationInfoBtn' />";
-                            tr.insertCell(17).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteExaminationInfoBtn' />";
-                            var td18 = document.createElement("td");
-                            td18.setAttribute("style", "display:none");
-                            td18.innerHTML = DeptCode;
-                            tr.appendChild(td18);
-
+                            table3.row.add({
+                                "0": SortNo,
+                                "1": ExamType,
+                                "2": document.getElementById("ExamTypeListDropDownList").options[document.getElementById("ExamTypeListDropDownList").selectedIndex].text,
+                                "3": ItemCode,
+                                "4": document.getElementById("ExamNameListDropDownList").options[document.getElementById("ExamNameListDropDownList").selectedIndex].text,
+                                "5": ExamDate,
+                                "6": Data_6,
+                                "7": Data_7,
+                                "8": ReportDate,
+                                "9": ExamPara,
+                                "10": Description,
+                                "11": Impression,
+                                "12": Recommendation,
+                                "13": Status,
+                                "14": IsAbnormal,
+                                "15": "<input type='button' value='详细' class='btn btn-primary readExaminationInfoBtn' />",
+                                "16": "<input type='button' value='编辑' class='btn btn-primary editExaminationInfoBtn' />",
+                                "17": "<input type='button' value='删除' class='btn btn-primary deleteExaminationInfoBtn' />",
+                                "18": DeptCode
+                            }).draw();
                             document.getElementById("ExamTypeListDropDownList").value = "";
                             document.getElementById("ExamNameListDropDownList").value = "";
                             document.getElementById("ExamDateInput").value = "";
@@ -1018,6 +1063,7 @@
         })
 
         $(document).on("click", ".deleteExaminationInfoBtn", function () {
+            dataindex = table3.row($(this).parent().parent()).index();
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             $('#DeleteDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -1027,8 +1073,8 @@
         });
 
         $(".sureDeleteBtn").click(function () {
+            table3.column(0).visible(true);
             var SortNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
-
             $.ajax({
                 url: "/DoctorHome/ExaminationInfoDelete",
                 type: "GET",
@@ -1042,12 +1088,21 @@
                         tbody.deleteRow(trSeq);
                         $("#addExamInfoDiv").show();
                         $("#ExamDetails").hide();
+                        table3.row(dataindex).remove().draw();
                     }
                     else {
                         alert("数据删除失败，请重试！");
                     }
                 }
             })
+            var max = 0;
+            for (i = 0; i < table3.column(0).data().length; i++) {
+                if (max < parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim())) {
+                    max = parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim());
+                }
+            }
+            $("#MaxSortNo").attr("value", max);
+            table3.column(0).visible(false);
         })
     });
 
