@@ -21,6 +21,7 @@ namespace CDMIS.ViewModels
         public string Message { get; set; }  //新信息条数
         public string UndoneCount { get; set; } //未完成任务数
         public string ServerIP { get; set; } //服务器IP
+        public string InvalidFlag { get; set; } //权限
         public List<ToDoList> TodoList { get; set; }
         public UserOverviewViewModel()
         {

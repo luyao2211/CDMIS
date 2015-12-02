@@ -135,7 +135,8 @@ namespace CDMIS.Controllers
                                     }
                                     else
                                     {
-                                        return RedirectToAction("Activition", "Account");
+                                        ModelState.AddModelError("errorConnection", "该用户没有权限登录本系统");
+                                        return View();
                                     }
 
                                 }

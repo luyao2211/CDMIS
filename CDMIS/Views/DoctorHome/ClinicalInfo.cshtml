@@ -350,7 +350,7 @@
                     <label class="col-sm-2 control-label">
                         *就诊科室</label>
                     <div class="col-sm-4">
-                        @Html.DropDownListFor(model => model.ClinicalInfo.DepartmentCode, Model.DeptList(), new { id = "DeptListDropDownListFor", @class = "form-control chzn-select" })
+                        @Html.DropDownListFor(model => model.ClinicalInfo.DepartmentCode, Model.DeptList(), new { id = "DeptListDropDownListFor", @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group ">
@@ -521,7 +521,10 @@
         $("#nav a").attr("id", ""); //Reset id's 
         $("#nav li:eq(1) a").attr("id", "currentnav");
 
-
+        $("#DeptListDropDownListFor").chosen({
+            no_results_text: "没有找到相应的选项",
+            placeholder_text: "请选择……"
+        });
         document.getElementById('HospitalListDropDownListFor').value = "";
         document.getElementById('VisitTypeListDropDownListFor').value = "";
 
@@ -593,13 +596,16 @@
             document.getElementById("DischargeDate").value = DischargeDate;
             document.getElementById("Doctor").value = Doctor;
             document.getElementById("editDischargeDate").style.display = "none";
-
             if (VisitId.substr(0, 2) == "In") {
                 document.getElementById("editDischargeDate").style.display = "block";
             }
             $('#editDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
                 overlayClose: true     //点击蒙层关闭窗口
+            });
+            $("#DepartmentName").chosen({
+                no_results_text: "没有找到相应的选项",
+                placeholder_text: "请选择……"
             });
         }
 
@@ -781,11 +787,6 @@
     });
 
     $(function () {
-        $('.chzn-select').chosen({
-            no_results_text: "没有找到相应的选项",
-            placeholder_text: "请选择……"
-        });
-
         $("#VisitTypeName").change(function () {
             var value = $(this).val();
 

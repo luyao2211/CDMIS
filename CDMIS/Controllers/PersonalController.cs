@@ -40,6 +40,7 @@ namespace CDMIS.Controllers
                 overview.Role = user.Role;
                 overview.Message = _ServicesSoapClient.GetUnreadCount(user.UserId).ToString();
                 overview.ServerIP = _ServicesSoapClient.getLocalmachineIPAddress();
+                overview.InvalidFlag = _ServicesSoapClient.GetActivatedState(user.UserId, user.Role);
                 if (user.Role == "Patient")
                 {
                     List<ToDoList> list = new List<ToDoList>();

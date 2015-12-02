@@ -753,6 +753,26 @@ namespace CDMIS.Controllers
             return items;
         }
 
+        //读取照片
+        public JsonResult GetPhotoAddress(string UserId)
+        {
+            var res = new JsonResult();
+            var DetailInfo = _ServicesSoapClient.GetDoctorDetailInfo(UserId);
+            string hostAddress = System.Configuration.ConfigurationManager.AppSettings["WebServe"];
+            string PhotoAddress = "";
+            if (DetailInfo.PhotoAddress == null || DetailInfo.PhotoAddress == "")
+            {
+                PhotoAddress = "http://" + hostAddress + "/PersonalPhotoCheck/non2.jpg";
+            }
+            else
+            {
+                PhotoAddress = "http://" + hostAddress + "/PersonalPhotoCheck/" + DetailInfo.PhotoAddress;
+            }
+            res.Data = PhotoAddress;
+            res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return res;
+        }
+
         //GetActivationCodeJson 生成邀请码
         public JsonResult GetActivationCodeJson(int Role)
         {
@@ -765,13 +785,32 @@ namespace CDMIS.Controllers
         }
 
         //将邀请码写入数据库
-        public JsonResult SetActivationCodeJson(string UserId, string RoleClass, string ActivationCode)
+        public JsonResult SetActivationCodeJson(string UserId, string RoleClass, string ActivationCode, string InvalidFlag, string PhoneNo)
         {
+            string ActivateState = "";
+            if (InvalidFlag == "已激活")
+            {
+                ActivateState = "0";
+            }
+            else
+            {
+                ActivateState = "1";
+            }
             var res = new JsonResult();
             int Ret = 0;
-            Ret = _ServicesSoapClient.SetActivationCode(UserId, RoleClass, ActivationCode);
+            Ret = _ServicesSoapClient.SetPsRoleMatch(UserId, RoleClass, ActivationCode, ActivateState, "");
             res.Data = Ret;
             res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            string RoleName = "";
+            if (RoleClass == "Doctor")
+            {
+                RoleName = "医生";
+            }
+            else
+            {
+                RoleName = "健康专员";
+            }
+            string Message = _ServicesSoapClient.sendSMS(PhoneNo, "Activision", "您的" + RoleName + "权限" + InvalidFlag);
             return res;
         }
         #endregion

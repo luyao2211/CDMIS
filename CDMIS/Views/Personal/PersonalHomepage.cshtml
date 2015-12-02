@@ -9,8 +9,10 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script type="text/javascript" src="/Scripts/My97DatePicker/WdatePicker.js"></script>
 <link href="../../Content/simpleModal.css" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="Stylesheet" />
 <script type="text/javascript" src="../../Scripts/jquery.simplemodal.1.4.4.min.js"></script>
 <script type="text/javascript" src="../../Scripts/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../Scripts/chosen.jquery.min.js"></script>
 @using (Html.BeginForm("PersonalHomepage", "Personal", FormMethod.Post, new { id = "Form5", @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     <div style="margin-top: 2.0em; width: 21%; float: left; text-align: center;">
@@ -121,10 +123,10 @@
                     @*@Html.ValidationMessageFor(m => m.UnitName)*@
                 </div>
                 <label class="col-sm-2 control-label" style="text-align: justify">
-                    职称：</label>
+                    科室：</label>
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.JobTitle, Model.GetJobTitleList(), new { @disabled = "disabled", @class = "form-control" })
-                    @*@Html.ValidationMessageFor(m => m.JobTitle)*@
+                    @Html.DropDownListFor(model => model.Dept, Model.GetDeptList(), new { @disabled = "disabled", @class = "form-control" })
+                    @*@Html.ValidationMessageFor(m => m.Dept)*@
                 </div>
             </div>
             <div class="form-group">
@@ -135,10 +137,10 @@
                     @*@Html.ValidationMessageFor(m => m.Level)*@
                 </div>
                 <label class="col-sm-2 control-label" style="text-align: justify">
-                    科室：</label>
+                    职称：</label>
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.Dept, Model.GetDeptList(), new { @disabled = "disabled", @class = "form-control" })
-                    @*@Html.ValidationMessageFor(m => m.Dept)*@
+                    @Html.DropDownListFor(model => model.JobTitle, Model.GetJobTitleList(), new { @disabled = "disabled", @class = "form-control" })
+                    @*@Html.ValidationMessageFor(m => m.JobTitle)*@
                 </div>
             </div>
         </div>
@@ -308,6 +310,10 @@
         $("#JobTitle").removeAttr("disabled");
         $("#Level").removeAttr("disabled");
         $("#Dept").removeAttr("disabled");
+        $("#Dept").chosen({
+            no_results_text: "没有找到相应的选项",
+            placeholder_text: "请选择",
+        });
         document.getElementById("fileUpload").disabled = false;
         document.getElementById("DatePicker").style.display = "block";
         document.getElementById("btEdit").value = "保存信息";
