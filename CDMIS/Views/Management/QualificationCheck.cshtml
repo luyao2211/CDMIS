@@ -19,7 +19,7 @@
                 <th>
                     Id
                 </th>
-                <th>
+                <th style="display: none">
                     邀请码
                 </th>
                 <th>
@@ -42,7 +42,7 @@
                     </td>
                     <td id = "Doctor||@item.UserId">@item.UserId
                     </td>
-                    <td>@item.ActivationCode
+                    <td style="display: none">@item.ActivationCode
                     </td>
                     <td>@item.PhoneNo
                     </td>
@@ -67,7 +67,7 @@
                 <th>
                     Id
                 </th>
-                <th>
+                <th style="display: none">
                     邀请码
                 </th>
                 <th>
@@ -90,7 +90,7 @@
                     </td>
                     <td id = "HealthCoach||@item.UserId">@item.UserId
                     </td>
-                    <td>@item.ActivationCode
+                    <td style="display: none">@item.ActivationCode
                     </td>
                     <td>@item.PhoneNo
                     </td>
@@ -110,14 +110,21 @@
     <div class="modalHeader">
         <span>激活用户</span>
     </div>
-    <div class="modalContent">
+
+    <div style="margin-top: 2.0em; width: 45%; float: left; text-align: center;">
+        <div>
+            <img src="" id="img0" style="width: 168px; height:168px" alt="头像未上传"/>
+        </div>
+    </div>
+
+    <div style="margin-top: 2.0em; width: 54%; float: left; text-align: center;">
         <form class="form-horizontal" role="form">
             <div class="form-group">
                 <label for="AlertItemCode" class="col-sm-3 control-label">
                     姓名
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="UserName" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="UserName" onkeyup="IsLegal(this.id);" disabled="disabled">
                 </div>
             </div>
             <div class="form-group">
@@ -125,15 +132,8 @@
                     Id
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="UserId" onkeyup="IsLegal(this.id);">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="Min" class="col-sm-3 control-label">
-                    邀请码
-                </label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" id="ActivationCode" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="UserId" onkeyup="IsLegal(this.id);" disabled="disabled">
+                    <input type="text" class="form-control" id="ActivateCode" onkeyup="IsLegal(this.id);" style="display: none">
                 </div>
             </div>
             <div class="form-group">
@@ -141,12 +141,15 @@
                     手机号
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="PhoneNo" onkeyup="IsLegal(this.id);">
+                    <input type="text" class="form-control" id="PhoneNo" onkeyup="IsLegal(this.id);" disabled="disabled">
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-7" align="center">
-                    <input type="button" class="btn btn-primary SendSMSBtn"  value="发送短信" />
+                <div class="col-sm-6" align="center">
+                    <input type="button" class="btn btn-primary SendSMSBtn"  value="已激活" />
+                </div>
+                <div class="col-sm-6" align="center">
+                    <input type="button" class="btn btn-primary SendSMSBtn"  value="激活失败" />
                 </div>
             </div>
             <p align="center" style="color:red" class="notice">
@@ -156,8 +159,6 @@
 </div>
 
 <script type="text/javascript">
-    var flag = false;
-
     $(document).ready(function () {
         $("#menu a").attr("id", ""); //Reset id's 
         $("#menu li:eq(2) a").attr("id", "current");
@@ -180,28 +181,25 @@
 
     //点击激活按钮
     $(".activateBtn").click(function () {
-        flag = false;
         var UserName = $(this).parent().parent().find("td:eq(0)").text().trim();
+        var ActivateCode = $(this).parent().parent().find("td:eq(2)").text().trim();
         var UserId = $(this).parent().parent().find("td:eq(1)").text().trim();
-        var ActivationCode = $(this).parent().parent().find("td:eq(2)").text().trim(); //去空格
-
-        if ((ActivationCode == null) || (ActivationCode == "")) {
-            var RoleClass = $(this).parent().parent().find("td:eq(1)").attr("id").split("||")[0];
-            flag = true;
-            if (RoleClass == "Doctor") {
-                var Role = 13;
-            }
-            else {
-                var Role = 12;
-            }
-            ActivationCode = GetActivationCode(Role);
-            $(this).parent().parent().find("td:eq(2)").text(ActivationCode);
-        }
         var PhoneNo = $(this).parent().parent().find("td:eq(3)").text();
-
+        $.ajax({
+            url: "/Management/GetPhotoAddress",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            data: {
+                UserId: UserId
+            },
+            success: function (res) {
+                $("#img0").attr("src", res);
+            }
+        });
         $('#UserName').val(UserName);
         $('#UserId').val(UserId);
-        $('#ActivationCode').val(ActivationCode);
+        $('#ActivateCode').val(ActivateCode);
         $('#PhoneNo').val(PhoneNo);
 
         $('#activateDiv').modal({
@@ -213,45 +211,22 @@
     //点击发送短信按钮
     $(".SendSMSBtn").click(function () {
         $.modal.close();
-        if (flag) {
-            var UserId = $('#UserId').val();
-            var RoleClass = "";
-            var ActivationCode = $('#ActivationCode').val();
-            var Role = ActivationCode.substring(0, 1);
-            if (Role == "H") {
-                RoleClass = "HealthCoach";
-            }
-            else {
-                RoleClass = "Doctor";
-            }
-            SetActivationCode(UserId, RoleClass, ActivationCode);
-            flag = false;
+        var UserId = $('#UserId').val();
+        var RoleClass = "";
+        var ActivationCode = $('#ActivateCode').val();
+        var Role = ActivationCode.substring(0, 1);
+        var PhoneNo = $('#PhoneNo').val().trim();
+        if (Role == "H") {
+            RoleClass = "HealthCoach";
         }
+        else {
+            RoleClass = "Doctor";
+        }
+        SetActivationCode(UserId, RoleClass, ActivationCode, $(this).attr("value"), PhoneNo);
     });
 
-
-    //生成邀请码
-    function GetActivationCode(Role) {
-        var ActivationCode = "";
-        $.ajax({
-            url: "/Management/GetActivationCodeJson",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            data: {
-                Role: Role
-            },
-            success: function (res) {
-                ActivationCode = res;
-            }
-        });
-
-        return ActivationCode;
-    }
-
     //将邀请码写入数据库
-    function SetActivationCode(UserId, RoleClass, ActivationCode) {
-
+    function SetActivationCode(UserId, RoleClass, ActivationCode, InvalidFlag, PhoneNo) {
         $.ajax({
             url: "/Management/SetActivationCodeJson",
             type: "GET",
@@ -260,13 +235,19 @@
             data: {
                 UserId: UserId,
                 RoleClass: RoleClass,
-                ActivationCode: ActivationCode
+                ActivationCode: ActivationCode,
+                InvalidFlag: InvalidFlag,
+                PhoneNo: PhoneNo
             },
             success: function (res) {
+                window.location.href = "/Management/QualificationCheck";
             }
         });
     }
 
+    String.prototype.trim = function () {
+        return this.replace(/(^\s*)|(\s*$)/g, "");
+    }
 </script>
 <style>
     .DctorClass
@@ -278,5 +259,5 @@
         margin-top: 40px;
     }
     
-    #simplemodal-container {height:300px; width:380px;}
+    #simplemodal-container {height:300px; width:500px;}
 </style>

@@ -15,57 +15,16 @@
 {
     <div style="width:560px; height:280px; float: left; margin-left:350px; margin-top: 40px">
         <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:justify">
-            邀请码：</label>
-            <div class="col-sm-4">
-                @Html.TextBoxFor(m => m.InviteCode, new { @class = "form-control", id = "InviteCode"})
-                @Html.ValidationMessageFor(m => m.InviteCode)
-                @Html.ValidationMessage("errorActivition") 
-            </div>
+            <label class="col-sm-12 control-label" style="text-align:justify; font-size:34px">
+            您目前还没有该权限</label>
         </div>
-        <div class="form-group">
-                <div style="margin-left: 140px">
-                    <input type="button" class="btn btn-primary" id="Sure" value="激活" onclick="Submit()" />
-                    @Html.ValidationMessage("errorConnection")
-                </div>
-            </div>
-            <div class="form-group">
-                <div style="margin-left:60px">
-                    <label style="display: none; color: Red; font-weight: bold;" id="showlabel">
-                    激活成功，即将进入系统</label>
-                </div>
-            </div>
     </div>
    
 }
 
 <script type="text/javascript">
-function Submit() {
-        if ($("#InviteCode").val() != "") {
 
-            $.ajax({
-                url: "/Account/CheckInviteCode",
-                type: "GET",
-                dataType: "json",
-                async: false,
-                data: { InviteCode: $("#InviteCode").val() },
-                success: function (res) {
-                    if (res == true) {
-                        document.getElementById("showlabel").style.display = "block";
-                        location = "/DoctorHome/PatientList";
-                        //                        setTimeout(function () {
-                        //                            document.getElementById("Form5").submit();
-                        //                        }, 1000)
-                    }
-                    else {
-                        alert("激活失败，请重新输入");
-                    }
-                }
-            });
-        }
-        else {
-            alert("邀请码，请输入邀请码");
-        }
+    $(document).ready(function () {
+    })
 
-    }
 </script>
