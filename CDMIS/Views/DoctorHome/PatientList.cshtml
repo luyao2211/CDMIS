@@ -65,9 +65,9 @@
             @Html.DropDownListFor(model => model.CareLevelSelected, Model.CareLevelList(), new { id = "CareLevelDropDownList", @class = "form-control" })
         </div>
         <!--修改：隐藏警报 ZC 2015-05-13 -->
-        <label for="" class="col-sm-1 control-label" style="display:none">
+        <label for="" class="col-sm-1 control-label" style="display: none">
             警报</label>
-        <div class="col-sm-2" style="display:none">
+        <div class="col-sm-2" style="display: none">
             @Html.DropDownListFor(model => model.AlertStatusSelected, Model.AlertStatusList(), new { id = "AlertDropDownList", @class = "form-control" })
         </div>
         <div class="col-sm-1 ">
@@ -102,7 +102,7 @@
                             模块
                         </th>
                         <!--修改：删除警报 ZC 2015-05-13 -->
-                        <th width="80px" style="display:none">
+                        <th width="80px" style="display: none">
                             未处理警报数
                         </th>
                         <th width="100px">
@@ -126,17 +126,16 @@
                                 <a href="">
                                     <input id="ProfileLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/profile.png);
                                         background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                        width: 24px; height: 24px; margin-right: 5px" title="患者档案" /></a> 
-                                        @*<a href="">
+                                        width: 24px; height: 24px; margin-right: 5px" title="患者档案" /></a> @*<a href="">
                                             <input id="TreatmentLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/medication.png);
                                                 background-repeat: no-repeat; background-color: transparent; cursor: pointer;
                                                 width: 24px; height: 24px; margin-right: 5px" title="治疗" /></a>*@
-                                                <a href="">
-                                            <input id="PlanLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/plan.png);
-                                                background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                                width: 24px; height: 24px; margin-right: 5px" title="健康计划" /></a>
+                                <a href="">
+                                    <input id="PatientDetailInfo" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/plan.png);
+                                        background-repeat: no-repeat; background-color: transparent; cursor: pointer;
+                                        width: 24px; height: 24px; margin-right: 5px" title="健康计划" /></a>
                                 <!--修改：删除警报 ZC 2015-05-13 -->
-                                <a href="" style="display:none">
+                                <a href="" style="display: none">
                                     <input id="AlertLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/alert.png);
                                         background-repeat: no-repeat; background-color: transparent; cursor: pointer;
                                         width: 24px; height: 24px; margin-right: 5px" title="警报" /></a> <a>
@@ -158,7 +157,7 @@
                             </td>
                             <td width="150px">@item.Module
                             </td>
-                            <td width="80px" style="display:none">@item.AlertNumber
+                            <td width="80px" style="display: none">@item.AlertNumber
                             </td>
                             <td width="100px" align="center">
                                 @switch (@item.CareLevel)
@@ -283,11 +282,11 @@
             var row_clicked = $(td).closest('tr');
             var patientId = table.row(row_clicked).data()[1];
             switch (colIndex) {
-//                case 1:     //患者信息-健康参数
-//                    {
-//                        location.href = "/PatientInfo/HealthPlan" + "?PatientId=" + patientId;
-//                        break;
-//                    }
+                //                case 1:     //患者信息-健康参数  
+                //                    {  
+                //                        location.href = "/PatientInfo/HealthPlan" + "?PatientId=" + patientId;  
+                //                        break;  
+                //                    }  
                 case 8:     //关注等级
                     {
                         $('#notifyModal').modal({
@@ -350,14 +349,14 @@
                     $(this).parent().attr('href', "/DoctorHome/BasicProfile" + "?PatientId=" + content + "&Role=" + "Patient");
                     break;
                 }
-//            case "TreatmentLink":
-//                {
-//                    $(this).parent().attr('href', "/PatientInfo/TreatmentPlan" + "?PatientId=" + content);
-//                    break;
+                //            case "TreatmentLink":
+                //                {
+                //                    $(this).parent().attr('href', "/PatientInfo/TreatmentPlan" + "?PatientId=" + content);
+                //                    break;
                 //                }
-            case "PlanLink":
+            case "PatientDetailInfo":
                 {
-                    $(this).parent().attr('href', "/PatientInfo/HealthPlan" + "?PatientId=" + content);
+                    $(this).parent().attr('href', "/PatientInfo/PatientDetailInfo" + "?PatientId=" + content);
                     break;
                 }
             case "AlertLink":

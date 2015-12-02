@@ -490,41 +490,88 @@
 @*页面跳转*@
 <div style="float: right">
     <ul id="Redirect">
-        <li>@Ajax.ActionLink("上一步", "LabTestInfo", new { UserId = @Model.UserId }, new AjaxOptions { OnSuccess = "tabClick5();", UpdateTargetId = "ShowClinicalProfileInfo", InsertionMode = InsertionMode.Replace })</li>
+        <li>@Ajax.ActionLink("上一步", "LabTestInfo", new { UserId = @Model.UserId, VisitId = @Model.VisitId }, new AjaxOptions { OnSuccess = "tabClick4();", UpdateTargetId = "ShowClinicalProfileInfo", InsertionMode = InsertionMode.Replace })</li>
         @*<li>@Ajax.ActionLink("完成", "DrugInfo", new AjaxOptions { OnSuccess = "success6();", UpdateTargetId = "ShowClinicalProfileInfo", InsertionMode = InsertionMode.Replace })</li>*@
         <li>@Html.ActionLink("下一步", "ModuleProfile", "DoctorHome", new { PatientId = @Model.UserId }, null)</li>
     </ul>
 </div>
 <script type="text/javascript">
+    var table5 = $('#DrugInfoList').DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "300px",
+        "bFilter": true,
+        "aaSorting": [[9, "desc"]],
+        "columnDefs": [{
+            "bSortable": false, "aTargets": [15, 16]
+        }, {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [1],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [2],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [5],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [7],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [8],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [11],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [12],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [13],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [14],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [17],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [18],
+            "visible": false,
+            "searchable": false
+        }]
+    });
+    $("#DrugInfoList").attr("width", "auto");
+
     $(document).ready(function () {
         document.getElementById("DrugTypeDropDownList").value = "";
         document.getElementById("UnitDropDownListInput").value = "";
         document.getElementById("RouteDropDownList").value = "";
-        //document.getElementById("FreqUnitDropDownList").value = "";
         document.getElementById("FreqUnit2DropDownList").value = "";
         document.getElementById("DeptListDropDownList").value = "";
         document.getElementById("OrderCodeInput").value = "";
-        //$("#OrderContentInput").val("");
-
-        var table5 = $('#DrugInfoList').DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "300px",
-            "bFilter": true,
-            "aaSorting": [[9, "desc"]],
-            "columnDefs": [{ "bSortable": false, "aTargets": [15, 16]}] //禁止某些列的排序功能
-
-        });
-        $("#DrugInfoList").attr("width", "auto");
 
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
         var trSeq;
-        var addNo = 0;
+        var dataindex = 0;
         var OrderNo = 0;
         var RepeatIndicator = 0;
 
@@ -542,6 +589,19 @@
 
         //        $("#TableBody").ajaxComplete(function () { //待请求完成时 执行 
         $(document).on("click", ".editDrugInfoBtn", function () {
+            dataindex = table5.row($(this).parent().parent()).index();
+            table5.column(0).visible(true);
+            table5.column(1).visible(true);
+            table5.column(2).visible(true);
+            table5.column(5).visible(true);
+            table5.column(7).visible(true);
+            table5.column(8).visible(true);
+            table5.column(11).visible(true);
+            table5.column(12).visible(true);
+            table5.column(13).visible(true);
+            table5.column(14).visible(true);
+            table5.column(17).visible(true);
+            table5.column(18).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var OrderNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var OrderSubNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
@@ -560,7 +620,18 @@
             var FreqIntevalUnit = $("#TableBody tr:eq(" + trSeq + ") td:eq(14)").text().trim();
             var DeptCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(17)").text().trim();
             var OrderCode = $("#TableBody tr:eq(" + trSeq + ") td:eq(18)").text().trim();
-
+            table5.column(0).visible(false);
+            table5.column(1).visible(false);
+            table5.column(2).visible(false);
+            table5.column(5).visible(false);
+            table5.column(7).visible(false);
+            table5.column(8).visible(false);
+            table5.column(11).visible(false);
+            table5.column(12).visible(false);
+            table5.column(13).visible(false);
+            table5.column(14).visible(false);
+            table5.column(17).visible(false);
+            table5.column(18).visible(false);
             EditData(OrderNo, OrderSubNo, OrderClass, OrderContent, Dosage, DosageUnits, DosageUnitsText, Administration, RepeatIndicator, StartDateTime, StopDateTime, FreqCounter, Frequency, FreqInteval, FreqIntevalUnit, DeptCode, OrderCode);
 
             $('.chosen').chosen({
@@ -571,9 +642,6 @@
 
         //编辑数据界面
         function EditData(OrderNo, OrderSubNo, OrderClass, OrderContent, Dosage, DosageUnits, DosageUnitsText, Administration, RepeatIndicator, StartDateTime, StopDateTime, FreqCounter, Frequency, FreqInteval, FreqIntevalUnit, DeptCode, OrderCode) {
-            //alert(OrderNo);
-            //alert(OrderSubNo);
-
             document.getElementById("OrderNo").value = OrderNo;
             document.getElementById("OrderClass").value = OrderClass;
             //document.getElementById("OrderContent").value = OrderContent;
@@ -662,28 +730,29 @@
                     data: { UserId: UserId, VisitId: VisitId, OrderNo: OrderNo, OrderSubNo: OrderSubNo, OrderClass: OrderClass, RepeatIndicator: RepeatIndicator, OrderCode: OrderCode, OrderContent: OrderContent, Dosage: Dosage, DosageUnitsCode: DosageUnitsCode, Administration: Administration, StartDateTime: StartDateTime, StopDateTime: StopDateTime, FreqCounter: FreqCounter, Frequency: Frequency, FreqInteval: FreqInteval, FreqIntevalUnit: FreqIntevalUnit, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            // $.modal.close();
                             $("#cancel").click();
-                            //location = "/DoctorHome/ClinicalProfile";
-                            //$("#ShowClinicalProfileInfo").html();
-
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(OrderNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(OrderSubNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(OrderClass);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(OrderContent);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(Dosage);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(DosageUnitsCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(DosageUnits);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(Administration);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text(RepeatIndicator);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(9)").text(StartDateTime);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(10)").text(StopDateTime);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(11)").text(FreqCounter);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(12)").text(Frequency);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(13)").text(FreqInteval);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(14)").text(FreqIntevalUnit);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(17)").text(DeptCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(18)").text(OrderCode);
+                            table5.row(dataindex).remove().draw();
+                            table5.row.add({
+                                "0": OrderNo,
+                                "1": OrderSubNo,
+                                "2": OrderClass,
+                                "3": OrderContent,
+                                "4": Dosage,
+                                "5": DosageUnitsCode,
+                                "6": DosageUnits,
+                                "7": Administration,
+                                "8": RepeatIndicator,
+                                "9": StartDateTime,
+                                "10": StopDateTime,
+                                "11": FreqCounter,
+                                "12": Frequency,
+                                "13": FreqInteval,
+                                "14": FreqIntevalUnit,
+                                "15": "<input type='button' value='编辑' class='btn btn-primary editDrugInfoBtn' />",
+                                "16": "<input type='button' value='删除' class='btn btn-primary deleteDrugInfoBtn' />",
+                                "17": DeptCode,
+                                "18": OrderCode
+                            }).draw();
                         }
                         else {
                             alert("数据修改失败，请重新输入！");
@@ -709,7 +778,7 @@
             }
 
             //var OrderNo = parseInt(document.getElementById("MaxOrderNo").value) + addNo + 1;
-            var OrderNo = Number(document.getElementById("MaxOrderNo").value) + addNo + 1;
+            var OrderNo = Number(document.getElementById("MaxOrderNo").value) + 1;
             //alert(OrderNo);
             var OrderSubNo = 1;
             var OrderClass = document.getElementById("DrugTypeDropDownList").value;
@@ -787,75 +856,34 @@
                     data: { UserId: UserId, VisitId: VisitId, OrderSubNo: OrderSubNo, OrderClass: OrderClass, RepeatIndicator: RepeatIndicator, OrderCode: OrderCode, OrderContent: OrderContent, Dosage: Dosage, DosageUnits: DosageUnits, Administration: Administration, StartDateTime: StartDateTime, StopDateTime: StopDateTime, FreqCounter: FreqCounter, Frequency: Frequency, FreqInteval: FreqInteval, FreqIntevalUnit: FreqIntevalUnit, DeptCode: DeptCode },  //输入参数
                     success: function (res) {
                         if (res == true) {
-
-                            //alert("数据插入成功！");
-                            addNo++;
-                            var tr = document.getElementById("TableBody").insertRow();
-
-                            var td0 = document.createElement("td");
-                            td0.setAttribute("style", "display:none");
-                            td0.innerHTML = OrderNo;
-                            tr.appendChild(td0);
-
-                            var td1 = document.createElement("td");
-                            td1.setAttribute("style", "display:none");
-                            td1.innerHTML = OrderSubNo;
-                            tr.appendChild(td1);
-                            var td2 = document.createElement("td");
-                            td2.setAttribute("style", "display:none");
-                            td2.innerHTML = OrderClass;
-                            tr.appendChild(td2);
-                            tr.insertCell(3).innerHTML = OrderContent;
-                            tr.insertCell(4).innerHTML = Dosage;
-                            var td5 = document.createElement("td");
-                            td5.setAttribute("style", "display:none");
-                            td5.innerHTML = DosageUnits;
-                            tr.appendChild(td5);
+                            $("#MaxOrderNo").attr("value", OrderNo);
                             if (DosageUnits != "") {
-                                tr.insertCell(6).innerHTML = document.getElementById("UnitDropDownListInput").options[document.getElementById("UnitDropDownListInput").selectedIndex].text;
+                                var Data_6 = document.getElementById("UnitDropDownListInput").options[document.getElementById("UnitDropDownListInput").selectedIndex].text;
                             }
                             else {
-                                tr.insertCell(6).innerHTML = "";
+                                var Data_6 = "";
                             }
-                            var td7 = document.createElement("td");
-                            td7.setAttribute("style", "display:none");
-                            td7.innerHTML = Administration;
-                            tr.appendChild(td7);
-                            var td8 = document.createElement("td");
-                            td8.setAttribute("style", "display:none");
-                            td8.innerHTML = RepeatIndicator;
-                            tr.appendChild(td8);
-                            tr.insertCell(9).innerHTML = StartDateTime;
-                            tr.insertCell(10).innerHTML = StopDateTime;
-
-                            var td11 = document.createElement("td");
-                            td11.setAttribute("style", "display:none");
-                            td11.innerHTML = FreqCounter;
-                            tr.appendChild(td11);
-                            var td12 = document.createElement("td");
-                            td12.setAttribute("style", "display:none");
-                            td12.innerHTML = "";
-                            tr.appendChild(td12);
-                            var td13 = document.createElement("td");
-                            td13.setAttribute("style", "display:none");
-                            td13.innerHTML = FreqInteval;
-                            tr.appendChild(td13);
-                            var td14 = document.createElement("td");
-                            td14.setAttribute("style", "display:none");
-                            td14.innerHTML = FreqIntevalUnit;
-                            tr.appendChild(td14);
-                            tr.insertCell(15).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editDrugInfoBtn' />";
-                            tr.insertCell(16).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteDrugInfoBtn' />";
-                            var td17 = document.createElement("td");
-                            td17.setAttribute("style", "display:none");
-                            td17.innerHTML = DeptCode;
-                            tr.appendChild(td17);
-
-                            var td17 = document.createElement("td");
-                            td17.setAttribute("style", "display:none");
-                            td17.innerHTML = OrderCode;
-                            tr.appendChild(td17);
-
+                            table5.row.add({
+                                "0": OrderNo,
+                                "1": OrderSubNo,
+                                "2": OrderClass,
+                                "3": OrderContent,
+                                "4": Dosage,
+                                "5": DosageUnits,
+                                "6": Data_6,
+                                "7": Administration,
+                                "8": RepeatIndicator,
+                                "9": StartDateTime,
+                                "10": StopDateTime,
+                                "11": FreqCounter,
+                                "12": "",
+                                "13": FreqInteval,
+                                "14": FreqIntevalUnit,
+                                "15": "<input type='button' value='编辑' class='btn btn-primary editDrugInfoBtn' />",
+                                "16": "<input type='button' value='删除' class='btn btn-primary deleteDrugInfoBtn' />",
+                                "17": DeptCode,
+                                "18": OrderCode
+                            }).draw();
                             document.getElementById("DrugTypeDropDownList").value = "";
                             document.getElementById("OrderCodeInput").value = "";
                             document.getElementById("DosageInput").value = "";
@@ -868,7 +896,6 @@
                             document.getElementById("FreqUnit2DropDownList").value = "";
                             document.getElementById("DeptListDropDownList").value = "";
                             $("#cancel").click();
-
                         }
                         else {
                             alert("数据插入失败，请重新输入！");
@@ -879,6 +906,7 @@
         })
 
         $(document).on("click", ".deleteDrugInfoBtn", function () {
+            dataindex = table5.row($(this).parent().parent()).index();
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             $('#DeleteDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -888,9 +916,10 @@
         });
 
         $(".sureDeleteBtn").click(function () {
+            table5.column(0).visible(true);
+            table5.column(1).visible(true);
             var OrderNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var OrderSubNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
-
             $.ajax({
                 url: "/DoctorHome/DrugInfoDelete",
                 type: "GET",
@@ -899,17 +928,25 @@
                 data: { UserId: UserId, VisitId: VisitId, OrderNo: OrderNo, OrderSubNo: OrderSubNo },  //输入参数
                 success: function (res) {
                     if (res == true) {
-
                         $("#cancelDelete").click();
                         var tbody = document.getElementById("TableBody");
                         tbody.deleteRow(trSeq);
+                        table5.row(dataindex).remove().draw();
                     }
                     else {
                         alert("数据删除失败，请重试！");
                     }
                 }
-
             })
+            var max = 0;
+            for (i = 0; i < table5.column(0).data().length; i++) {
+                if (max < parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim())) {
+                    max = parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim());
+                }
+            }
+            $("#MaxOrderNo").attr("value", max);
+            table5.column(0).visible(false);
+            table5.column(1).visible(false);
         })
     });
 

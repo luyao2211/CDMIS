@@ -2,6 +2,64 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://bme319.org/" xmlns:s1="http://bme319.org/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://bme319.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://bme319.org/">
+      <s:element name="GetTmpLabSubItemByStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTmpLabSubItemByStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTmpLabSubItemByStatusResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetMpLabSubItemCmp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HospitalCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="HZCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Redundance" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="revUserId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TerminalName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TerminalIP" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DeviceType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetMpLabSubItemCmpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetMpLabSubItemCmpResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeStatusForTmpLabSubItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HospitalCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeStatusForTmpLabSubItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ChangeStatusForTmpLabSubItemResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetMpLabSubItemCmp">
         <s:complexType />
       </s:element>
@@ -839,6 +897,60 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetPatientDetailInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPatientDetailInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPatientDetailInfoResult" type="tns:PatientDetailInfo1" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PatientDetailInfo1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomeAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Occupation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nationality" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmergencyContact" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmergencyContactPhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhotoAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Module" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Height" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Weight" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDoctorDetailInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Doctor" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDoctorDetailInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDoctorDetailInfoResult" type="tns:DoctorDetailInfo1" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DoctorDetailInfo1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhotoAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JobTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Level" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dept" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="SetPatBasicInfoDetail">
         <s:complexType>
           <s:sequence>
@@ -2940,6 +3052,23 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetTasks">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTasksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTasksResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetCmTaskItemInfo">
         <s:complexType>
           <s:sequence>
@@ -3444,61 +3573,32 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetTmpLabSubItemByStatus">
+      <s:element name="SetDocName">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetTmpLabSubItemByStatusResponse">
+      <s:element name="SetDocNameResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetTmpLabSubItemByStatusResult">
-              <s:complexType>
-                <s:sequence>
-                  <s:element ref="s:schema" />
-                  <s:any />
-                </s:sequence>
-              </s:complexType>
-            </s:element>
+            <s:element minOccurs="1" maxOccurs="1" name="SetDocNameResult" type="s:boolean" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SetMpLabSubItemCmp">
+      <s:element name="GetModuleByDoctorId">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="HospitalCode" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="HZCode" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Redundance" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="revUserId" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="TerminalName" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="TerminalIP" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="DeviceType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SetMpLabSubItemCmpResponse">
+      <s:element name="GetModuleByDoctorIdResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="SetMpLabSubItemCmpResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="ChangeStatusForTmpLabSubItem">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="HospitalCode" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="ChangeStatusForTmpLabSubItemResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="ChangeStatusForTmpLabSubItemResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetModuleByDoctorIdResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -6033,60 +6133,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetPatientDetailInfo">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetPatientDetailInfoResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetPatientDetailInfoResult" type="tns:PatientDetailInfo1" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:complexType name="PatientDetailInfo1">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="HomeAddress" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Occupation" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Nationality" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="EmergencyContact" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="EmergencyContactPhoneNumber" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PhotoAddress" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Module" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="IDNo" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Height" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Weight" type="s:string" />
-        </s:sequence>
-      </s:complexType>
-      <s:element name="GetDoctorDetailInfo">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Doctor" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetDoctorDetailInfoResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetDoctorDetailInfoResult" type="tns:DoctorDetailInfo1" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:complexType name="DoctorDetailInfo1">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="IDNo" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PhotoAddress" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="UnitName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="JobTitle" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Level" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Dept" type="s:string" />
-        </s:sequence>
-      </s:complexType>
       <s:element name="TestGetCacheConnection">
         <s:complexType />
       </s:element>
@@ -8043,6 +8089,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="DeleteInsurance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteInsuranceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DeleteInsuranceResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetInsuranceType">
         <s:complexType />
       </s:element>
@@ -8050,6 +8110,23 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="GetInsuranceTypeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInsurance">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetInsuranceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInsuranceResult">
               <s:complexType>
                 <s:sequence>
                   <s:element ref="s:schema" />
@@ -8216,35 +8293,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SetDocName">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="SetDocNameResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="SetDocNameResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetModuleByDoctorId">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetModuleByDoctorIdResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetModuleByDoctorIdResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="DataSet" nillable="true">
         <s:complexType>
           <s:sequence>
@@ -8256,6 +8304,8 @@
       <s:element name="boolean" type="s:boolean" />
       <s:element name="string" nillable="true" type="s:string" />
       <s:element name="int" type="s:int" />
+      <s:element name="PatientDetailInfo1" nillable="true" type="tns:PatientDetailInfo1" />
+      <s:element name="DoctorDetailInfo1" nillable="true" type="tns:DoctorDetailInfo1" />
       <s:element name="WnMstAlert" nillable="true" type="tns:WnMstAlert" />
       <s:element name="VitalSigns" nillable="true" type="tns:VitalSigns" />
       <s:element name="Clinic" nillable="true" type="tns:Clinic" />
@@ -8267,8 +8317,6 @@
       <s:element name="ChartData" nillable="true" type="tns:ChartData" />
       <s:element name="PatientBasicInfo" nillable="true" type="tns:PatientBasicInfo" />
       <s:element name="Message" nillable="true" type="tns:Message" />
-      <s:element name="PatientDetailInfo1" nillable="true" type="tns:PatientDetailInfo1" />
-      <s:element name="DoctorDetailInfo1" nillable="true" type="tns:DoctorDetailInfo1" />
       <s:element name="PatientBasicInfo0" nillable="true" type="tns:PatientBasicInfo0" />
       <s:element name="PatientDetailInfo0" nillable="true" type="tns:PatientDetailInfo0" />
       <s:element name="PatientALLBasicInfo" nillable="true" type="tns:PatientALLBasicInfo" />
@@ -8287,6 +8335,24 @@
       </s:complexType>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="GetTmpLabSubItemByStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTmpLabSubItemByStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetTmpLabSubItemByStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTmpLabSubItemByStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetMpLabSubItemCmpSoapIn">
+    <wsdl:part name="parameters" element="tns:SetMpLabSubItemCmp" />
+  </wsdl:message>
+  <wsdl:message name="SetMpLabSubItemCmpSoapOut">
+    <wsdl:part name="parameters" element="tns:SetMpLabSubItemCmpResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeStatusForTmpLabSubItemSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangeStatusForTmpLabSubItem" />
+  </wsdl:message>
+  <wsdl:message name="ChangeStatusForTmpLabSubItemSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangeStatusForTmpLabSubItemResponse" />
+  </wsdl:message>
   <wsdl:message name="GetMpLabSubItemCmpSoapIn">
     <wsdl:part name="parameters" element="tns:GetMpLabSubItemCmp" />
   </wsdl:message>
@@ -8568,6 +8634,18 @@
   </wsdl:message>
   <wsdl:message name="checkverificationSoapOut">
     <wsdl:part name="parameters" element="tns:checkverificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPatientDetailInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPatientDetailInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDoctorDetailInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDoctorDetailInfoResponse" />
   </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailSoapIn">
     <wsdl:part name="parameters" element="tns:SetPatBasicInfoDetail" />
@@ -9175,6 +9253,12 @@
   <wsdl:message name="GetMstTaskByParentCodeSoapOut">
     <wsdl:part name="parameters" element="tns:GetMstTaskByParentCodeResponse" />
   </wsdl:message>
+  <wsdl:message name="GetTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTasks" />
+  </wsdl:message>
+  <wsdl:message name="GetTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTasksResponse" />
+  </wsdl:message>
   <wsdl:message name="GetCmTaskItemInfoSoapIn">
     <wsdl:part name="parameters" element="tns:GetCmTaskItemInfo" />
   </wsdl:message>
@@ -9319,23 +9403,17 @@
   <wsdl:message name="GetLabItemNameSoapOut">
     <wsdl:part name="parameters" element="tns:GetLabItemNameResponse" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusSoapIn">
-    <wsdl:part name="parameters" element="tns:GetTmpLabSubItemByStatus" />
+  <wsdl:message name="SetDocNameSoapIn">
+    <wsdl:part name="parameters" element="tns:SetDocName" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusSoapOut">
-    <wsdl:part name="parameters" element="tns:GetTmpLabSubItemByStatusResponse" />
+  <wsdl:message name="SetDocNameSoapOut">
+    <wsdl:part name="parameters" element="tns:SetDocNameResponse" />
   </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpSoapIn">
-    <wsdl:part name="parameters" element="tns:SetMpLabSubItemCmp" />
+  <wsdl:message name="GetModuleByDoctorIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetModuleByDoctorId" />
   </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpSoapOut">
-    <wsdl:part name="parameters" element="tns:SetMpLabSubItemCmpResponse" />
-  </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemSoapIn">
-    <wsdl:part name="parameters" element="tns:ChangeStatusForTmpLabSubItem" />
-  </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemSoapOut">
-    <wsdl:part name="parameters" element="tns:ChangeStatusForTmpLabSubItemResponse" />
+  <wsdl:message name="GetModuleByDoctorIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetModuleByDoctorIdResponse" />
   </wsdl:message>
   <wsdl:message name="GetRoleListSoapIn">
     <wsdl:part name="parameters" element="tns:GetRoleList" />
@@ -10093,18 +10171,6 @@
   <wsdl:message name="getLocalmachineIPAddressSoapOut">
     <wsdl:part name="parameters" element="tns:getLocalmachineIPAddressResponse" />
   </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoSoapIn">
-    <wsdl:part name="parameters" element="tns:GetPatientDetailInfo" />
-  </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoSoapOut">
-    <wsdl:part name="parameters" element="tns:GetPatientDetailInfoResponse" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoSoapIn">
-    <wsdl:part name="parameters" element="tns:GetDoctorDetailInfo" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoSoapOut">
-    <wsdl:part name="parameters" element="tns:GetDoctorDetailInfoResponse" />
-  </wsdl:message>
   <wsdl:message name="TestGetCacheConnectionSoapIn">
     <wsdl:part name="parameters" element="tns:TestGetCacheConnection" />
   </wsdl:message>
@@ -10765,11 +10831,23 @@
   <wsdl:message name="SetInsuranceSoapOut">
     <wsdl:part name="parameters" element="tns:SetInsuranceResponse" />
   </wsdl:message>
+  <wsdl:message name="DeleteInsuranceSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteInsurance" />
+  </wsdl:message>
+  <wsdl:message name="DeleteInsuranceSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteInsuranceResponse" />
+  </wsdl:message>
   <wsdl:message name="GetInsuranceTypeSoapIn">
     <wsdl:part name="parameters" element="tns:GetInsuranceType" />
   </wsdl:message>
   <wsdl:message name="GetInsuranceTypeSoapOut">
     <wsdl:part name="parameters" element="tns:GetInsuranceTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuranceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInsurance" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuranceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInsuranceResponse" />
   </wsdl:message>
   <wsdl:message name="GetInsuranceNameSoapIn">
     <wsdl:part name="parameters" element="tns:GetInsuranceName" />
@@ -10825,17 +10903,32 @@
   <wsdl:message name="SetPatNameSoapOut">
     <wsdl:part name="parameters" element="tns:SetPatNameResponse" />
   </wsdl:message>
-  <wsdl:message name="SetDocNameSoapIn">
-    <wsdl:part name="parameters" element="tns:SetDocName" />
+  <wsdl:message name="GetTmpLabSubItemByStatusHttpGetIn">
+    <wsdl:part name="Status" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="SetDocNameSoapOut">
-    <wsdl:part name="parameters" element="tns:SetDocNameResponse" />
+  <wsdl:message name="GetTmpLabSubItemByStatusHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdSoapIn">
-    <wsdl:part name="parameters" element="tns:GetModuleByDoctorId" />
+  <wsdl:message name="SetMpLabSubItemCmpHttpGetIn">
+    <wsdl:part name="HospitalCode" type="s:string" />
+    <wsdl:part name="HZCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Redundance" type="s:string" />
+    <wsdl:part name="revUserId" type="s:string" />
+    <wsdl:part name="TerminalName" type="s:string" />
+    <wsdl:part name="TerminalIP" type="s:string" />
+    <wsdl:part name="DeviceType" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdSoapOut">
-    <wsdl:part name="parameters" element="tns:GetModuleByDoctorIdResponse" />
+  <wsdl:message name="SetMpLabSubItemCmpHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpGetIn">
+    <wsdl:part name="HospitalCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Status" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
   <wsdl:message name="GetMpLabSubItemCmpHttpGetIn" />
   <wsdl:message name="GetMpLabSubItemCmpHttpGetOut">
@@ -11212,6 +11305,18 @@
   </wsdl:message>
   <wsdl:message name="checkverificationHttpGetOut">
     <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoHttpGetIn">
+    <wsdl:part name="UserId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoHttpGetOut">
+    <wsdl:part name="Body" element="tns:PatientDetailInfo1" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoHttpGetIn">
+    <wsdl:part name="Doctor" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DoctorDetailInfo1" />
   </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailHttpGetIn">
     <wsdl:part name="Patient" type="s:string" />
@@ -12123,6 +12228,10 @@
   <wsdl:message name="GetMstTaskByParentCodeHttpGetOut">
     <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
+  <wsdl:message name="GetTasksHttpGetIn" />
+  <wsdl:message name="GetTasksHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
   <wsdl:message name="GetCmTaskItemInfoHttpGetIn">
     <wsdl:part name="CategoryCode" type="s:string" />
     <wsdl:part name="Code" type="s:string" />
@@ -12301,32 +12410,18 @@
   <wsdl:message name="GetLabItemNameHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusHttpGetIn">
-    <wsdl:part name="Status" type="s:string" />
+  <wsdl:message name="SetDocNameHttpGetIn">
+    <wsdl:part name="UserId" type="s:string" />
+    <wsdl:part name="UserName" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusHttpGetOut">
-    <wsdl:part name="Body" element="tns:DataSet" />
-  </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpHttpGetIn">
-    <wsdl:part name="HospitalCode" type="s:string" />
-    <wsdl:part name="HZCode" type="s:string" />
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Redundance" type="s:string" />
-    <wsdl:part name="revUserId" type="s:string" />
-    <wsdl:part name="TerminalName" type="s:string" />
-    <wsdl:part name="TerminalIP" type="s:string" />
-    <wsdl:part name="DeviceType" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpHttpGetOut">
+  <wsdl:message name="SetDocNameHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpGetIn">
-    <wsdl:part name="HospitalCode" type="s:string" />
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Status" type="s:string" />
+  <wsdl:message name="GetModuleByDoctorIdHttpGetIn">
+    <wsdl:part name="UserId" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpGetOut">
-    <wsdl:part name="Body" element="tns:boolean" />
+  <wsdl:message name="GetModuleByDoctorIdHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="GetRoleListHttpGetIn" />
   <wsdl:message name="GetRoleListHttpGetOut">
@@ -13441,18 +13536,6 @@
   <wsdl:message name="getLocalmachineIPAddressHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoHttpGetIn">
-    <wsdl:part name="UserId" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoHttpGetOut">
-    <wsdl:part name="Body" element="tns:PatientDetailInfo1" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoHttpGetIn">
-    <wsdl:part name="Doctor" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoHttpGetOut">
-    <wsdl:part name="Body" element="tns:DoctorDetailInfo1" />
-  </wsdl:message>
   <wsdl:message name="TestGetCacheConnectionHttpGetIn" />
   <wsdl:message name="TestGetCacheConnectionHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
@@ -14337,8 +14420,18 @@
   <wsdl:message name="SetInsuranceHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
+  <wsdl:message name="DeleteInsuranceHttpGetIn">
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteInsuranceHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
   <wsdl:message name="GetInsuranceTypeHttpGetIn" />
   <wsdl:message name="GetInsuranceTypeHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuranceHttpGetIn" />
+  <wsdl:message name="GetInsuranceHttpGetOut">
     <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
   <wsdl:message name="GetInsuranceNameHttpGetIn">
@@ -14418,18 +14511,32 @@
   <wsdl:message name="SetPatNameHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
-  <wsdl:message name="SetDocNameHttpGetIn">
-    <wsdl:part name="UserId" type="s:string" />
-    <wsdl:part name="UserName" type="s:string" />
+  <wsdl:message name="GetTmpLabSubItemByStatusHttpPostIn">
+    <wsdl:part name="Status" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="SetDocNameHttpGetOut">
+  <wsdl:message name="GetTmpLabSubItemByStatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="SetMpLabSubItemCmpHttpPostIn">
+    <wsdl:part name="HospitalCode" type="s:string" />
+    <wsdl:part name="HZCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Redundance" type="s:string" />
+    <wsdl:part name="revUserId" type="s:string" />
+    <wsdl:part name="TerminalName" type="s:string" />
+    <wsdl:part name="TerminalIP" type="s:string" />
+    <wsdl:part name="DeviceType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetMpLabSubItemCmpHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdHttpGetIn">
-    <wsdl:part name="UserId" type="s:string" />
+  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpPostIn">
+    <wsdl:part name="HospitalCode" type="s:string" />
+    <wsdl:part name="Code" type="s:string" />
+    <wsdl:part name="Status" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdHttpGetOut">
-    <wsdl:part name="Body" element="tns:string" />
+  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
   <wsdl:message name="GetMpLabSubItemCmpHttpPostIn" />
   <wsdl:message name="GetMpLabSubItemCmpHttpPostOut">
@@ -14806,6 +14913,18 @@
   </wsdl:message>
   <wsdl:message name="checkverificationHttpPostOut">
     <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoHttpPostIn">
+    <wsdl:part name="UserId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientDetailInfoHttpPostOut">
+    <wsdl:part name="Body" element="tns:PatientDetailInfo1" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoHttpPostIn">
+    <wsdl:part name="Doctor" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDoctorDetailInfoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DoctorDetailInfo1" />
   </wsdl:message>
   <wsdl:message name="SetPatBasicInfoDetailHttpPostIn">
     <wsdl:part name="Patient" type="s:string" />
@@ -15717,6 +15836,10 @@
   <wsdl:message name="GetMstTaskByParentCodeHttpPostOut">
     <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
+  <wsdl:message name="GetTasksHttpPostIn" />
+  <wsdl:message name="GetTasksHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
   <wsdl:message name="GetCmTaskItemInfoHttpPostIn">
     <wsdl:part name="CategoryCode" type="s:string" />
     <wsdl:part name="Code" type="s:string" />
@@ -15895,32 +16018,18 @@
   <wsdl:message name="GetLabItemNameHttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusHttpPostIn">
-    <wsdl:part name="Status" type="s:string" />
+  <wsdl:message name="SetDocNameHttpPostIn">
+    <wsdl:part name="UserId" type="s:string" />
+    <wsdl:part name="UserName" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="GetTmpLabSubItemByStatusHttpPostOut">
-    <wsdl:part name="Body" element="tns:DataSet" />
-  </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpHttpPostIn">
-    <wsdl:part name="HospitalCode" type="s:string" />
-    <wsdl:part name="HZCode" type="s:string" />
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Redundance" type="s:string" />
-    <wsdl:part name="revUserId" type="s:string" />
-    <wsdl:part name="TerminalName" type="s:string" />
-    <wsdl:part name="TerminalIP" type="s:string" />
-    <wsdl:part name="DeviceType" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SetMpLabSubItemCmpHttpPostOut">
+  <wsdl:message name="SetDocNameHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpPostIn">
-    <wsdl:part name="HospitalCode" type="s:string" />
-    <wsdl:part name="Code" type="s:string" />
-    <wsdl:part name="Status" type="s:string" />
+  <wsdl:message name="GetModuleByDoctorIdHttpPostIn">
+    <wsdl:part name="UserId" type="s:string" />
   </wsdl:message>
-  <wsdl:message name="ChangeStatusForTmpLabSubItemHttpPostOut">
-    <wsdl:part name="Body" element="tns:boolean" />
+  <wsdl:message name="GetModuleByDoctorIdHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="GetRoleListHttpPostIn" />
   <wsdl:message name="GetRoleListHttpPostOut">
@@ -17035,18 +17144,6 @@
   <wsdl:message name="getLocalmachineIPAddressHttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoHttpPostIn">
-    <wsdl:part name="UserId" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetPatientDetailInfoHttpPostOut">
-    <wsdl:part name="Body" element="tns:PatientDetailInfo1" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoHttpPostIn">
-    <wsdl:part name="Doctor" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetDoctorDetailInfoHttpPostOut">
-    <wsdl:part name="Body" element="tns:DoctorDetailInfo1" />
-  </wsdl:message>
   <wsdl:message name="TestGetCacheConnectionHttpPostIn" />
   <wsdl:message name="TestGetCacheConnectionHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
@@ -17931,8 +18028,18 @@
   <wsdl:message name="SetInsuranceHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
+  <wsdl:message name="DeleteInsuranceHttpPostIn">
+    <wsdl:part name="Code" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteInsuranceHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
   <wsdl:message name="GetInsuranceTypeHttpPostIn" />
   <wsdl:message name="GetInsuranceTypeHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuranceHttpPostIn" />
+  <wsdl:message name="GetInsuranceHttpPostOut">
     <wsdl:part name="Body" element="tns:DataSet" />
   </wsdl:message>
   <wsdl:message name="GetInsuranceNameHttpPostIn">
@@ -18012,20 +18119,22 @@
   <wsdl:message name="SetPatNameHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
   </wsdl:message>
-  <wsdl:message name="SetDocNameHttpPostIn">
-    <wsdl:part name="UserId" type="s:string" />
-    <wsdl:part name="UserName" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SetDocNameHttpPostOut">
-    <wsdl:part name="Body" element="tns:boolean" />
-  </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdHttpPostIn">
-    <wsdl:part name="UserId" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetModuleByDoctorIdHttpPostOut">
-    <wsdl:part name="Body" element="tns:string" />
-  </wsdl:message>
   <wsdl:portType name="ServicesSoap">
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetTmpLabSubItemByStatusSoapIn" />
+      <wsdl:output message="tns:GetTmpLabSubItemByStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetMpLabSubItemCmpSoapIn" />
+      <wsdl:output message="tns:SetMpLabSubItemCmpSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemSoapIn" />
+      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetMpLabSubItemCmpSoapIn" />
@@ -18260,6 +18369,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
       <wsdl:input message="tns:checkverificationSoapIn" />
       <wsdl:output message="tns:checkverificationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
+      <wsdl:input message="tns:GetPatientDetailInfoSoapIn" />
+      <wsdl:output message="tns:GetPatientDetailInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
+      <wsdl:input message="tns:GetDoctorDetailInfoSoapIn" />
+      <wsdl:output message="tns:GetDoctorDetailInfoSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
@@ -18766,6 +18885,11 @@
       <wsdl:input message="tns:GetMstTaskByParentCodeSoapIn" />
       <wsdl:output message="tns:GetMstTaskByParentCodeSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取任务信息列表（StartDate最新 EndDate不过期） Table: Cm.MstTask Author:WF  20151130</wsdl:documentation>
+      <wsdl:input message="tns:GetTasksSoapIn" />
+      <wsdl:output message="tns:GetTasksSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
       <wsdl:input message="tns:GetCmTaskItemInfoSoapIn" />
@@ -18885,20 +19009,15 @@
       <wsdl:input message="tns:GetLabItemNameSoapIn" />
       <wsdl:output message="tns:GetLabItemNameSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetTmpLabSubItemByStatusSoapIn" />
-      <wsdl:output message="tns:GetTmpLabSubItemByStatusSoapOut" />
+    <wsdl:operation name="SetDocName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
+      <wsdl:input message="tns:SetDocNameSoapIn" />
+      <wsdl:output message="tns:SetDocNameSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetMpLabSubItemCmpSoapIn" />
-      <wsdl:output message="tns:SetMpLabSubItemCmpSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemSoapIn" />
-      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemSoapOut" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
+      <wsdl:input message="tns:GetModuleByDoctorIdSoapIn" />
+      <wsdl:output message="tns:GetModuleByDoctorIdSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -19530,16 +19649,6 @@
       <wsdl:input message="tns:getLocalmachineIPAddressSoapIn" />
       <wsdl:output message="tns:getLocalmachineIPAddressSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
-      <wsdl:input message="tns:GetPatientDetailInfoSoapIn" />
-      <wsdl:output message="tns:GetPatientDetailInfoSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
-      <wsdl:input message="tns:GetDoctorDetailInfoSoapIn" />
-      <wsdl:output message="tns:GetDoctorDetailInfoSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">数据库连接测试  Author:ZAM  2014-11-25</wsdl:documentation>
       <wsdl:input message="tns:TestGetCacheConnectionSoapIn" />
@@ -20090,10 +20199,20 @@
       <wsdl:input message="tns:SetInsuranceSoapIn" />
       <wsdl:output message="tns:SetInsuranceSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">DeleteData Table: Cm.MstInsurance Author:WF  2015-11-28</wsdl:documentation>
+      <wsdl:input message="tns:DeleteInsuranceSoapIn" />
+      <wsdl:output message="tns:DeleteInsuranceSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsuranceType Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
       <wsdl:input message="tns:GetInsuranceTypeSoapIn" />
       <wsdl:output message="tns:GetInsuranceTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsurance Table: Cm.MstInsurance Author:WF  2015-11-27</wsdl:documentation>
+      <wsdl:input message="tns:GetInsuranceSoapIn" />
+      <wsdl:output message="tns:GetInsuranceSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetInsuranceName">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetName Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
@@ -20140,18 +20259,23 @@
       <wsdl:input message="tns:SetPatNameSoapIn" />
       <wsdl:output message="tns:SetPatNameSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
-      <wsdl:input message="tns:SetDocNameSoapIn" />
-      <wsdl:output message="tns:SetDocNameSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
-      <wsdl:input message="tns:GetModuleByDoctorIdSoapIn" />
-      <wsdl:output message="tns:GetModuleByDoctorIdSoapOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServicesHttpGet">
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetTmpLabSubItemByStatusHttpGetIn" />
+      <wsdl:output message="tns:GetTmpLabSubItemByStatusHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetMpLabSubItemCmpHttpGetIn" />
+      <wsdl:output message="tns:SetMpLabSubItemCmpHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpGetIn" />
+      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetMpLabSubItemCmpHttpGetIn" />
@@ -20386,6 +20510,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
       <wsdl:input message="tns:checkverificationHttpGetIn" />
       <wsdl:output message="tns:checkverificationHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
+      <wsdl:input message="tns:GetPatientDetailInfoHttpGetIn" />
+      <wsdl:output message="tns:GetPatientDetailInfoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
+      <wsdl:input message="tns:GetDoctorDetailInfoHttpGetIn" />
+      <wsdl:output message="tns:GetDoctorDetailInfoHttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
@@ -20892,6 +21026,11 @@
       <wsdl:input message="tns:GetMstTaskByParentCodeHttpGetIn" />
       <wsdl:output message="tns:GetMstTaskByParentCodeHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取任务信息列表（StartDate最新 EndDate不过期） Table: Cm.MstTask Author:WF  20151130</wsdl:documentation>
+      <wsdl:input message="tns:GetTasksHttpGetIn" />
+      <wsdl:output message="tns:GetTasksHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
       <wsdl:input message="tns:GetCmTaskItemInfoHttpGetIn" />
@@ -21011,20 +21150,15 @@
       <wsdl:input message="tns:GetLabItemNameHttpGetIn" />
       <wsdl:output message="tns:GetLabItemNameHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetTmpLabSubItemByStatusHttpGetIn" />
-      <wsdl:output message="tns:GetTmpLabSubItemByStatusHttpGetOut" />
+    <wsdl:operation name="SetDocName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
+      <wsdl:input message="tns:SetDocNameHttpGetIn" />
+      <wsdl:output message="tns:SetDocNameHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetMpLabSubItemCmpHttpGetIn" />
-      <wsdl:output message="tns:SetMpLabSubItemCmpHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpGetIn" />
-      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpGetOut" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
+      <wsdl:input message="tns:GetModuleByDoctorIdHttpGetIn" />
+      <wsdl:output message="tns:GetModuleByDoctorIdHttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -21656,16 +21790,6 @@
       <wsdl:input message="tns:getLocalmachineIPAddressHttpGetIn" />
       <wsdl:output message="tns:getLocalmachineIPAddressHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
-      <wsdl:input message="tns:GetPatientDetailInfoHttpGetIn" />
-      <wsdl:output message="tns:GetPatientDetailInfoHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
-      <wsdl:input message="tns:GetDoctorDetailInfoHttpGetIn" />
-      <wsdl:output message="tns:GetDoctorDetailInfoHttpGetOut" />
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">数据库连接测试  Author:ZAM  2014-11-25</wsdl:documentation>
       <wsdl:input message="tns:TestGetCacheConnectionHttpGetIn" />
@@ -22216,10 +22340,20 @@
       <wsdl:input message="tns:SetInsuranceHttpGetIn" />
       <wsdl:output message="tns:SetInsuranceHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">DeleteData Table: Cm.MstInsurance Author:WF  2015-11-28</wsdl:documentation>
+      <wsdl:input message="tns:DeleteInsuranceHttpGetIn" />
+      <wsdl:output message="tns:DeleteInsuranceHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsuranceType Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
       <wsdl:input message="tns:GetInsuranceTypeHttpGetIn" />
       <wsdl:output message="tns:GetInsuranceTypeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsurance Table: Cm.MstInsurance Author:WF  2015-11-27</wsdl:documentation>
+      <wsdl:input message="tns:GetInsuranceHttpGetIn" />
+      <wsdl:output message="tns:GetInsuranceHttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="GetInsuranceName">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetName Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
@@ -22266,18 +22400,23 @@
       <wsdl:input message="tns:SetPatNameHttpGetIn" />
       <wsdl:output message="tns:SetPatNameHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
-      <wsdl:input message="tns:SetDocNameHttpGetIn" />
-      <wsdl:output message="tns:SetDocNameHttpGetOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
-      <wsdl:input message="tns:GetModuleByDoctorIdHttpGetIn" />
-      <wsdl:output message="tns:GetModuleByDoctorIdHttpGetOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServicesHttpPost">
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:GetTmpLabSubItemByStatusHttpPostIn" />
+      <wsdl:output message="tns:GetTmpLabSubItemByStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:SetMpLabSubItemCmpHttpPostIn" />
+      <wsdl:output message="tns:SetMpLabSubItemCmpHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
+      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpPostIn" />
+      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
       <wsdl:input message="tns:GetMpLabSubItemCmpHttpPostIn" />
@@ -22512,6 +22651,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证短信验证码，Author：LY 2015-11-25</wsdl:documentation>
       <wsdl:input message="tns:checkverificationHttpPostIn" />
       <wsdl:output message="tns:checkverificationHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
+      <wsdl:input message="tns:GetPatientDetailInfoHttpPostIn" />
+      <wsdl:output message="tns:GetPatientDetailInfoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
+      <wsdl:input message="tns:GetDoctorDetailInfoHttpPostIn" />
+      <wsdl:output message="tns:GetDoctorDetailInfoHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="SetPatBasicInfoDetail">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">插入患者详细信息 Table：Ps.BasicInfoDetail Author:LS  2014-12-03</wsdl:documentation>
@@ -23018,6 +23167,11 @@
       <wsdl:input message="tns:GetMstTaskByParentCodeHttpPostIn" />
       <wsdl:output message="tns:GetMstTaskByParentCodeHttpPostOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取任务信息列表（StartDate最新 EndDate不过期） Table: Cm.MstTask Author:WF  20151130</wsdl:documentation>
+      <wsdl:input message="tns:GetTasksHttpPostIn" />
+      <wsdl:output message="tns:GetTasksHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">得到某个任务的详细信息 Table: Cm.MstTask Author:LY  20151029</wsdl:documentation>
       <wsdl:input message="tns:GetCmTaskItemInfoHttpPostIn" />
@@ -23137,20 +23291,15 @@
       <wsdl:input message="tns:GetLabItemNameHttpPostIn" />
       <wsdl:output message="tns:GetLabItemNameHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetTmpLabSubItemByStatus Table：Tmp.LabResultDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:GetTmpLabSubItemByStatusHttpPostIn" />
-      <wsdl:output message="tns:GetTmpLabSubItemByStatusHttpPostOut" />
+    <wsdl:operation name="SetDocName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
+      <wsdl:input message="tns:SetDocNameHttpPostIn" />
+      <wsdl:output message="tns:SetDocNameHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">SetMpLabSubItemCmp Table：Mp.LabSubItemsCmp Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:SetMpLabSubItemCmpHttpPostIn" />
-      <wsdl:output message="tns:SetMpLabSubItemCmpHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ChangeStatusForTmpLabSubItem Table：Tmp.LabItemDict Author:WY  2015-07-13</wsdl:documentation>
-      <wsdl:input message="tns:ChangeStatusForTmpLabSubItemHttpPostIn" />
-      <wsdl:output message="tns:ChangeStatusForTmpLabSubItemHttpPostOut" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
+      <wsdl:input message="tns:GetModuleByDoctorIdHttpPostIn" />
+      <wsdl:output message="tns:GetModuleByDoctorIdHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="GetRoleList">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">查询输出Cm.MstRole所有角色名称，用于角色名称选择下拉框 Table：Cm.MstRole Author:ZYF  2014-12-03</wsdl:documentation>
@@ -23782,16 +23931,6 @@
       <wsdl:input message="tns:getLocalmachineIPAddressHttpPostIn" />
       <wsdl:output message="tns:getLocalmachineIPAddressHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取用户详细信息 Table：Ps.BasicInfoDetail Author:ZCY  2015-4-14</wsdl:documentation>
-      <wsdl:input message="tns:GetPatientDetailInfoHttpPostIn" />
-      <wsdl:output message="tns:GetPatientDetailInfoHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">根据用户名获取医生身份信息 Table:Ps.DoctorInfoDetail Author:ZCY  2015-4-29</wsdl:documentation>
-      <wsdl:input message="tns:GetDoctorDetailInfoHttpPostIn" />
-      <wsdl:output message="tns:GetDoctorDetailInfoHttpPostOut" />
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">数据库连接测试  Author:ZAM  2014-11-25</wsdl:documentation>
       <wsdl:input message="tns:TestGetCacheConnectionHttpPostIn" />
@@ -24342,10 +24481,20 @@
       <wsdl:input message="tns:SetInsuranceHttpPostIn" />
       <wsdl:output message="tns:SetInsuranceHttpPostOut" />
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">DeleteData Table: Cm.MstInsurance Author:WF  2015-11-28</wsdl:documentation>
+      <wsdl:input message="tns:DeleteInsuranceHttpPostIn" />
+      <wsdl:output message="tns:DeleteInsuranceHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsuranceType Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
       <wsdl:input message="tns:GetInsuranceTypeHttpPostIn" />
       <wsdl:output message="tns:GetInsuranceTypeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetInsurance Table: Cm.MstInsurance Author:WF  2015-11-27</wsdl:documentation>
+      <wsdl:input message="tns:GetInsuranceHttpPostIn" />
+      <wsdl:output message="tns:GetInsuranceHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="GetInsuranceName">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GetName Table: Cm.MstInsurance Author:LY  2015-06-25</wsdl:documentation>
@@ -24392,19 +24541,36 @@
       <wsdl:input message="tns:SetPatNameHttpPostIn" />
       <wsdl:output message="tns:SetPatNameHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">修改医生姓名 Table：Ps.DoctorInfoDetail Author:WF  2015-06-02</wsdl:documentation>
-      <wsdl:input message="tns:SetDocNameHttpPostIn" />
-      <wsdl:output message="tns:SetDocNameHttpPostOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获得模块列表字符串 Table：Ps.DoctorInfo Author:WF  2015-06-04</wsdl:documentation>
-      <wsdl:input message="tns:GetModuleByDoctorIdHttpPostIn" />
-      <wsdl:output message="tns:GetModuleByDoctorIdHttpPostOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="ServicesSoap" type="tns:ServicesSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <soap:operation soapAction="http://bme319.org/GetTmpLabSubItemByStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <soap:operation soapAction="http://bme319.org/SetMpLabSubItemCmp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <soap:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <soap:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
       <wsdl:input>
@@ -24821,6 +24987,24 @@
     </wsdl:operation>
     <wsdl:operation name="checkverification">
       <soap:operation soapAction="http://bme319.org/checkverification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <soap:operation soapAction="http://bme319.org/GetPatientDetailInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <soap:operation soapAction="http://bme319.org/GetDoctorDetailInfo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -25737,6 +25921,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <soap:operation soapAction="http://bme319.org/GetTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <soap:operation soapAction="http://bme319.org/GetCmTaskItemInfo" style="document" />
       <wsdl:input>
@@ -25953,8 +26146,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <soap:operation soapAction="http://bme319.org/GetTmpLabSubItemByStatus" style="document" />
+    <wsdl:operation name="SetDocName">
+      <soap:operation soapAction="http://bme319.org/SetDocName" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -25962,17 +26155,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <soap:operation soapAction="http://bme319.org/SetMpLabSubItemCmp" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <soap:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <soap:operation soapAction="http://bme319.org/GetModuleByDoctorId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -27114,24 +27298,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <soap:operation soapAction="http://bme319.org/GetPatientDetailInfo" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <soap:operation soapAction="http://bme319.org/GetDoctorDetailInfo" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <soap:operation soapAction="http://bme319.org/TestGetCacheConnection" style="document" />
       <wsdl:input>
@@ -28122,8 +28288,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <soap:operation soapAction="http://bme319.org/DeleteInsurance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <soap:operation soapAction="http://bme319.org/GetInsuranceType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <soap:operation soapAction="http://bme319.org/GetInsurance" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -28212,27 +28396,36 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <soap:operation soapAction="http://bme319.org/SetDocName" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <soap:operation soapAction="http://bme319.org/GetModuleByDoctorId" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="ServicesSoap12" type="tns:ServicesSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <soap12:operation soapAction="http://bme319.org/GetTmpLabSubItemByStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <soap12:operation soapAction="http://bme319.org/SetMpLabSubItemCmp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <soap12:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <soap12:operation soapAction="http://bme319.org/GetMpLabSubItemCmp" style="document" />
       <wsdl:input>
@@ -28649,6 +28842,24 @@
     </wsdl:operation>
     <wsdl:operation name="checkverification">
       <soap12:operation soapAction="http://bme319.org/checkverification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <soap12:operation soapAction="http://bme319.org/GetPatientDetailInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <soap12:operation soapAction="http://bme319.org/GetDoctorDetailInfo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -29565,6 +29776,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <soap12:operation soapAction="http://bme319.org/GetTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <soap12:operation soapAction="http://bme319.org/GetCmTaskItemInfo" style="document" />
       <wsdl:input>
@@ -29781,8 +30001,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <soap12:operation soapAction="http://bme319.org/GetTmpLabSubItemByStatus" style="document" />
+    <wsdl:operation name="SetDocName">
+      <soap12:operation soapAction="http://bme319.org/SetDocName" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -29790,17 +30010,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <soap12:operation soapAction="http://bme319.org/SetMpLabSubItemCmp" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <soap12:operation soapAction="http://bme319.org/ChangeStatusForTmpLabSubItem" style="document" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <soap12:operation soapAction="http://bme319.org/GetModuleByDoctorId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -30942,24 +31153,6 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <soap12:operation soapAction="http://bme319.org/GetPatientDetailInfo" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <soap12:operation soapAction="http://bme319.org/GetDoctorDetailInfo" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <soap12:operation soapAction="http://bme319.org/TestGetCacheConnection" style="document" />
       <wsdl:input>
@@ -31950,8 +32143,26 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <soap12:operation soapAction="http://bme319.org/DeleteInsurance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <soap12:operation soapAction="http://bme319.org/GetInsuranceType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <soap12:operation soapAction="http://bme319.org/GetInsurance" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -32040,27 +32251,36 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <soap12:operation soapAction="http://bme319.org/SetDocName" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <soap12:operation soapAction="http://bme319.org/GetModuleByDoctorId" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="ServicesHttpGet" type="tns:ServicesHttpGet">
     <http:binding verb="GET" />
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <http:operation location="/GetTmpLabSubItemByStatus" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <http:operation location="/SetMpLabSubItemCmp" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <http:operation location="/ChangeStatusForTmpLabSubItem" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <http:operation location="/GetMpLabSubItemCmp" />
       <wsdl:input>
@@ -32477,6 +32697,24 @@
     </wsdl:operation>
     <wsdl:operation name="checkverification">
       <http:operation location="/checkverification" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <http:operation location="/GetPatientDetailInfo" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <http:operation location="/GetDoctorDetailInfo" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -33391,6 +33629,15 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <http:operation location="/GetTasks" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <http:operation location="/GetCmTaskItemInfo" />
       <wsdl:input>
@@ -33595,8 +33842,8 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <http:operation location="/GetTmpLabSubItemByStatus" />
+    <wsdl:operation name="SetDocName">
+      <http:operation location="/SetDocName" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -33604,17 +33851,8 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <http:operation location="/SetMpLabSubItemCmp" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <http:operation location="/ChangeStatusForTmpLabSubItem" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <http:operation location="/GetModuleByDoctorId" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -34756,24 +34994,6 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <http:operation location="/GetPatientDetailInfo" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <http:operation location="/GetDoctorDetailInfo" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <http:operation location="/TestGetCacheConnection" />
       <wsdl:input>
@@ -35764,8 +35984,26 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <http:operation location="/DeleteInsurance" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <http:operation location="/GetInsuranceType" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <http:operation location="/GetInsurance" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -35847,24 +36085,6 @@
     </wsdl:operation>
     <wsdl:operation name="SetPatName">
       <http:operation location="/SetPatName" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <http:operation location="/SetDocName" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <http:operation location="/GetModuleByDoctorId" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -35875,6 +36095,33 @@
   </wsdl:binding>
   <wsdl:binding name="ServicesHttpPost" type="tns:ServicesHttpPost">
     <http:binding verb="POST" />
+    <wsdl:operation name="GetTmpLabSubItemByStatus">
+      <http:operation location="/GetTmpLabSubItemByStatus" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMpLabSubItemCmp">
+      <http:operation location="/SetMpLabSubItemCmp" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
+      <http:operation location="/ChangeStatusForTmpLabSubItem" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetMpLabSubItemCmp">
       <http:operation location="/GetMpLabSubItemCmp" />
       <wsdl:input>
@@ -36291,6 +36538,24 @@
     </wsdl:operation>
     <wsdl:operation name="checkverification">
       <http:operation location="/checkverification" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatientDetailInfo">
+      <http:operation location="/GetPatientDetailInfo" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoctorDetailInfo">
+      <http:operation location="/GetDoctorDetailInfo" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -37205,6 +37470,15 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <http:operation location="/GetTasks" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetCmTaskItemInfo">
       <http:operation location="/GetCmTaskItemInfo" />
       <wsdl:input>
@@ -37409,8 +37683,8 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetTmpLabSubItemByStatus">
-      <http:operation location="/GetTmpLabSubItemByStatus" />
+    <wsdl:operation name="SetDocName">
+      <http:operation location="/SetDocName" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -37418,17 +37692,8 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SetMpLabSubItemCmp">
-      <http:operation location="/SetMpLabSubItemCmp" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ChangeStatusForTmpLabSubItem">
-      <http:operation location="/ChangeStatusForTmpLabSubItem" />
+    <wsdl:operation name="GetModuleByDoctorId">
+      <http:operation location="/GetModuleByDoctorId" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -38570,24 +38835,6 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPatientDetailInfo">
-      <http:operation location="/GetPatientDetailInfo" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDoctorDetailInfo">
-      <http:operation location="/GetDoctorDetailInfo" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="TestGetCacheConnection">
       <http:operation location="/TestGetCacheConnection" />
       <wsdl:input>
@@ -39578,8 +39825,26 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeleteInsurance">
+      <http:operation location="/DeleteInsurance" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetInsuranceType">
       <http:operation location="/GetInsuranceType" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsurance">
+      <http:operation location="/GetInsurance" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -39661,24 +39926,6 @@
     </wsdl:operation>
     <wsdl:operation name="SetPatName">
       <http:operation location="/SetPatName" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetDocName">
-      <http:operation location="/SetDocName" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetModuleByDoctorId">
-      <http:operation location="/GetModuleByDoctorId" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>

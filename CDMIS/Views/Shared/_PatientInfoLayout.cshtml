@@ -26,7 +26,7 @@
         </div>
         @{Html.RenderAction("PatientBasicInfo", "PatientInfo");}
         <ul id="menu">
-            <li>@Html.ActionLink("健康计划", "HealthPlan", "PatientInfo")</li>
+            <li style="display:none">@Html.ActionLink("健康计划", "HealthPlan", "PatientInfo")</li>
             <li>@Html.ActionLink("健康模块", "PatientDetailInfo", "PatientInfo")</li>
             <li>@Html.ActionLink("临床信息", "ClinicInfo", "PatientInfo")</li>
             <li>@Html.ActionLink("症状管理", "SymptomsManagement", "PatientInfo")</li>

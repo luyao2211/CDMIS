@@ -118,7 +118,7 @@ namespace CDMIS.Controllers
                 {
                     newhe.news.Title = "无主题";
                 }
-                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), "", newhe.news.Title, newhe.selectedModuleId, "", 0, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
+                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), "", newhe.news.Title, newhe.selectedModuleId, "", -1, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
                 if (flag == 1)
                 {
                     return RedirectToAction("Index", new { Module = newhe.selectedModuleId });
@@ -212,7 +212,7 @@ namespace CDMIS.Controllers
                 {
                     newhe.news.Title = "无主题";
                 }
-                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), newhe.news.Id, newhe.news.Title, newhe.selectedModuleId, "", 0, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
+                int flag = _ServicesSoapClient.SetMstTask(newhe.selectedModuleId.Substring(0, 2), newhe.news.Id, newhe.news.Title, newhe.selectedModuleId, "", -2, 99999999, 2, 1, newhe.news.Path, newhe.news.Author, user.TerminalName, user.TerminalIP, user.DeviceType);
                 if (flag == 1)
                 {
                     return RedirectToAction("Index", new { Module = newhe.selectedModuleId });

@@ -137,3 +137,15 @@ E:\Program\task\github\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
 E:\Program\task\github\CDMIS\CDMIS\obj\Debug\CDMIS.csprojResolveAssemblyReference.cache
 E:\Program\task\github\CDMIS\CDMIS\obj\Debug\CDMIS.dll
 E:\Program\task\github\CDMIS\CDMIS\obj\Debug\CDMIS.pdb
+C:\Users\LY\Desktop\CDMIS\CDMIS\obj\Debug\CDMIS.csprojResolveAssemblyReference.cache
+C:\Users\LY\Desktop\CDMIS\CDMIS\obj\Debug\CDMIS.dll
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\CDMIS.dll
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\CDMIS.pdb
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\EntityFramework.dll
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\log4net.dll
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\Newtonsoft.Json.dll
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\EntityFramework.xml
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\log4net.xml
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\Newtonsoft.Json.pdb
+C:\Users\LY\Desktop\CDMIS\CDMIS\bin\Newtonsoft.Json.xml
+C:\Users\LY\Desktop\CDMIS\CDMIS\obj\Debug\CDMIS.pdb

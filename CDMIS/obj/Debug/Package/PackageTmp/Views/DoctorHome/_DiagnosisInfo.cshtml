@@ -339,29 +339,50 @@
     </ul>
 </div>
 <script type="text/javascript">
+    var table2 = $('#DiagnosisInfoList').DataTable({
+        "oLanguage": {//语言国际化
+            "sUrl": "/Content/jquery.dataTable.cn.txt"
+        },
+        "bAutoWidth": true,
+        "bPaginate": false,  //是否分页。
+        "sScrollX": "100%",
+        "sScrollY": "300px",
+        "bFilter": true,
+        "aaSorting": [[8, "desc"]],
+        "columnDefs": [{
+            "bSortable": false, "aTargets": [9]
+        }, {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [1],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [4],
+            "visible": false,
+            "searchable": false
+        }, {
+            "targets": [5],
+            "visible": false,
+            "searchable": false
+        }]
+    });
+    $("#DiagnosisInfoList").attr("width", "auto");
+
     $(document).ready(function () {
         document.getElementById("DiagnosisTypeNameDropDownListFor").value = "";
         document.getElementById("TypeNameDropDownListFor").value = "";
 
-
-        var table2 = $('#DiagnosisInfoList').DataTable({
-            "oLanguage": {//语言国际化
-                "sUrl": "/Content/jquery.dataTable.cn.txt"
-            },
-            "bAutoWidth": true,
-            "bPaginate": false,  //是否分页。
-            "sScrollX": "100%",
-            "sScrollY": "300px",
-            "bFilter": true,
-            "aaSorting": [[8, "desc"]],
-            "columnDefs": [{ "bSortable": false, "aTargets": [9]}] //禁止某些列的排序功能
-        });
-        $("#DiagnosisInfoList").attr("width", "auto");
-
+        var dataindex = 0;
         var UserId = document.getElementById("UId").value;
         var VisitId = "@Model.VisitId";
         var trSeq;
-        var addNo = 0;
 
         $(".addDiagnosisInfo").click(function () {
             $('#addDataDiv').modal({
@@ -381,6 +402,12 @@
         })
 
         $(document).on("click", ".editDiagnosisInfoBtn", function () {
+            dataindex = table2.row($(this).parent().parent()).index();
+            table2.column(0).visible(true);
+            table2.column(1).visible(true);
+            table2.column(3).visible(true);
+            table2.column(4).visible(true);
+            table2.column(5).visible(true);
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             var DiagnosisNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var DiagnosisType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
@@ -391,7 +418,11 @@
             var DiagnosisName = $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text().trim();
             var Description = $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text().trim();
             var RecordDate = $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text().trim();
-
+            table2.column(0).visible(false);
+            table2.column(1).visible(false);
+            table2.column(3).visible(false);
+            table2.column(4).visible(false);
+            table2.column(5).visible(false);
             EditData(DiagnosisNo, DiagnosisType, DiagnosisTypeName, Type, TypeName, DiagnosisCode, DiagnosisName, Description, RecordDate);
 
             $('#TypeName').chosen({
@@ -475,15 +506,20 @@
                     success: function (res) {
                         if (res == true) {
                             $("#cancel").click();
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(DiagnosisNo);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(DiagnosisType);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(DiagnosisTypeName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(Type);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(TypeName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(DiagnosisCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(DiagnosisName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(Description);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(8)").text(RecordDate);
+                            table2.row(dataindex).remove().draw();
+                            table2.row.add({
+                                "0": DiagnosisNo,
+                                "1": DiagnosisType,
+                                "2": DiagnosisTypeName,
+                                "3": Type,
+                                "4": TypeName,
+                                "5": DiagnosisCode,
+                                "6": DiagnosisName,
+                                "7": Description,
+                                "8": RecordDate,
+                                "9": "<input type='button' value='编辑' class='btn btn-primary editDiagnosisInfoBtn' />",
+                                "10": "<input type='button' value='删除' class='btn btn-primary deleteDiagnosisInfoBtn' />"
+                            }).draw();
                         }
                         else {
                             alert("数据修改失败，请重新输入！");
@@ -508,7 +544,7 @@
                 //alert("12");
             }
 
-            var DiagnosisNo = parseInt(document.getElementById("MaxDiagnosisNo").value) + addNo + 1;
+            var DiagnosisNo = parseInt(document.getElementById("MaxDiagnosisNo").value) + 1;
             var DiagnosisType = document.getElementById("DiagnosisTypeNameDropDownListFor").value;
             var Type = document.getElementById("TypeNameDropDownListFor").value;
             var DiagnosisCode = document.getElementById("DiagnosisNameDropDownListFor").value;
@@ -542,39 +578,20 @@
                     data: { UserId: UserId, VisitId: VisitId, DiagnosisNo: DiagnosisNo, DiagnosisType: DiagnosisType, Type: Type, DiagnosisCode: DiagnosisCode, Description: Description, RecordDate: RecordDate },  //输入参数
                     success: function (res) {
                         if (res == true) {
-                            addNo++;
-                            var tr = document.getElementById("TableBody").insertRow();
-
-                            var td0 = document.createElement("td");
-                            td0.setAttribute("style", "display:none");
-                            td0.innerHTML = DiagnosisNo;
-                            tr.appendChild(td0);
-
-                            var td1 = document.createElement("td");
-                            td1.setAttribute("style", "display:none");
-                            td1.innerHTML = DiagnosisType;
-                            tr.appendChild(td1);
-                            tr.insertCell(2).innerHTML = document.getElementById("DiagnosisTypeNameDropDownListFor").options[document.getElementById("DiagnosisTypeNameDropDownListFor").selectedIndex].text;
-                            var td3 = document.createElement("td");
-                            td3.setAttribute("style", "display:none");
-                            td3.innerHTML = Type;
-                            tr.appendChild(td3);
-
-                            var td4 = document.createElement("td");
-                            td4.setAttribute("style", "display:none");
-                            td4.innerHTML = document.getElementById("TypeNameDropDownListFor").options[document.getElementById("TypeNameDropDownListFor").selectedIndex].text;
-                            tr.appendChild(td4);
-                            //tr.insertCell(4).innerHTML = document.getElementById("TypeNameDropDownListFor").options[document.getElementById("TypeNameDropDownListFor").selectedIndex].text;
-
-                            var td5 = document.createElement("td");
-                            td5.setAttribute("style", "display:none");
-                            td5.innerHTML = DiagnosisCode;
-                            tr.appendChild(td5);
-                            tr.insertCell(6).innerHTML = document.getElementById("DiagnosisNameDropDownListFor").options[document.getElementById("DiagnosisNameDropDownListFor").selectedIndex].text;
-                            tr.insertCell(7).innerHTML = Description;
-                            tr.insertCell(8).innerHTML = RecordDate;
-                            tr.insertCell(9).innerHTML = "<input type='button' value='编辑' class='btn btn-primary editDiagnosisInfoBtn' />";
-                            tr.insertCell(10).innerHTML = "<input type='button' value='删除' class='btn btn-primary deleteDiagnosisInfoBtn' />";
+                            $("#MaxDiagnosisNo").attr("value", DiagnosisNo);
+                            table2.row.add({
+                                "0": DiagnosisNo,
+                                "1": DiagnosisType,
+                                "2": document.getElementById("DiagnosisTypeNameDropDownListFor").options[document.getElementById("DiagnosisTypeNameDropDownListFor").selectedIndex].text,
+                                "3": Type,
+                                "4": document.getElementById("TypeNameDropDownListFor").options[document.getElementById("TypeNameDropDownListFor").selectedIndex].text,
+                                "5": DiagnosisCode,
+                                "6": document.getElementById("DiagnosisNameDropDownListFor").options[document.getElementById("DiagnosisNameDropDownListFor").selectedIndex].text,
+                                "7": Description,
+                                "8": RecordDate,
+                                "9": "<input type='button' value='编辑' class='btn btn-primary editDiagnosisInfoBtn' />",
+                                "10": "<input type='button' value='删除' class='btn btn-primary deleteDiagnosisInfoBtn' />"
+                            }).draw();
                             document.getElementById("DiagnosisTypeNameDropDownListFor").value = "";
                             document.getElementById("TypeNameDropDownListFor").value = "";
                             document.getElementById("DiagnosisNameDropDownListFor").value = "";
@@ -591,6 +608,7 @@
         })
 
         $(document).on("click", ".deleteDiagnosisInfoBtn", function () {
+            dataindex = table2.row($(this).parent().parent()).index();
             trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
             $('#DeleteDataDiv').modal({
                 closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -600,9 +618,10 @@
         });
 
         $(".sureDeleteBtn").click(function () {
+            table2.column(0).visible(true);
+            table2.column(1).visible(true);
             var DiagnosisNo = $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text().trim();
             var DiagnosisType = $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text().trim();
-
             $.ajax({
                 url: "/DoctorHome/DiagnosisInfoDelete",
                 type: "GET",
@@ -614,13 +633,22 @@
                         $("#cancelDelete").click();
                         var tbody = document.getElementById("TableBody");
                         tbody.deleteRow(trSeq);
+                        table2.row(dataindex).remove().draw();
                     }
                     else {
                         alert("数据删除失败，请重试！");
                     }
                 }
-
             })
+            var max = 0;
+            for (i = 0; i < table2.column(0).data().length; i++) {
+                if (max < parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim())) {
+                    max = parseInt($("#TableBody tr:eq(" + i + ") td:eq(0)").text().trim());
+                }
+            }
+            $("#MaxDiagnosisNo").attr("value", max);
+            table2.column(0).visible(false);
+            table2.column(1).visible(false);
         })
     });
 

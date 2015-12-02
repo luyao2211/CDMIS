@@ -141,9 +141,9 @@
 
     <div> 
     <ul id="tabs" style="margin-top: 20px;">
-             <li>
+            @* <li>
                 @Ajax.ActionLink("健康计划", "HealthPlan", new { PatientId = @Model.PatientBasicInfo.UserId }, new AjaxOptions() { OnSuccess = "success();", OnBegin = "hide();", UpdateTargetId = "tableContainer", HttpMethod = "Get", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading" })
-            </li>
+            </li>*@
             <li>
                 @Ajax.ActionLink("个人信息", "PatientDetailInfo", new { PatientId = @Model.PatientBasicInfo.UserId }, new AjaxOptions() { OnSuccess = "success();", OnBegin = "hide();", UpdateTargetId = "tableContainer", HttpMethod = "Get", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading" })
             </li>
@@ -171,7 +171,7 @@
  <div id="tableContainer">
      @if(ViewBag.TabNo == "1")
     {
-        {Html.RenderAction("HealthPlan", "PatientInfo", new { UserId = @Model.PatientBasicInfo.UserId });}
+        { Html.RenderAction("PatientDetailInfo", "PatientInfo", new { UserId = @Model.PatientBasicInfo.UserId }); }
     }
     //else if(ViewBag.TabNo == "6")
     //{

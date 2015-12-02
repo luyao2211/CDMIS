@@ -510,7 +510,7 @@
 </div>
 <div style="float: right">
     <ul id="Redirect">
-        <li>@Html.ActionLink("上一步", "ModuleProfile", new { PatientId = @Model.UserId })</li>
+        <li>@Html.ActionLink("上一步", "BasicProfile", new { PatientId = @Model.UserId, Role = "Patient" })</li>
         <li>@Html.ActionLink("下一步", "ClinicalProfile", new { UserId = @Model.UserId })</li>
     </ul>
 </div>
@@ -639,20 +639,7 @@
                     success: function (res) {
                         if (res == true) {
                             $("#cancel").click();
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(0)").text(VisitId);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(1)").text(HospitalCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(2)").text(HospitalName);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(3)").text(DepartmentCode);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(4)").text(DepartmentName);
-
-                            if (DischargeDate == "9999/01/01 0:00:00") {
-                                DischargeDate = "";
-                            }
-
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(5)").text(AdmissionDate + "|" + DischargeDate);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(6)").text(Doctor);
-                            $("#TableBody tr:eq(" + trSeq + ") td:eq(7)").text(SortNo);
-
+                            window.location.href = "/DoctorHome/ClinicalInfo?UserId=" + UserId;
                         }
                         else {
                             alert("数据编辑失败，请重新输入！");

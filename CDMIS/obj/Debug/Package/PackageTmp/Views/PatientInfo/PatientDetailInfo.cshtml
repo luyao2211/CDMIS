@@ -76,7 +76,7 @@ if (Model.ModuleDetailList.Count > 0)
         <label class="control-label col-sm-2" style="text-align: left; font-size: 17px">@Model.ModuleDetailList[0].CategoryName</label>
         <input type="button" class="btn btn-primary" value="编辑" onclick="EnableEdit();"/>
         <input type="submit" class="btn btn-primary" value="保存" onclick="Save();" disabled="disabled"/>
-        <input type="button" class="btn btn-primary" value="同步模块信息" name="@Model.ModuleDetailList[0].CategoryCode" onclick="SynDetailInfo(this.name);"/>
+        <input type="button" class="btn btn-primary" value="同步模块信息" name="@Model.ModuleDetailList[0].CategoryCode" onclick="SynDetailInfo(this.name);" disabled="disabled"/>
     </div>
     <div class="form-horizontal">
     <div class="scrollTbody" style="overflow:-Scroll;overflow-x:hidden">
@@ -253,7 +253,8 @@ if (Model.ModuleDetailList.Count > 0)
     //进入编辑状态
     function EnableEdit() {
         $('*[title="M"]').removeAttr('disabled');
-        $("*[onclick="Save();"]").removeAttr('disabled');
+        $('*[onclick="Save();"]').removeAttr('disabled');
+        $('*[value="同步模块信息"]').removeAttr('disabled');
     }
 
     function Calculate(name, value) {
@@ -477,8 +478,11 @@ if (Model.ModuleDetailList.Count > 0)
     //删除药品
     function DeleteDrugInfo(Category, ItemCode, ItemSeq) {
         var Seq = parseInt(ItemSeq);
-        if (Seq == "1")
+        if (Seq == "1") {
+            $("#" + ItemCode + ItemSeq).val("");
+            DrugTypeChanged("Cm." + Category, ItemCode, ItemSeq);
             return;
+        }
         else {
             $("#" + ItemCode + ItemSeq).remove();
             $("#" + ItemSeq + ItemCode).remove();
@@ -531,7 +535,7 @@ if (Model.ModuleDetailList.Count > 0)
 
     //同步部分模块信息
     function SynDetailInfo(Module) {
-        if (Module == 'M1') {
+        if(Module == 'M1'){
             $.ajax({
                 url: "/DoctorHome/SynBasicInfoDetail",
                 type: "GET",
@@ -545,24 +549,31 @@ if (Model.ModuleDetailList.Count > 0)
                         var Value = TypeNameList.split("|")[1];
                         if (Code == "左心室肥大") {
                             $("#QB0002").val(Value);
+                            $("#QB0002").attr("style",$("#QB0002").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "房颤") {
                             $("#QA0005").val(Value);
+                            $("#QA0005").attr("style", $("#QA0005").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "心脏瓣膜疾病") {
                             $("#QA0006").val(Value);
+                            $("#QA0006").attr("style", $("#QA0006").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "62.00028") {
                             $("#QH0003").val(Value);
+                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "62.2713") {
                             $("#QH0001").val(Value);
-                        }
+                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                        }   
                         if (Code == "62.63304") {
                             $("#QH0002").val(Value);
+                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY0277") {
                             $("#QH0004").val(Value);
+                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
                         }
                     }
                     if (item != null) {
@@ -596,27 +607,46 @@ if (Model.ModuleDetailList.Count > 0)
                         var TypeNameList = res[item];
                         var Code = TypeNameList.split("|")[0];
                         var Value = TypeNameList.split("|")[1];
-                        if (Code == "62.2713")
+                        if (Code == "62.2713") {
                             $("#QH0001").val(Value);
-                        if (Code == "62.63304")
+                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "62.63304") {
                             $("#QH0002").val(Value);
-                        if (Code == "62.00028")
+                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "62.00028") {
                             $("#QH0003").val(Value);
-                        if (Code == "JY0277")
+                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "JY0277") {
                             $("#QH0004").val(Value);
-                        if (Code == "JY2473")
+                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "JY2473") {
                             $("#QH0037").val(Value);
-                        if (Code == "JY1131")
+                            $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "JY1131") {
                             $("#QH0041").val(Value);
-                        if (Code == "69.TSH00")
+                            $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "69.TSH00") {
                             $("#QH0043").val(Value);
-                        if (Code == "10200901")
+                            $("#QH0043").attr("style", $("#QH0043").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "10200901") {
                             $("#QH0044").val(Value);
-                        if (Code == "JY2701")
+                            $("#QH0044").attr("style", $("#QH0044").attr("style") + ";background-color:#BBFFBB");
+                        }
+                        if (Code == "JY2701") {
                             $("#QH0045").val(Value);
+                            $("#QH0045").attr("style", $("#QH0045").attr("style") + ";background-color:#BBFFBB");
+                        }
                         if (Code == "61000102" || Code == "61000103" || Code == "61000202" || Code == "61000204") {
                             var temp = $("#QG0016").val();
                             $("#QG0016").val(temp + Value + " ; ");
+                            $("#QG0016").attr("style", $("#QG0016").attr("style") + ";background-color:#BBFFBB");
                         }
                     }
                     NDB = $('*[lang = "尿白蛋白浓度"]').val();
@@ -655,90 +685,119 @@ if (Model.ModuleDetailList.Count > 0)
                         var Value = TypeNameList.split("|")[1];
                         if (Code == "62.00028") {
                             $("#QH0003").val(Value);
+                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "62.2713") {
                             $("#QH0001").val(Value);
+                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "62.63304") {
                             $("#QH0002").val(Value);
+                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY0277") {
                             $("#QH0004").val(Value);
+                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY0002") {
                             $("#QH0008").val(Value);
+                            $("#QH0008").attr("style", $("#QH0008").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3069") {
                             $("#QH0010").val(Value);
+                            $("#QH0010").attr("style", $("#QH0010").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3071") {
                             $("#QH0011").val(Value);
+                            $("#QH0011").attr("style", $("#QH0011").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3072") {
                             $("#QH0012").val(Value);
+                            $("#QH0012").attr("style", $("#QH0012").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3062") {
                             $("#QH0013").val(Value);
+                            $("#QH0013").attr("style", $("#QH0013").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3065") {
                             $("#QH0014").val(Value);
+                            $("#QH0014").attr("style", $("#QH0014").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3077") {
                             $("#QH0015").val(Value);
+                            $("#QH0015").attr("style", $("#QH0015").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "50.21377") {
                             $("#QH0016").val(Value);
+                            $("#QH0016").attr("style", $("#QH0016").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1131") {
                             $("#QH0041").val(Value);
+                            $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1562") {
                             $("#QH0018").val(Value);
+                            $("#QH0018").attr("style", $("#QH0018").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1057") {
                             $("#QH0019").val(Value);
+                            $("#QH0019").attr("style", $("#QH0019").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1056") {
                             $("#QH0020").val(Value);
+                            $("#QH0020").attr("style", $("#QH0020").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "62.79599") {
                             $("#QH0021").val(Value);
+                            $("#QH0021").attr("style", $("#QH0021").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1064") {
                             $("#QH0022").val(Value);
+                            $("#QH0022").attr("style", $("#QH0022").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1007") {
                             $("#QH0024").val(Value);
+                            $("#QH0024").attr("style", $("#QH0024").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY3861") {
                             $("#QH0025").val(Value);
+                            $("#QH0025").attr("style", $("#QH0025").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "69.TSH00") {
                             $("#QH0029").val(Value);
+                            $("#QH0029").attr("style", $("#QH0029").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1931") {
                             $("#QH0032").val(Value);
+                            $("#QH0032").attr("style", $("#QH0032").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY1391") {
                             $("#QH0033").val(Value);
+                            $("#QH0033").attr("style", $("#QH0033").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY0165") {
                             $("#QH0035").val(Value);
+                            $("#QH0035").attr("style", $("#QH0035").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY0113") {
                             $("#QH0036").val(Value);
+                            $("#QH0036").attr("style", $("#QH0036").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "JY2473") {
                             $("#QH0037").val(Value);
+                            $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "10200901") {
                             $("#QH0039").val(Value);
+                            $("#QH0039").attr("style", $("#QH0039").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code == "31100901") {
                             $("#QH0040").val(Value);
+                            $("#QH0040").attr("style", $("#QH0040").attr("style") + ";background-color:#BBFFBB");
                         }
                         if (Code.substring(0, 3) == "ECG") {
                             $("#QJ0021").val(Value);
+                            $("#QJ0021").attr("style", $("#QJ0021").attr("style") + ";background-color:#BBFFBB");
                         }
                     }
                     if (item != null) {
