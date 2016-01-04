@@ -173,26 +173,57 @@ namespace CDMIS.Controllers
         }
 
         //UpdateModuleInfo 修改某患者某模块的负责医生
-        public JsonResult UpdateHCInfo(string PatientId, string DoctorId, string Seq, string PreDocId)
+        public JsonResult UpdateHCInfo(string PatientId, string DoctorId, string Seq, string PreDocId, string Module)
         {
             var user = Session["CurrentUser"] as UserAndRole;
             var res = new JsonResult();
             int Ret = 0;
+            var ModuleTable = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
             if (DoctorId != "0")
             {
-                Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, "HC", "Doctor", Convert.ToInt32(Seq), DoctorId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
-                Ret = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, "HM1", PatientId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                if (user.Role == "Doctor")
+                {
+                    Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, "HC", "Doctor", Convert.ToInt32(Seq), DoctorId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                    foreach (DataRow Row in ModuleTable.Tables[0].Rows)
+                    {
+                        Ret = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, "H" + Row[0].ToString(), PatientId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                        Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, "H" + Row[0].ToString(), "InvalidFlag", 1, "0", "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                        Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, "H" + Row[0].ToString(), "Doctor", 1, DoctorId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                    }
+                }
+                else
+                {
+                    Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, Module.Substring(1), "Doctor", 1, DoctorId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                    Ret = _ServicesSoapClient.SetBasicInfoDetail(PatientId, Module.Substring(1), "InvalidFlag", 1, "0", "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                    Ret = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, Module.Substring(1), PatientId, "", 1, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType) ? 1 : 0;
+                }
             }
             if (PreDocId != "0")
             {
-                Ret = _ServicesSoapClient.DeletePatient(PreDocId, "HM1", PatientId);
+                if (user.Role == "Doctor")
+                {
+                    foreach (DataRow Row in ModuleTable.Tables[0].Rows)
+                    {
+                        Ret = _ServicesSoapClient.DeletePatient(PreDocId, "H" + Row[0].ToString(), PatientId);
+                    }
+                }
+                else
+                {
+                    Ret = _ServicesSoapClient.DeletePatient(PreDocId, "", PatientId);
+                }
             }
             if (Ret == 1)
             {
-                string planNo = _ServicesSoapClient.GetExecutingPlanByModule(PatientId, "M1");
-                if (planNo != null && planNo != "")
+                if (user.Role == "HealthCoach")
                 {
-                    _ServicesSoapClient.UpdatePlanStatus(planNo, 4, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    foreach (DataRow Row in ModuleTable.Tables[0].Rows)
+                    {
+                        string planNo = _ServicesSoapClient.GetExecutingPlanByModule(PatientId, Row[0].ToString());
+                        if (planNo != null && planNo != "")
+                        {
+                            _ServicesSoapClient.UpdatePlanStatus(planNo, 4, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        }
+                    }
                 }
             }
             res.Data = Ret;

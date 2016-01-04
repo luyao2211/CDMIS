@@ -66,9 +66,11 @@
             @Html.ActionLink("健康模块", "ModuleProfile", "DoctorHome", new { PatientId = @Model.PatientId }, new { target = "_self" })</li>
         <li>
             @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.PatientId }, new { target = "_self" })</li>
+        <li>
+            @Html.ActionLink("临床信息查看", "ClinicInfo", "PatientInfo", new { PatientId = @Model.PatientId }, new { target = "_self" })</li>
     </ul>
 </div>
-@{Html.RenderAction("PatientBasicInfo", "PatientInfo");}
+@{Html.RenderAction("PatientBasicInfo", "PatientInfo", new { PointedPatient = @Model.PatientId });}
 @using (Html.BeginForm("HealthCoachManagement", "DoctorHome", FormMethod.Post, new { id = "MMForm", @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => model.PatientId)
@@ -102,11 +104,20 @@
                     foreach (var item in Model.HealthCoachInfoList)
                     {
                     <tr>
-                        <td style="display: none;">
+                        <td style="display: none;">@item.HCDivName
                         </td>
-                        <td>
-                            健康专员
-                        </td>
+                        @if (item.HCDivName.IndexOf("HC") != -1)
+                        {
+                            <td>
+                                健康专员
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @item.DataTableName
+                            </td>
+                        }
                         <td style="display: none;">@item.HealthCoachId
                         </td>
                         <td>
@@ -193,6 +204,8 @@
 </div>
 <script type="text/javascript">
     $(function () {
+        $("#menu a").attr("id", ""); //Reset id's 
+        $("#menu li:eq(1) a").attr("id", "current");
         $("#nav a").attr("id", ""); //Reset id's 
         $("#nav li:eq(4) a").attr("id", "currentnav");
 
@@ -207,6 +220,11 @@
             "bFilter": true
         });
         //$('#HC' + i + 'Div').hide();
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
+        if ($("#menu li:eq(0) a").attr("href") == "/DoctorHome/HealthCoachPatientList") {
+            $("#nav li:eq(4) a").html("推荐医生");
+        }
+        $("#Redirect li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
     });
 
     //点击编辑按钮
@@ -214,6 +232,7 @@
         var trSeq = $(this).parent().parent().parent().find("tr").index($(this).parent().parent());
         var preDocId = $.trim($("#MMTBody tr:eq(" + trSeq + ") td:eq(2)").text());
         var seq = $.trim($("#MMTBody tr:eq(" + trSeq + ") td:eq(5)").text());
+        var Module = $.trim($("#MMTBody tr:eq(" + trSeq + ") td:eq(0)").text());
         var btn2, trSeq2, doctorId, doctorName;
 
         $('#HCDataTable tbody tr').each(function () {
@@ -245,7 +264,7 @@
                     type: "GET",
                     dataType: "json",
                     async: false,
-                    data: { PatientId: $("#PatientId").val(), DoctorId: doctorId, Seq: seq, PreDocId: preDocId },
+                    data: { PatientId: $("#PatientId").val(), DoctorId: doctorId, Seq: seq, PreDocId: preDocId, Module: Module },
                     success: function (res) {
                         if (res == 1) {
                             $("#MMTBody tr:eq(" + trSeq + ") td:eq(2)").text(doctorId);

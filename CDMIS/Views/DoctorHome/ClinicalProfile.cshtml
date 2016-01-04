@@ -108,9 +108,11 @@
             @Html.ActionLink("健康模块", "ModuleProfile", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
         <li>
             @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
+        <li>
+            @Html.ActionLink("临床信息查看", "ClinicInfo", "PatientInfo", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
     </ul>
 </div>
-@{Html.RenderAction("PatientBasicInfo", "PatientInfo");}
+@{Html.RenderAction("PatientBasicInfo", "PatientInfo", new { PointedPatient = @Model.UserId });}
 <div class="modalContent" style="margin-top: 15px; text-align: center;">
     <div class="form-horizontal" role="form">
         <div class="form-group">
@@ -142,6 +144,14 @@
         $("#menu li:eq(1) a").attr("id", "current");
         $("#nav a").attr("id", ""); //Reset id's 
         $("#nav li:eq(2) a").attr("id", "currentnav");
+        if ("@Model.LatestClinicalInfo" != "") {
+            $("#ClinicalInfoListDropDownListFor").val("@Model.LatestClinicalInfo");
+            $(".clinicalProfileBtn").click();
+        }
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
+        if ($("#menu li:eq(0) a").attr("href") == "/DoctorHome/HealthCoachPatientList") {
+            $("#nav li:eq(4) a").html("推荐医生");
+        }
     });
 
     $(".clinicalProfileBtn").click(function () {

@@ -44,11 +44,14 @@ namespace CDMIS.Controllers
             return View(pbiModel);
         }
 
-        public ActionResult PatientBasicInfo()
+        public ActionResult PatientBasicInfo(string PointedPatient)
         {
             //PatientId = "P4444";
-            string PatientId = Session["PatientId"] as String;
-
+            string PatientId = PointedPatient;
+            if (PointedPatient == null)
+            {
+                PatientId = Session["PatientId"] as String;
+            }
             ServiceReference.PatientBasicInfo pbi = _ServicesSoapClient.GetPatBasicInfo(PatientId);  //获取基本信息
 
             PatientBasicInfoViewModel pbiModel = new PatientBasicInfoViewModel();
@@ -262,7 +265,6 @@ namespace CDMIS.Controllers
             }
             //AdmissionDate ClinicDate Num
             CDMIS.ServiceReference.Clinic Clinic = _ServicesSoapClient.GetClinicalNew(PatientId, Convert.ToDateTime("1897-01-01 00:00:00"), Convert.ToDateTime("1897-01-01 00:00:00"), 10);
-
             //都放在了webservice
 
 

@@ -239,7 +239,7 @@
     }
 
     $(document).ready(function () {
-        if ($("#doctordetail").attr("title") == "Doctor")
+        if ($("#doctordetail").attr("title") == "Doctor" || $("#doctordetail").attr("title") == "HealthCoach")
             $("#doctordetail").removeAttr("style");
         if (document.getElementById("PhoneNumber").value == "") {
             document.getElementById("PhoneNumber").value = "请输入有效手机号码";

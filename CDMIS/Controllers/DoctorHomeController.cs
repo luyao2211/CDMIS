@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CDMIS.ViewModels;
 using CDMIS.Models;
 using CDMIS.ServiceReference;
-using CDMIS.WebReferenceJC;
 using System.Data;
 using System.Collections;
 using CDMIS.OtherCs;
 using CDMIS.CommonLibrary;
+using System.Net.Http;
 
 namespace CDMIS.Controllers
 {
@@ -47,6 +46,14 @@ namespace CDMIS.Controllers
         }
 
         #region <" 患者列表 ">
+        //健康专员患者列表
+        public ActionResult HealthCoachPatientList(string Patient)
+        {
+            var user = Session["CurrentUser"] as UserAndRole;
+            PatientListViewModel patientListView = new PatientListViewModel(user.UserId);
+            return PartialView(patientListView);
+        }
+
         //患者列表
         public ActionResult PatientList(string PatientId)
         {
@@ -812,15 +819,40 @@ namespace CDMIS.Controllers
 
 
             List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
-            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
-            foreach (DataTable item in ModulesInfo.Tables)
+            DataSet ModulesInfo = new DataSet();
+            if (user.Role == "Doctor")
             {
-                foreach (DataRow row in item.Rows)
+                ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
+                foreach (DataTable item in ModulesInfo.Tables)
                 {
-                    ModuleInfo NewLine = new Models.ModuleInfo();
-                    NewLine.Category = row[0].ToString();
-                    NewLine.ModuleName = row[1].ToString();
-                    ModuleInfo.Add(NewLine);
+                    foreach (DataRow row in item.Rows)
+                    {
+                        ModuleInfo NewLine = new Models.ModuleInfo();
+                        NewLine.Category = row[0].ToString();
+                        NewLine.ModuleName = row[1].ToString();
+                        ModuleInfo.Add(NewLine);
+                    }
+                }
+            }
+            else
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                HttpResponseMessage response = client.GetAsync("Api/v1/Users/HModulesByID?PatientId=" + PatientId + "&DoctorId=" + DoctorId).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.Content.ReadAsStringAsync().Result != "[]")
+                    {
+                        string[] Modules = response.Content.ReadAsStringAsync().Result.Split(new string[] { "},{", "[{\"", "\"}]" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string Module in Modules)
+                        {
+                            string[] Detail = Module.Split(new string[] { "\",\"", "\":\"" }, StringSplitOptions.RemoveEmptyEntries);
+                            ModuleInfo NewLine = new Models.ModuleInfo();
+                            NewLine.Category = Detail[1].Substring(1);
+                            NewLine.ModuleName = Detail[3];
+                            ModuleInfo.Add(NewLine);
+                        }
+                    }
                 }
             }
             model.ModuleBoughtInfo = ModuleInfo;
@@ -836,7 +868,7 @@ namespace CDMIS.Controllers
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (DoctorModules.IndexOf(row[0].ToString()) != -1)
+                    if (DoctorModules.IndexOf(row[0].ToString()) != -1 || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x){return x.Category == row[0].ToString();}) == null))
                     {
                         ModuleInfo NewLine = new Models.ModuleInfo();
                         NewLine.Category = row[0].ToString();
@@ -868,6 +900,16 @@ namespace CDMIS.Controllers
                                 Value = row[7].ToString(),
                                 Content = _ServicesSoapClient.GetUserName(row[7].ToString())
                             };
+                            if (user.Role == "HealthCoach")
+                            {
+                                HttpClient client = new HttpClient();
+                                client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                                HttpResponseMessage response = client.GetAsync("Api/v1/Users/BasicDtlValue?UserId=" + PatientId + "&CategoryCode=H" + Category + "&ItemCode=Doctor&ItemSeq=1").Result;
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    NewLine.Value = response.Content.ReadAsStringAsync().Result.Split(new string[] { "{", ":", "}", "\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                                }
+                            }
                             if (NewLine.Value == DoctorId)
                             {
                                 NewLine.EditDeleteFlag = "true";
@@ -900,7 +942,20 @@ namespace CDMIS.Controllers
                     else
                     {
                         if (row[3].ToString() == "InvalidFlag")
-                            InvalidFlag = (row[7].ToString() != "");
+                        {
+                            if (user.Role == "HealthCoach")
+                            {
+                                HttpClient client = new HttpClient();
+                                client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                                HttpResponseMessage response = client.GetAsync("Api/v1/Users/BasicDtlValue?UserId=" + PatientId + "&CategoryCode=H" + Category + "&ItemCode=InvalidFlag&ItemSeq=1").Result;
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    InvalidFlag = (response.Content.ReadAsStringAsync().Result.Split(new string[] { "{", ":", "}", "\"" }, StringSplitOptions.RemoveEmptyEntries)[1] == "0");
+                                }
+                            }
+                            else
+                                InvalidFlag = (row[7].ToString() != "");
+                        }
                     }
                 }
             }
@@ -1026,15 +1081,40 @@ namespace CDMIS.Controllers
                     }
                 }
                 List<ModuleInfo> ModuleInfo = new List<Models.ModuleInfo>();
-                DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(UserId);
-                foreach (DataTable item in ModulesInfo.Tables)
+                DataSet ModulesInfo = new DataSet();
+                if (user.Role == "Doctor")
                 {
-                    foreach (DataRow row in item.Rows)
+                    ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(UserId);
+                    foreach (DataTable item in ModulesInfo.Tables)
                     {
-                        ModuleInfo NewLine = new Models.ModuleInfo();
-                        NewLine.Category = row[0].ToString();
-                        NewLine.ModuleName = row[1].ToString();
-                        ModuleInfo.Add(NewLine);
+                        foreach (DataRow row in item.Rows)
+                        {
+                            ModuleInfo NewLine = new Models.ModuleInfo();
+                            NewLine.Category = row[0].ToString();
+                            NewLine.ModuleName = row[1].ToString();
+                            ModuleInfo.Add(NewLine);
+                        }
+                    }
+                }
+                else
+                {
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                    HttpResponseMessage response = client.GetAsync("Api/v1/Users/HModulesByID?PatientId=" + UserId + "&DoctorId=" + DoctorId).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        if (response.Content.ReadAsStringAsync().Result != "[]")
+                        {
+                            string[] Modules = response.Content.ReadAsStringAsync().Result.Split(new string[] { "},{", "[{\"", "\"}]" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string Module in Modules)
+                            {
+                                string[] Detail = Module.Split(new string[] { "\",\"", "\":\"" }, StringSplitOptions.RemoveEmptyEntries);
+                                ModuleInfo NewLine = new Models.ModuleInfo();
+                                NewLine.Category = Detail[1].Substring(1);
+                                NewLine.ModuleName = Detail[3];
+                                ModuleInfo.Add(NewLine);
+                            }
+                        }
                     }
                 }
                 model.ModuleBoughtInfo = ModuleInfo;
@@ -1050,7 +1130,7 @@ namespace CDMIS.Controllers
                 {
                     foreach (DataRow row in item.Rows)
                     {
-                        if (DoctorModules.IndexOf(row[0].ToString()) != -1)
+                        if (DoctorModules.IndexOf(row[0].ToString()) != -1 || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x) { return x.Category == row[0].ToString(); }) == null))
                         {
                             ModuleInfo NewLine = new Models.ModuleInfo();
                             NewLine.Category = row[0].ToString();
@@ -1189,7 +1269,14 @@ namespace CDMIS.Controllers
                     if (ModuleFind == null)
                     {
                         //插入 医生详细信息表 负责患者信息
-                        flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, 0, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        if (user.Role == "Doctor")
+                        {
+                            flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, CategoryCode, UserId, Description, 0, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        }
+                        else
+                        {
+                            flag = _ServicesSoapClient.SetPsDoctorDetailOnPat(DoctorId, "H" + CategoryCode, UserId, Description, 0, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        }
                         model.ModuleBoughtInfo.Add(new ModuleInfo
                         {
                             Category = CategoryCode,
@@ -1203,9 +1290,18 @@ namespace CDMIS.Controllers
                             return x.Category == CategoryCode;
                         }));
                     }
-                    flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                    //插入 患者详细信息表 负责医生信息                           
-                    flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    if (user.Role == "Doctor")
+                    {
+                        flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        //插入 患者详细信息表 负责医生信息                           
+                        flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    }
+                    else
+                    {
+                        flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, "H" + CategoryCode, "InvalidFlag", ItemSeq, "0", Description, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                        //插入 患者详细信息表 负责医生信息                           
+                        flag = _ServicesSoapClient.SetBasicInfoDetail(Patient, "H" + CategoryCode, "Doctor", ItemSeq, DoctorId, "", SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                    }
 
                     for (j = 0; j < ItemInfo.Count; j++)
                     {
@@ -1273,6 +1369,16 @@ namespace CDMIS.Controllers
                                         Value = row[7].ToString(),
                                         Content = _ServicesSoapClient.GetUserName(row[7].ToString())
                                     };
+                                    if (user.Role == "HealthCoach")
+                                    {
+                                        HttpClient client = new HttpClient();
+                                        client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                                        HttpResponseMessage response = client.GetAsync("Api/v1/Users/BasicDtlValue?UserId=" + UserId + "&CategoryCode=H" + CategoryCode + "&ItemCode=Doctor&ItemSeq=1").Result;
+                                        if (response.IsSuccessStatusCode)
+                                        {
+                                            NewLine.Value = response.Content.ReadAsStringAsync().Result.Split(new string[] { "{", ":", "}", "\"" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                                        }
+                                    }
                                     if (NewLine.Value == DoctorId)
                                     {
                                         NewLine.EditDeleteFlag = "true";
@@ -1305,7 +1411,20 @@ namespace CDMIS.Controllers
                             else
                             {
                                 if (row[3].ToString() == "InvalidFlag")
-                                    InvalidFlag = (row[7].ToString() != "");
+                                {
+                                    if (user.Role == "HealthCoach")
+                                    {
+                                        HttpClient client = new HttpClient();
+                                        client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+                                        HttpResponseMessage response = client.GetAsync("Api/v1/Users/BasicDtlValue?UserId=" + UserId + "&CategoryCode=H" + CategoryCode + "&ItemCode=InvalidFlag&ItemSeq=1").Result;
+                                        if (response.IsSuccessStatusCode)
+                                        {
+                                            InvalidFlag = (response.Content.ReadAsStringAsync().Result.Split(new string[] { "{", ":", "}", "\"" }, StringSplitOptions.RemoveEmptyEntries)[1] == "0");
+                                        }
+                                    }
+                                    else
+                                        InvalidFlag = (row[7].ToString() != "");
+                                }
                             }
                         }
                     }
@@ -1768,13 +1887,31 @@ namespace CDMIS.Controllers
         #endregion
 
         #region 临床信息
-        public ActionResult ClinicalProfile(string UserId)     //传入患者Id
+        public ActionResult ClinicalProfile(string UserId, string Newer)     //传入患者Id
         {
+            bool Set = true;
             Models.PatientBasicInfo ClinicalProfile = new Models.PatientBasicInfo();
+            if (Newer == "new")
+            {
+                string VisitId = _ServicesSoapClient.GetNoByNumberingType(8);
+                DateTime ClinicDate = Convert.ToDateTime(_ServicesSoapClient.GetServerTime());
+                string HospitalCode = "HJZYY";
+                string Department = "41";
+                var user = Session["CurrentUser"] as UserAndRole;
+                bool flag = _ServicesSoapClient.SetOutPatientInfo(UserId, VisitId, ClinicDate, HospitalCode, Department, user.UserName, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
+                if (flag == false)
+                {
+                    Set = false;
+                }
+            }
             //加载患者基本信息
             ClinicalProfile = GetPatientBasicInfo(UserId);
             //加载患者就诊信息列表，下拉框
             ClinicalProfile.ClinicalInfoList = GetClinicalInfoList(UserId);
+            if (Newer == "new" && Set == true)
+            {
+                ClinicalProfile.LatestClinicalInfo = ClinicalProfile.ClinicalInfoList[ClinicalProfile.ClinicalInfoList.Count - 1].Value;
+            }
 
             return View(ClinicalProfile);
         }
@@ -3496,8 +3633,16 @@ namespace CDMIS.Controllers
                 if (PatientId != null && PatientId != "")
                 {
                     MMVM.PatientId = PatientId;
-                    MMVM.HealthCoachInfoList = GetHealthCareList(MMVM.PatientId);
-                    MMVM.HealthCoachList = GetHealthCoachInfoList();
+                    if (user.Role == "Doctor")
+                    {
+                        MMVM.HealthCoachInfoList = GetHealthCareList(MMVM.PatientId);
+                        MMVM.HealthCoachList = GetHealthCoachInfoList("HealthCoach");
+                    }
+                    else
+                    {
+                        MMVM.HealthCoachInfoList = GetDoctorCareInfo(MMVM.PatientId);
+                        MMVM.HealthCoachList = GetHealthCoachInfoList("Doctor");
+                    }
                 }
                 return View(MMVM);
             }
@@ -3551,21 +3696,48 @@ namespace CDMIS.Controllers
                     HealthCoachName = _ServicesSoapClient.GetUserName(row[0].ToString()),
                     HCDivName = "HC" + row[2].ToString() + "Div",
                     DataTableName = "HC" + row[2].ToString() + "DataTable",
-                    HealthCoachList = GetHealthCoachInfoList()
+                    HealthCoachList = GetHealthCoachInfoList("HealthCoach")
                 };
                 hclist.Add(hc);
             }
             if (hclist.Count == 0)
             {
-                hclist.Add(new HealthCoach { ItemSeq = "1", HealthCoachId = "0", HealthCoachName = "", HCDivName = "HC1Div", DataTableName = "HC1DataTable", HealthCoachList = GetHealthCoachInfoList() });
+                hclist.Add(new HealthCoach { ItemSeq = "1", HealthCoachId = "0", HealthCoachName = "", HCDivName = "HC1Div", DataTableName = "HC1DataTable", HealthCoachList = GetHealthCoachInfoList("HealthCoach") });
             }
             return hclist;
         }
 
-        //获取健康专员列表
-        public List<DoctorAndHCInfo> GetHealthCoachInfoList()
+        public List<HealthCoach> GetDoctorCareInfo(string PatientId)
         {
-            DataTable docList = _ServicesSoapClient.GetActiveUserByRole("HealthCoach").Tables[0];
+            List<HealthCoach> dclist = new List<HealthCoach>();
+            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
+            foreach (DataTable item in ModulesInfo.Tables)
+            {
+                foreach (DataRow row in item.Rows)
+                {
+                    DataTable dcOfPat = _ServicesSoapClient.GetConForPatient(PatientId, row[0].ToString()).Tables[0];
+                    foreach (DataRow line in dcOfPat.Rows)
+                    {
+                        HealthCoach dc = new HealthCoach()
+                        {
+                            ItemSeq = line[2].ToString(),
+                            HealthCoachId = line[0].ToString(),
+                            HealthCoachName = _ServicesSoapClient.GetUserName(line[0].ToString()),
+                            HCDivName = "H" + row[0].ToString(),
+                            DataTableName = row[1].ToString(),
+                            HealthCoachList = GetHealthCoachInfoList("Doctor")
+                        };
+                        dclist.Add(dc);
+                    }
+                }
+            }
+            return dclist;
+        }
+
+        //获取健康专员列表
+        public List<DoctorAndHCInfo> GetHealthCoachInfoList(string Type)
+        {
+            DataTable docList = _ServicesSoapClient.GetActiveUserByRole(Type).Tables[0];
             List<DoctorAndHCInfo> DoctorList = new List<DoctorAndHCInfo>();
             foreach (DataRow DR in docList.Rows)
             {

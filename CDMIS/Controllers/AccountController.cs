@@ -78,14 +78,7 @@ namespace CDMIS.Controllers
                             for (int i = 0; i < length; i++)
                             {
                                 RoleClass[i] = RoleList.Tables[0].Rows[i]["RoleClass"].ToString();
-                                if (RoleClass[i] == "Administrator")
-                                {
-                                    CurrentUser.Role = "Administrator";
-                                }
-                                else if (RoleClass[i] == "Doctor")
-                                {
-                                    CurrentUser.Role = "Doctor";
-                                }
+                                CurrentUser.Role = RoleClass[i];
                             }
                             string hostAddress = Request.ServerVariables.Get("Remote_Addr").ToString();
                             if (hostAddress == "::1")
@@ -126,24 +119,26 @@ namespace CDMIS.Controllers
                                 {
                                     return RedirectToAction("Index", "Management");
                                 }
-                                else if (CurrentUser.Role == "Doctor")
+                                else
                                 {
-                                    var ActivitionFlag = _ServicesSoapClient.GetActivatedState(UserId, "Doctor");
+                                    var ActivitionFlag = _ServicesSoapClient.GetActivatedState(UserId, LogOnModel.UserRole);
                                     if (ActivitionFlag == "0")
                                     {
-                                        return RedirectToAction("PatientList", "DoctorHome");
+                                        CurrentUser.Role = LogOnModel.UserRole;
+                                        if (CurrentUser.Role == "Doctor")
+                                        {
+                                            return RedirectToAction("PatientList", "DoctorHome");
+                                        }
+                                        else
+                                        {
+                                            return RedirectToAction("HealthCoachPatientList", "DoctorHome");
+                                        }
                                     }
                                     else
                                     {
                                         ModelState.AddModelError("errorConnection", "该用户没有权限登录本系统");
                                         return View();
                                     }
-
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("errorConnection", "该用户没有权限登录本系统");
-                                    return View();
                                 }
                                 //switch (CurrentUser.Role)
                                 //{

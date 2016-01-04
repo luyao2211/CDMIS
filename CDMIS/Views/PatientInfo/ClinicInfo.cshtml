@@ -1,13 +1,13 @@
 ﻿@model CDMIS.ServiceReference.Clinic
 @{
     ViewBag.Title = "患者临床信息";
-    Layout = "~/Views/Shared/_PatientInfoLayout.cshtml";
+    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
 }
 
 <link href="../../Content/timeLine.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/simpleModal.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../Scripts/jquery.simplemodal.1.4.4.min.js"></script>
-
+<script type="text/javascript" src="../../Scripts/My97DatePicker/WdatePicker.js"></script>
 <style type="text/css">
       
     #simple-overlay
@@ -28,77 +28,32 @@
         width: 900px;
     }
 </style>
-
+<div style="height: 40px;">
+    <ul id="nav">
+        <li>
+            @Html.ActionLink("个人信息", "BasicProfile", "DoctorHome", new { PatientId = @Model.UserId, Role = "Patient" }, new { target = "_self" })
+        </li>
+        <li>
+            @Html.ActionLink("就诊信息", "ClinicalInfo", "DoctorHome", new { UserId = @Model.UserId }, new { target = "_self" })
+        </li>
+        <li>
+            @Html.ActionLink("临床信息", "ClinicalProfile", "DoctorHome", new { UserId = @Model.UserId }, new { target = "_self" })
+        </li>
+        <li>
+            @Html.ActionLink("健康模块", "ModuleProfile", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })
+        </li>
+        <li>
+            @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })
+        </li>
+        <li>
+            @Html.ActionLink("临床信息查看", "ClinicInfo", "PatientInfo", new { PatientId = @Model.UserId }, new { target = "_self" })
+        </li>
+    </ul>
+</div>
+@{Html.RenderAction("PatientBasicInfo", "PatientInfo", new { PointedPatient = @Model.UserId });}
 @Html.HiddenFor(model => model.UserId)
 @Html.HiddenFor(model => model.AdmissionDateMark)
 @Html.HiddenFor(model => model.ClinicDateMark)
-
-<div id="simple-overlay" style="display: none; width: 100%; height: 100%; text-align: center;">
-    <div id="loading">
-        <img alt="Load" src="../../Content/Image/history_loading.gif" style="width: 50px;
-            height: 50px;" />
-        <h3>
-            正在同步，请稍后……</h3>
-    </div>
-</div>
-
-@*同步信息*@
-<div>
-    <h4>
-        根据就诊卡同步</h4>
-    <div class="modalContent" style="margin-top: 15px; text-align: center;">
-        <div class="form-horizontal" role="form">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">
-                    就诊医院
-                </label>
-                <div class="col-sm-4">
-                    @*@Html.DropDownList("HCode", Model.HospitalList(), new { id = "HospitalListDropDownListFor", @class = "form-control", onclick = "HospitalChange()" })*@
-                    <select id="HospitalListDropDownListFor" class="form-control" onclick = "HospitalChange()">
-                        <option value="">请选择</option>
-                    </select>
-                </div>
-                <label class="col-sm-2 control-label">
-                    就诊ID
-                </label>
-                <div class="col-sm-4">
-                    @Html.TextBox("PIDJC", "", new { id = "PIDJC", @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @*<label class="col-sm-2 control-label">
-                    就诊ID
-                </label>
-                <div class="col-sm-4">
-                    @Html.TextBox("PIDJC", "", new { id = "PIDJC", @class = "form-control" })
-                </div>*@
-                <label class="col-sm-2 control-label">
-                    起始日期
-                </label>
-                <div class="col-sm-4">
-                    @Html.TextBox("StartDateTime", "", new { id = "StartDateTime", @onclick = "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})", @class = "form-control" })
-                </div>
-                @*<div class="col-sm-4">
-                    <input style="font-size: 16px; font-weight: bold; text-align: center" value="起始日期未填时，将同步所有临床信息"
-                        class="form-control" disabled="disabled" />
-                </div>*@
-                <label class="col-sm-4 control-label">
-                    起始日期未填，将同步所有临床信息
-                </label>
-                <div class="col-sm-2">
-                    <input type="button" class="btn btn-primary" id="synchronization" value="同步" />
-                </div>
-            </div>
-            <div class="form-group" style="display: none;" id="synchronizationTip">
-                <div class="col-sm-12">
-                    <p id="synchronizationWarning" style="font-size: 16px; color: #FF0000; font-weight: bold;
-                        text-align: center">
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @*时间轴动态*@
 
@@ -247,6 +202,16 @@
     //            }
     //        });
     //    })()
+    $(document).ready(function () {
+        $("#menu a").attr("id", ""); //Reset id's 
+        $("#menu li:eq(1) a").attr("id", "current");
+        $("#nav a").attr("id", ""); //Reset id's 
+        $("#nav li:eq(5) a").attr("id", "currentnav");
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
+        if ($("#menu li:eq(0) a").attr("href") == "/DoctorHome/HealthCoachPatientList") {
+            $("#nav li:eq(4) a").html("推荐医生");
+        }
+    })
 
     function GetMoreClinic() {
 

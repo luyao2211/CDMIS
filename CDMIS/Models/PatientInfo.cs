@@ -43,6 +43,7 @@ namespace CDMIS.Models
         public int AlertNumber { get; set; }
         public int CareLevel { get; set; }
         public List<SelectListItem> ClinicalInfoList { get; set; }
+        public string LatestClinicalInfo { get; set; }
         public PatientBasicInfo()
         {
 

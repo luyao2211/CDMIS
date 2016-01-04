@@ -48,5 +48,4 @@ namespace CDMIS.Models
         public string ModuleName { get; set; }
         public string Category { get; set; }
     }
-
 }

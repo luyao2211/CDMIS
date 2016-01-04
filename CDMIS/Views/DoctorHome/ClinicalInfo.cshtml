@@ -110,9 +110,11 @@
             @Html.ActionLink("健康模块", "ModuleProfile", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
         <li>
             @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
+        <li>
+            @Html.ActionLink("临床信息查看", "ClinicInfo", "PatientInfo", new { PatientId = @Model.UserId }, new { target = "_self" })</li>
     </ul>
 </div>
-@{Html.RenderAction("PatientBasicInfo", "PatientInfo");}
+@{Html.RenderAction("PatientBasicInfo", "PatientInfo", new { PointedPatient = @Model.UserId });}
 @*就诊卡信息*@
 <div>
     <h4>
@@ -544,6 +546,10 @@
         });
 
         var UserId = document.getElementById("UId").value;
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
+        if ($("#menu li:eq(0) a").attr("href") == "/DoctorHome/HealthCoachPatientList") {
+            $("#nav li:eq(4) a").html("推荐医生");
+        }
 
         $(".addClinicalInfoBtn").click(function () {
             var VID = $("#ClinicalInfoListDropDownListFor").val();

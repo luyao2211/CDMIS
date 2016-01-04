@@ -22,6 +22,7 @@ namespace CDMIS.Models
         [Required(ErrorMessage = "请输入验证码")]
         public string ValidateCode { get; set; }    //登录时的验证码
         public bool RememberMe { get; set; }        //是否记住密码
+        public string UserRole { get; set; }        //登录类型
     }
 
     //忘记密码-验证 TDY-20141209

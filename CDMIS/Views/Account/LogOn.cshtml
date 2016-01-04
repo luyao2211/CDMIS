@@ -16,9 +16,22 @@
             登 录</h2>
         <div class="form-group">
             <label class="col-sm-offset-1 col-sm-2 control-label" style="text-align: justify">
-                用户名：</label>
+                登录类型
+            </label>
             <div class="col-sm-6">
-                @Html.TextBoxFor(model => model.UserId, new { id = "UserId", @class = "form-control", placeholder = "手机号/用户ID"})
+                <select id="UserRole" name="UserRole" class="form-control" style="font-size:17px;">
+                    <option value="">请选择</option>
+                    <option value="Doctor">医生</option>
+                    <option value="HealthCoach">健康专员</option>
+                </select>               
+            </div>            
+        </div>
+        <div class="form-group">
+            <label class="col-sm-offset-1 col-sm-2 control-label" style="text-align: justify">
+                用户名：
+            </label>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.UserId, new { id = "UserId", @class = "form-control", placeholder = "手机号/用户ID" })
                 @Html.ValidationMessageFor(model => model.UserId)
                 @Html.ValidationMessage("errorUserId")
                 <label for="AlertUserId" id="AlertUserId" style="color:red; display:none">请输入11位手机号码</label>

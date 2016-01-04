@@ -128,7 +128,7 @@ namespace CDMIS.Controllers
             var UserId = user.UserId;
             string hostAddress = System.Configuration.ConfigurationManager.AppSettings["WebServe"];
             PersonalHomepageModel.Role = user.Role;
-            if (user.Role == "Administrator" || user.Role == "Doctor")
+            if (user.Role == "Administrator" || user.Role == "Doctor" || user.Role == "HealthCoach")
             {
                 var BasicInfo = _ServicesSoapClient.GetDoctorInfo(UserId);
                 var DetailInfo = _ServicesSoapClient.GetDoctorInfoDetail(UserId);
@@ -174,7 +174,7 @@ namespace CDMIS.Controllers
                         PersonalHomepageModel.PhotoAddress = "http://" + hostAddress + "/PersonalPhoto/" + DetailInfo.PhotoAddress;
                         //PersonalHomepageModel.PhotoAddress = "CDFiles\\PersonalPhoto\\Doctor\\" + DetailInfo.PhotoAddress; 
                     }
-                    if (PersonalHomepageModel.Role == "Doctor")
+                    if (PersonalHomepageModel.Role == "Doctor" || PersonalHomepageModel.Role == "HealthCoach")
                     {
                         var DoctorDetail = _ServicesSoapClient.GetDoctorDetailInfo(UserId);
                         PersonalHomepageModel.UnitName = DoctorDetail.UnitName;

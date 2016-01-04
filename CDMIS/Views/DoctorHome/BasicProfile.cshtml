@@ -101,6 +101,8 @@
             @Html.ActionLink("健康模块", "ModuleProfile", "DoctorHome", new { PatientId = @Model.Patient.UserId }, new { target = "_self" })</li>
         <li>
             @Html.ActionLink("分配健康专员", "HealthCoachManagement", "DoctorHome", new { PatientId = @Model.Patient.UserId }, new { target = "_self" })</li>
+        <li>
+            @Html.ActionLink("临床信息查看", "ClinicInfo", "PatientInfo", new { PatientId = @Model.Patient.UserId }, new { target = "_self" })</li>
     </ul>
 </div>
 @using (Html.BeginForm("BasicProfile", "DoctorHome", FormMethod.Post, new { id = "Form1", enctype = "multipart/form-data", onkeydown = "Enter()" }))
@@ -346,6 +348,10 @@
             $("#nav a").attr("id", ""); //Reset id's 
             $("#nav li:eq(0) a").attr("id", "currentnav");
 
+        }
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
+        if ($("#menu li:eq(0) a").attr("href") == "/DoctorHome/HealthCoachPatientList") {
+            $("#nav li:eq(4) a").html("推荐医生");
         }
     })
 

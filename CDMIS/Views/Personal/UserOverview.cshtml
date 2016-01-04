@@ -11,7 +11,7 @@
 </style>
 @if (Request.IsAuthenticated && Model.UserId != "")
 {
-    <p style="margin-bottom: 5px;">
+    <p style="margin-bottom: 5px;" id="BackToMain">
         用户：
         @if(Model.InvalidFlag == "0")
         {
@@ -34,7 +34,7 @@
          {
              case "Administrator": @Html.ActionLink("返回首页", "Index", "Dict"); break;
              case "Doctor": @Html.ActionLink("返回首页", "PatientList", "DoctorHome"); break;
-             case "Patient": @Html.ActionLink("返回首页", "HealthParameters", "PatientHome"); break;
+             case "HealthCoach": @Html.ActionLink("返回首页", "HealthCoachPatientList", "DoctorHome"); break;
              default: break;
          }]</a>
         }

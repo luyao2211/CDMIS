@@ -80,7 +80,7 @@
             <table width="100%" id="DataTable" class="display ">
                 <thead>
                     <tr>
-                        <th width="120px">
+                        <th width="260px">
                             操作
                         </th>
                         <th width="120px">
@@ -98,7 +98,7 @@
                         <th width="150px">
                             主诊断
                         </th>
-                        <th width="150px">
+                        <th width="120px">
                             模块
                         </th>
                         <!--修改：删除警报 ZC 2015-05-13 -->
@@ -122,26 +122,36 @@
                         foreach (var item in Model.PatientList)
                         {
                         <tr class="normalRow" align="center">
-                            <td width="120px">
+                            <td width="260px">
                                 <a href="">
-                                    <input id="ProfileLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/profile.png);
+                                    <input id="BasicProfile" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/profile.png);
                                         background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                        width: 24px; height: 24px; margin-right: 5px" title="患者档案" /></a> @*<a href="">
-                                            <input id="TreatmentLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/medication.png);
-                                                background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                                width: 24px; height: 24px; margin-right: 5px" title="治疗" /></a>*@
+                                        width: 24px; height: 24px; margin-right: 5px" title="个人信息" /></a>
                                 <a href="">
-                                    <input id="PatientDetailInfo" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/plan.png);
+                                    <input id="ClinicalInfo" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/plan.png);
                                         background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                        width: 24px; height: 24px; margin-right: 5px" title="健康计划" /></a>
+                                        width: 24px; height: 24px; margin-right: 5px" title="就诊信息" /></a>
+                                <a href="">
+                                    <input id="ClinicalProfile" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/medication.png);
+                                        background-repeat: no-repeat; background-color: transparent; cursor: pointer;
+                                        width: 24px; height: 24px; margin-right: 5px" title="临床信息" /></a>
+                                <a href="">
+                                    <input id="ModuleProfile" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/module.png);
+                                        background-repeat: no-repeat; background-color: transparent; cursor: pointer;
+                                        width: 24px; height: 24px; margin-right: 5px" title="健康模块" /></a>
+                                <a href="">
+                                    <input id="HealthCoachManagement" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/healthcoach.png);
+                                        background-repeat: no-repeat; background-color: transparent; cursor: pointer;
+                                        width: 24px; height: 24px; margin-right: 5px" title="健康专员管理" /></a>
+                                <a href="">
+                                    <input id="ClinicTimeLine" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/clinictimeline.png);
+                                        background-repeat: no-repeat; background-color: transparent; cursor: pointer;
+                                        width: 24px; height: 24px; margin-right: 5px" title="临床信息查看" /></a>
                                 <!--修改：删除警报 ZC 2015-05-13 -->
-                                <a href="" style="display: none">
-                                    <input id="AlertLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/alert.png);
+                                <a>
+                                    <input id="MessageLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/mail.png);
                                         background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                        width: 24px; height: 24px; margin-right: 5px" title="警报" /></a> <a>
-                                            <input id="MessageLink" class="OperationBtn" style="border: 0; background-image: url(../../Content/Image/mail.png);
-                                                background-repeat: no-repeat; background-color: transparent; cursor: pointer;
-                                                width: 24px; height: 24px; margin-right: 5px" title="发信" /></a>
+                                        width: 24px; height: 24px; margin-right: 5px" title="发信" /></a>
                             </td>
                             @*<td width="120px" style="cursor: pointer; color: #4573D5">@item.UserId
                             </td>*@
@@ -155,7 +165,7 @@
                             </td>
                             <td width="150px">@item.Diagnosis
                             </td>
-                            <td width="150px">@item.Module
+                            <td width="120px">@item.Module
                             </td>
                             <td width="80px" style="display: none">@item.AlertNumber
                             </td>
@@ -272,6 +282,7 @@
             },
             { "bSortable": false, "aTargets": [0]}] //禁止某些列的排序功能
         });
+        $("#menu li:eq(0) a").attr("href", $("#BackToMain a:eq(4)").attr("href"));
 
         //单击表格中按钮、图标的事件 td on click
         $(document).on('click', '#DataTable td', function (e) {
@@ -344,24 +355,34 @@
         var trIndex = $(this).parent().parent().parent().parent().find("tr").index($(this).parent().parent().parent());
         var content = trim($("#PatientListTbody tr:eq(" + trIndex + ") td:eq(1)").text());
         switch ($(this).attr('id')) {
-            case "ProfileLink":
+            case "BasicProfile":
                 {
                     $(this).parent().attr('href', "/DoctorHome/BasicProfile" + "?PatientId=" + content + "&Role=" + "Patient");
                     break;
                 }
-                //            case "TreatmentLink":
-                //                {
-                //                    $(this).parent().attr('href', "/PatientInfo/TreatmentPlan" + "?PatientId=" + content);
-                //                    break;
-                //                }
-            case "PatientDetailInfo":
+            case "ClinicalInfo":
                 {
-                    $(this).parent().attr('href', "/PatientInfo/PatientDetailInfo" + "?PatientId=" + content);
+                    $(this).parent().attr('href', "/DoctorHome/ClinicalInfo" + "?UserId=" + content);
                     break;
                 }
-            case "AlertLink":
+            case "ClinicalProfile":
                 {
-                    $(this).parent().attr('href', "/PatientInfo/PatientAlert" + "?PatientId=" + content);
+                    $(this).parent().attr('href', "/DoctorHome/ClinicalProfile" + "?UserId=" + content);
+                    break;
+                }
+            case "ModuleProfile":
+                {
+                    $(this).parent().attr('href', "/DoctorHome/ModuleProfile" + "?PatientId=" + content);
+                    break;
+                }
+            case "HealthCoachManagement":
+                {
+                    $(this).parent().attr('href', "/DoctorHome/HealthCoachManagement" + "?PatientId=" + content);
+                    break;
+                }
+            case "ClinicTimeLine":
+                {
+                    $(this).parent().attr('href', "/PatientInfo/ClinicInfo" + "?PatientId=" + content);
                     break;
                 }
             case "MessageLink":
