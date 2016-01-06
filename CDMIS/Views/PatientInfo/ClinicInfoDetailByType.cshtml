@@ -126,7 +126,10 @@
                    paging: false
                    //"aoColumnDefs": [{ "sWidth": "60px", "aTargets": [0] }]  //限定列宽
                });
-
+               
+               new $.fn.dataTable.FixedColumns(table11, {   //固定
+                   leftColumns: 1
+               });
                //        new $.fn.dataTable.FixedColumns(table12, {   //固定
                //            leftColumns: 1,
                //            rightColumns: 1
@@ -146,6 +149,9 @@
                    //"aoColumnDefs": [{ "sWidth": "60px", "aTargets": [0] }]  //限定列宽
                });
 
+               new $.fn.dataTable.FixedColumns(table12, {   //固定
+                   leftColumns: 1
+               });
                //        new $.fn.dataTable.FixedColumns(table12, {   //固定
                //            leftColumns: 1,
                //            rightColumns: 1

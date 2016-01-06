@@ -184,6 +184,7 @@
                                                     @Html.DropDownList(items.ItemCode, items.OptionList, new { id = items.ItemCode, style = "font-size:18px", title = "M", @class = "form-control defaultSelected" })
                                                 }
                                             }
+                                            <p class="@items.ItemCode" style="font-size: 24px; color: Red"></p>
                                         </div>
                                     }
                                     @if (items.ControlType == "2")
@@ -212,6 +213,7 @@
                                             {
                                                 @Html.TextBox(items.ItemCode, items.Content, new { id = items.ItemCode, title = "M", style = "font-size:17px;", @class = "form-control" })
                                             }
+                                            <p class="@items.ItemCode" style="font-size: 24px; color: Red"></p>
                                         </div>
                                     }
                                     @if (items.ControlType == "5")
@@ -696,33 +698,92 @@
                         var TypeNameList = res[item];
                         var Code = TypeNameList.split("|")[0];
                         var Value = TypeNameList.split("|")[1];
+                        var EDate = TypeNameList.split("|")[2];
                         if (Code == "左心室肥大") {
                             $("#QB0002").val(Value);
-                            $("#QB0002").attr("style",$("#QB0002").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60)
+                            {
+                                $("#QB0002").attr("style", $("#QB0002").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QB0002").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QB0002").show();
+                            }
+                            else
+                            {
+                                $("#QB0002").attr("style", $("#QB0002").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QB0002").hide();
+                            }
                         }
                         if (Code == "房颤") {
                             $("#QA0005").val(Value);
-                            $("#QA0005").attr("style", $("#QA0005").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QA0005").attr("style", $("#QA0005").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QA0005").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QA0005").show();
+                            }
+                            else {
+                                $("#QA0005").attr("style", $("#QA0005").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QA0005").hide();
+                            }
                         }
                         if (Code == "心脏瓣膜疾病") {
                             $("#QA0006").val(Value);
-                            $("#QA0006").attr("style", $("#QA0006").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QA0006").attr("style", $("#QA0006").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QA0006").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QA0006").show();
+                            }
+                            else {
+                                $("#QA0006").attr("style", $("#QA0006").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QA0006").hide();
+                            }
                         }
                         if (Code == "62.00028") {
                             $("#QH0003").val(Value);
-                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0003").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0003").show();
+                            }
+                            else {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0003").hide();
+                            }
                         }
                         if (Code == "62.2713") {
                             $("#QH0001").val(Value);
-                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0001").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0001").show();
+                            }
+                            else {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0001").hide();
+                            }
                         }   
                         if (Code == "62.63304") {
                             $("#QH0002").val(Value);
-                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0002").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0002").show();
+                            }
+                            else {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0002").hide();
+                            }
                         }
                         if (Code == "JY0277") {
                             $("#QH0004").val(Value);
-                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0004").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0004").show();
+                            }
+                            else {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0004").hide();
+                            }
                         }
                     }
                     if (item != null) {
@@ -756,41 +817,114 @@
                         var TypeNameList = res[item];
                         var Code = TypeNameList.split("|")[0];
                         var Value = TypeNameList.split("|")[1];
+                        var EDate = TypeNameList.split("|")[2];
                         if (Code == "62.2713") {
                             $("#QH0001").val(Value);
-                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0001").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0001").show();
+                            }
+                            else {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0001").hide();
+                            }
                         }
                         if (Code == "62.63304") {
                             $("#QH0002").val(Value);
-                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0002").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0002").show();
+                            }
+                            else {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0002").hide();
+                            }
                         }
                         if (Code == "62.00028") {
                             $("#QH0003").val(Value);
-                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0003").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0003").show();
+                            }
+                            else {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0003").hide();
+                            }
                         }
                         if (Code == "JY0277") {
                             $("#QH0004").val(Value);
-                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0004").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0004").show();
+                            }
+                            else {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0004").hide();
+                            }
                         }
                         if (Code == "JY2473") {
                             $("#QH0037").val(Value);
-                            $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0037").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0037").show();
+                            }
+                            else {
+                                $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0037").hide();
+                            }
                         }
                         if (Code == "JY1131") {
                             $("#QH0041").val(Value);
-                            $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0041").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0041").show();
+                            }
+                            else {
+                                $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0041").hide();
+                            }
                         }
                         if (Code == "69.TSH00") {
                             $("#QH0043").val(Value);
-                            $("#QH0043").attr("style", $("#QH0043").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0043").attr("style", $("#QH0043").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0043").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0043").show();
+                            }
+                            else {
+                                $("#QH0043").attr("style", $("#QH0043").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0043").hide();
+                            }
                         }
                         if (Code == "10200901") {
                             $("#QH0044").val(Value);
-                            $("#QH0044").attr("style", $("#QH0044").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0044").attr("style", $("#QH0044").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0044").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0044").show();
+                            }
+                            else {
+                                $("#QH0044").attr("style", $("#QH0044").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0044").hide();
+                            }
                         }
                         if (Code == "JY2701") {
                             $("#QH0045").val(Value);
-                            $("#QH0045").attr("style", $("#QH0045").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0045").attr("style", $("#QH0045").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0045").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0045").show();
+                            }
+                            else {
+                                $("#QH0045").attr("style", $("#QH0045").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0045").hide();
+                            }
                         }
                         if (Code == "61000102" || Code == "61000103" || Code == "61000202" || Code == "61000204") {
                             var temp = $("#QG0016").val();
@@ -832,121 +966,354 @@
                         var TypeNameList = res[item];
                         var Code = TypeNameList.split("|")[0];
                         var Value = TypeNameList.split("|")[1];
+                        var EDate = TypeNameList.split("|")[2];
                         if (Code == "62.00028") {
                             $("#QH0003").val(Value);
-                            $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0003").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0003").show();
+                            }
+                            else {
+                                $("#QH0003").attr("style", $("#QH0003").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0003").hide();
+                            }
                         }
                         if (Code == "62.2713") {
                             $("#QH0001").val(Value);
-                            $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0001").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0001").show();
+                            }
+                            else {
+                                $("#QH0001").attr("style", $("#QH0001").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0001").hide();
+                            }
                         }
                         if (Code == "62.63304") {
                             $("#QH0002").val(Value);
-                            $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0002").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0002").show();
+                            }
+                            else {
+                                $("#QH0002").attr("style", $("#QH0002").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0002").hide();
+                            }
                         }
                         if (Code == "JY0277") {
                             $("#QH0004").val(Value);
-                            $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0004").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0004").show();
+                            }
+                            else {
+                                $("#QH0004").attr("style", $("#QH0004").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0004").hide();
+                            }
                         }
                         if (Code == "JY0002") {
                             $("#QH0008").val(Value);
-                            $("#QH0008").attr("style", $("#QH0008").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0008").attr("style", $("#QH0008").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0008").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0008").show();
+                            }
+                            else {
+                                $("#QH0008").attr("style", $("#QH0008").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0008").hide();
+                            }
                         }
                         if (Code == "JY3069") {
                             $("#QH0010").val(Value);
-                            $("#QH0010").attr("style", $("#QH0010").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0010").attr("style", $("#QH0010").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0010").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0010").show();
+                            }
+                            else {
+                                $("#QH0010").attr("style", $("#QH0010").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0010").hide();
+                            }
                         }
                         if (Code == "JY3071") {
                             $("#QH0011").val(Value);
-                            $("#QH0011").attr("style", $("#QH0011").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0011").attr("style", $("#QH0011").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0011").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0011").show();
+                            }
+                            else {
+                                $("#QH0011").attr("style", $("#QH0011").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0011").hide();
+                            }
                         }
                         if (Code == "JY3072") {
                             $("#QH0012").val(Value);
-                            $("#QH0012").attr("style", $("#QH0012").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0012").attr("style", $("#QH0012").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0012").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0012").show();
+                            }
+                            else {
+                                $("#QH0012").attr("style", $("#QH0012").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0012").hide();
+                            }
                         }
                         if (Code == "JY3062") {
                             $("#QH0013").val(Value);
-                            $("#QH0013").attr("style", $("#QH0013").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0013").attr("style", $("#QH0013").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0013").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0013").show();
+                            }
+                            else {
+                                $("#QH0013").attr("style", $("#QH0013").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0013").hide();
+                            }
                         }
                         if (Code == "JY3065") {
                             $("#QH0014").val(Value);
-                            $("#QH0014").attr("style", $("#QH0014").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0014").attr("style", $("#QH0014").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0014").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0014").show();
+                            }
+                            else {
+                                $("#QH0014").attr("style", $("#QH0014").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0014").hide();
+                            }
                         }
                         if (Code == "JY3077") {
                             $("#QH0015").val(Value);
-                            $("#QH0015").attr("style", $("#QH0015").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0015").attr("style", $("#QH0015").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0015").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0015").show();
+                            }
+                            else {
+                                $("#QH0015").attr("style", $("#QH0015").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0015").hide();
+                            }
                         }
                         if (Code == "50.21377") {
                             $("#QH0016").val(Value);
-                            $("#QH0016").attr("style", $("#QH0016").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0016").attr("style", $("#QH0016").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0016").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0016").show();
+                            }
+                            else {
+                                $("#QH0016").attr("style", $("#QH0016").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0016").hide();
+                            }
                         }
                         if (Code == "JY1131") {
                             $("#QH0041").val(Value);
-                            $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0041").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0041").show();
+                            }
+                            else {
+                                $("#QH0041").attr("style", $("#QH0041").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0041").hide();
+                            }
                         }
                         if (Code == "JY1562") {
                             $("#QH0018").val(Value);
-                            $("#QH0018").attr("style", $("#QH0018").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0018").attr("style", $("#QH0018").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0018").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0018").show();
+                            }
+                            else {
+                                $("#QH0018").attr("style", $("#QH0018").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0018").hide();
+                            }
                         }
                         if (Code == "JY1057") {
                             $("#QH0019").val(Value);
-                            $("#QH0019").attr("style", $("#QH0019").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0019").attr("style", $("#QH0019").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0019").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0019").show();
+                            }
+                            else {
+                                $("#QH0019").attr("style", $("#QH0019").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0019").hide();
+                            }
                         }
                         if (Code == "JY1056") {
                             $("#QH0020").val(Value);
-                            $("#QH0020").attr("style", $("#QH0020").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0020").attr("style", $("#QH0020").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0020").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0020").show();
+                            }
+                            else {
+                                $("#QH0020").attr("style", $("#QH0020").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0020").hide();
+                            }
                         }
                         if (Code == "62.79599") {
                             $("#QH0021").val(Value);
-                            $("#QH0021").attr("style", $("#QH0021").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0021").attr("style", $("#QH0021").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0021").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0021").show();
+                            }
+                            else {
+                                $("#QH0021").attr("style", $("#QH0021").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0021").hide();
+                            }
                         }
                         if (Code == "JY1064") {
                             $("#QH0022").val(Value);
-                            $("#QH0022").attr("style", $("#QH0022").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0022").attr("style", $("#QH0022").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0022").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0022").show();
+                            }
+                            else {
+                                $("#QH0022").attr("style", $("#QH0022").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0022").hide();
+                            }
                         }
                         if (Code == "JY1007") {
                             $("#QH0024").val(Value);
-                            $("#QH0024").attr("style", $("#QH0024").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0024").attr("style", $("#QH0024").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0024").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0024").show();
+                            }
+                            else {
+                                $("#QH0024").attr("style", $("#QH0024").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0024").hide();
+                            }
                         }
                         if (Code == "JY3861") {
                             $("#QH0025").val(Value);
-                            $("#QH0025").attr("style", $("#QH0025").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0025").attr("style", $("#QH0025").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0025").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0025").show();
+                            }
+                            else {
+                                $("#QH0025").attr("style", $("#QH0025").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0025").hide();
+                            }
                         }
                         if (Code == "69.TSH00") {
                             $("#QH0029").val(Value);
-                            $("#QH0029").attr("style", $("#QH0029").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0029").attr("style", $("#QH0029").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0029").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0029").show();
+                            }
+                            else {
+                                $("#QH0029").attr("style", $("#QH0029").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0029").hide();
+                            }
                         }
                         if (Code == "JY1931") {
                             $("#QH0032").val(Value);
-                            $("#QH0032").attr("style", $("#QH0032").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0032").attr("style", $("#QH0032").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0032").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0032").show();
+                            }
+                            else {
+                                $("#QH0032").attr("style", $("#QH0032").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0032").hide();
+                            }
                         }
                         if (Code == "JY1391") {
                             $("#QH0033").val(Value);
-                            $("#QH0033").attr("style", $("#QH0033").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0033").attr("style", $("#QH0033").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0033").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0033").show();
+                            }
+                            else {
+                                $("#QH0033").attr("style", $("#QH0033").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0033").hide();
+                            }
                         }
                         if (Code == "JY0165") {
                             $("#QH0035").val(Value);
-                            $("#QH0035").attr("style", $("#QH0035").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0035").attr("style", $("#QH0035").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0035").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0035").show();
+                            }
+                            else {
+                                $("#QH0035").attr("style", $("#QH0035").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0035").hide();
+                            }
                         }
                         if (Code == "JY0113") {
                             $("#QH0036").val(Value);
-                            $("#QH0036").attr("style", $("#QH0036").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0036").attr("style", $("#QH0036").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0036").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0036").show();
+                            }
+                            else {
+                                $("#QH0036").attr("style", $("#QH0036").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0036").hide();
+                            }
                         }
                         if (Code == "JY2473") {
                             $("#QH0037").val(Value);
-                            $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0037").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0037").show();
+                            }
+                            else {
+                                $("#QH0037").attr("style", $("#QH0037").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0037").hide();
+                            }
                         }
                         if (Code == "10200901") {
                             $("#QH0039").val(Value);
-                            $("#QH0039").attr("style", $("#QH0039").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0039").attr("style", $("#QH0039").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0039").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0039").show();
+                            }
+                            else {
+                                $("#QH0039").attr("style", $("#QH0039").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0039").hide();
+                            }
                         }
                         if (Code == "31100901") {
                             $("#QH0040").val(Value);
-                            $("#QH0040").attr("style", $("#QH0040").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QH0040").attr("style", $("#QH0040").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QH0040").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QH0040").show();
+                            }
+                            else {
+                                $("#QH0040").attr("style", $("#QH0040").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QH0040").hide();
+                            }
                         }
                         if (Code.substring(0, 3) == "ECG") {
                             $("#QJ0021").val(Value);
-                            $("#QJ0021").attr("style", $("#QJ0021").attr("style") + ";background-color:#BBFFBB");
+                            if (new Date(EDate).DateDiff("d", new Date()) >= 60) {
+                                $("#QJ0021").attr("style", $("#QJ0021").attr("style") + ";background-color:#FFBBBB");
+                                $("." + "QJ0021").html("该信息为至少60天前所测，请慎重使用");
+                                $("." + "QJ0021").show();
+                            }
+                            else {
+                                $("#QJ0021").attr("style", $("#QJ0021").attr("style") + ";background-color:#BBFFBB");
+                                $("." + "QJ0021").hide();
+                            }
                         }
                     }
                     if (item != null) {
@@ -1240,5 +1607,23 @@
                 $("."+o).hide();
             }
         }
+    }
+
+    //计算日期差
+    Date.prototype.DateDiff = function(strInterval, dtEnd) {   
+        var dtStart = this;  
+        if (typeof dtEnd == 'string' )//如果是字符串转换为日期型  
+        {   
+            dtEnd = StringToDate(dtEnd);  
+        }  
+        switch (strInterval) {   
+            case 's' :return parseInt((dtEnd - dtStart) / 1000);  
+            case 'n' :return parseInt((dtEnd - dtStart) / 60000);  
+            case 'h' :return parseInt((dtEnd - dtStart) / 3600000);  
+            case 'd' :return parseInt((dtEnd - dtStart) / 86400000);  
+            case 'w' :return parseInt((dtEnd - dtStart) / (86400000 * 7));  
+            case 'm' :return (dtEnd.getMonth()+1)+((dtEnd.getFullYear()-dtStart.getFullYear())*12) - (dtStart.getMonth()+1);  
+            case 'y' :return dtEnd.getFullYear() - dtStart.getFullYear();  
+        }  
     }
 </script>

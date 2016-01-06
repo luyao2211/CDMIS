@@ -390,7 +390,7 @@ namespace CDMIS.Controllers
         {
             try
             {
-                DataSet ds = _ServicesSoapClient.GetPatientsByDoctorId(doctorId, "");
+                DataSet ds = _ServicesSoapClient.GetPatientsByDoctorId(doctorId, "", "Doctor");
                 return ds;
             }
             catch (Exception)
@@ -857,7 +857,14 @@ namespace CDMIS.Controllers
             }
             model.ModuleBoughtInfo = ModuleInfo;
             ModuleInfo = new List<Models.ModuleInfo>();
-            ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(PatientId);
+            if (user.Role == "Doctor")
+            {
+                ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(PatientId);
+            }
+            else
+            {
+                ModulesInfo = _ServicesSoapClient.GetModuleList();
+            }
             DataSet DoctorModule = _ServicesSoapClient.GetDoctorModuleList(DoctorId);
             List<string> DoctorModules = new List<string>();
             foreach (DataRow item in DoctorModule.Tables[0].Rows)
@@ -868,7 +875,7 @@ namespace CDMIS.Controllers
             {
                 foreach (DataRow row in item.Rows)
                 {
-                    if (DoctorModules.IndexOf(row[0].ToString()) != -1 || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x){return x.Category == row[0].ToString();}) == null))
+                    if ((user.Role == "Doctor" && DoctorModules.IndexOf(row[0].ToString()) != -1) || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x){return x.Category == row[0].ToString();}) == null))
                     {
                         ModuleInfo NewLine = new Models.ModuleInfo();
                         NewLine.Category = row[0].ToString();
@@ -1119,7 +1126,14 @@ namespace CDMIS.Controllers
                 }
                 model.ModuleBoughtInfo = ModuleInfo;
                 ModuleInfo = new List<Models.ModuleInfo>();
-                ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(UserId);
+                if (user.Role == "Doctor")
+                {
+                    ModulesInfo = _ServicesSoapClient.GetModulesUnBoughtByPId(UserId);
+                }
+                else
+                {
+                    ModulesInfo = _ServicesSoapClient.GetModuleList();
+                }
                 DataSet DoctorModule = _ServicesSoapClient.GetDoctorModuleList(DoctorId);
                 List<string> DoctorModules = new List<string>();
                 foreach (DataRow item in DoctorModule.Tables[0].Rows)
@@ -1130,7 +1144,7 @@ namespace CDMIS.Controllers
                 {
                     foreach (DataRow row in item.Rows)
                     {
-                        if (DoctorModules.IndexOf(row[0].ToString()) != -1 || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x) { return x.Category == row[0].ToString(); }) == null))
+                        if ((user.Role == "Doctor" && DoctorModules.IndexOf(row[0].ToString()) != -1) || (user.Role == "HealthCoach" && row[0].ToString() != "M4" && row[0].ToString() != "M5" && model.ModuleBoughtInfo.Find(delegate(ModuleInfo x) { return x.Category == row[0].ToString(); }) == null))
                         {
                             ModuleInfo NewLine = new Models.ModuleInfo();
                             NewLine.Category = row[0].ToString();
@@ -1679,8 +1693,22 @@ namespace CDMIS.Controllers
             string ItemCode = "InvalidFlag";
             int ItemSeq = 1;   //BasicInfoDetail
             int flag = 2;
-            flag = _ServicesSoapClient.DeleteModule(UserId, CategoryCode, ItemCode, ItemSeq);
-            flag = _ServicesSoapClient.DeletePatient(DoctorId, CategoryCode, UserId);
+            if (user.Role == "Doctor")
+            {
+                flag = _ServicesSoapClient.DeleteModule(UserId, CategoryCode, ItemCode, ItemSeq);
+            }
+            else
+            {
+                flag = _ServicesSoapClient.DeleteModule(UserId, "H" + CategoryCode, ItemCode, ItemSeq);
+            }
+            if (user.Role == "Doctor")
+            {
+                flag = _ServicesSoapClient.DeletePatient(DoctorId, CategoryCode, UserId);
+            }
+            else
+            {
+                flag = _ServicesSoapClient.DeletePatient(DoctorId, "H" + CategoryCode, UserId);
+            }
             if (flag == 1)
             {
                 res.Data = true;
@@ -3167,15 +3195,15 @@ namespace CDMIS.Controllers
             {
                 DataRow DR_1 = SynDetailDT.Rows[0];
                 {
-                    SynDetailList.Add(DR_1["Name1"].ToString() + "|" + DR_1["Value1"].ToString());
-                    SynDetailList.Add(DR_1["Name2"].ToString() + "|" + DR_1["Value2"].ToString());
-                    SynDetailList.Add(DR_1["Name3"].ToString() + "|" + DR_1["Value3"].ToString());
+                    SynDetailList.Add(DR_1["Name1"].ToString() + "|" + DR_1["Value1"].ToString() + "|" + DR_1["Date"].ToString().Substring(0, 10));
+                    SynDetailList.Add(DR_1["Name2"].ToString() + "|" + DR_1["Value2"].ToString() + "|" + DR_1["Date"].ToString().Substring(0, 10));
+                    SynDetailList.Add(DR_1["Name3"].ToString() + "|" + DR_1["Value3"].ToString() + "|" + DR_1["Date"].ToString().Substring(0, 10));
                 }
             }
             SynDetailDT = DS_SynDetail.Tables[1];
             foreach (DataRow DR_2 in SynDetailDT.Rows)
             {
-                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
+                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Value"].ToString() + "|" + DR_2["Date"].ToString().Substring(0, 10));
             }
             res.Data = SynDetailList;
             res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
@@ -3192,7 +3220,7 @@ namespace CDMIS.Controllers
             DataTable SynDetailDT = DS_SynDetail.Tables[0];
             foreach (DataRow DR_2 in SynDetailDT.Rows)
             {
-                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
+                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Value"].ToString() + "|" + DR_2["Date"].ToString().Substring(0, 10));
             }
             res.Data = SynDetailList;
             res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
@@ -3208,17 +3236,17 @@ namespace CDMIS.Controllers
             DataSet DS_SynDetail = new DataSet();
             DS_SynDetail = _ServicesSoapClient.SynBasicInfoDetailForM3(PatientId);
             DataTable SynDetailDT = DS_SynDetail.Tables[0];
-            if (SynDetailDT.Rows.Count != 0)
+            /*if (SynDetailDT.Rows.Count != 0)
             {
                 DataRow DR_1 = SynDetailDT.Rows[0];
                 {
                     SynDetailList.Add(DR_1["ItemCode"].ToString() + "|" + DR_1["Value"].ToString());
                 }
-            }
+            }*/
             SynDetailDT = DS_SynDetail.Tables[1];
             foreach (DataRow DR_2 in SynDetailDT.Rows)
             {
-                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Name"].ToString());
+                SynDetailList.Add(DR_2["Code"].ToString() + "|" + DR_2["Value"].ToString() + "|" + DR_2["Date"].ToString().Substring(0, 10));
             }
             res.Data = SynDetailList;
             res.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
@@ -3709,25 +3737,46 @@ namespace CDMIS.Controllers
 
         public List<HealthCoach> GetDoctorCareInfo(string PatientId)
         {
+            var user = Session["CurrentUser"] as UserAndRole;
             List<HealthCoach> dclist = new List<HealthCoach>();
-            DataSet ModulesInfo = _ServicesSoapClient.GetModulesBoughtByPId(PatientId);
-            foreach (DataTable item in ModulesInfo.Tables)
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://121.43.107.106:9000/");
+            HttpResponseMessage response = client.GetAsync("Api/v1/Users/HModulesByID?PatientId=" + PatientId + "&DoctorId=" + user.UserId).Result;
+            if (response.IsSuccessStatusCode)
             {
-                foreach (DataRow row in item.Rows)
+                if (response.Content.ReadAsStringAsync().Result != "[]")
                 {
-                    DataTable dcOfPat = _ServicesSoapClient.GetConForPatient(PatientId, row[0].ToString()).Tables[0];
-                    foreach (DataRow line in dcOfPat.Rows)
+                    string[] Modules = response.Content.ReadAsStringAsync().Result.Split(new string[] { "},{", "[{\"", "\"}]" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string Module in Modules)
                     {
-                        HealthCoach dc = new HealthCoach()
+                        string[] Detail = Module.Split(new string[] { "\",\"", "\":\"" }, StringSplitOptions.RemoveEmptyEntries);
+                        DataTable dcOfPat = _ServicesSoapClient.GetConForPatient(PatientId, Detail[1].Substring(1)).Tables[0];
+                        foreach (DataRow line in dcOfPat.Rows)
                         {
-                            ItemSeq = line[2].ToString(),
-                            HealthCoachId = line[0].ToString(),
-                            HealthCoachName = _ServicesSoapClient.GetUserName(line[0].ToString()),
-                            HCDivName = "H" + row[0].ToString(),
-                            DataTableName = row[1].ToString(),
-                            HealthCoachList = GetHealthCoachInfoList("Doctor")
-                        };
-                        dclist.Add(dc);
+                            HealthCoach dc = new HealthCoach()
+                            {
+                                ItemSeq = line[2].ToString(),
+                                HealthCoachId = line[0].ToString(),
+                                HealthCoachName = _ServicesSoapClient.GetUserName(line[0].ToString()),
+                                HCDivName = Detail[1],
+                                DataTableName = Detail[3],
+                                HealthCoachList = GetHealthCoachInfoList("Doctor")
+                            };
+                            dclist.Add(dc);
+                        }
+                        if (dcOfPat.Rows.Count == 0)
+                        {
+                            HealthCoach dc = new HealthCoach()
+                            {
+                                ItemSeq = "",
+                                HealthCoachId = "0",
+                                HealthCoachName = "",
+                                HCDivName = Detail[1],
+                                DataTableName = Detail[3],
+                                HealthCoachList = GetHealthCoachInfoList("Doctor")
+                            };
+                            dclist.Add(dc);
+                        }
                     }
                 }
             }

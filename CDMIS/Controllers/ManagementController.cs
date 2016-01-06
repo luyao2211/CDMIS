@@ -209,7 +209,7 @@ namespace CDMIS.Controllers
                 }
                 else
                 {
-                    Ret = _ServicesSoapClient.DeletePatient(PreDocId, "", PatientId);
+                    Ret = _ServicesSoapClient.DeletePatient(PreDocId, Module.Substring(1), PatientId);
                 }
             }
             if (Ret == 1)

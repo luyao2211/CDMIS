@@ -273,7 +273,7 @@ namespace CDMIS.Controllers
             }
 
             int setSuccessFlag = 0;
-            if (user.Role == "Administrator" || user.Role == "Doctor")
+            if (user.Role == "Administrator" || user.Role == "Doctor" || user.Role == "HealthCoach")
             {
                 var DoctorBasicInfo = _ServicesSoapClient.GetDoctorInfo(UserId);
                 var DoctorInvalidFlag = Convert.ToInt32(DoctorBasicInfo.Tables[0].Rows[0]["InvalidFlag"].ToString());
@@ -286,7 +286,7 @@ namespace CDMIS.Controllers
                 var SetDoctorECPNFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact002_4", ItemSeq, EmergencyContactPhoneNumber, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                 var SetDoctorPhotoFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_4", ItemSeq, avatarPath, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                 var SetDoctorIDNoFlag = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_1", ItemSeq, IDNo, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
-                if (user.Role == "Doctor")
+                if (user.Role == "Doctor" || user.Role == "HealthCoach")
                 {
                     var SetDoctorUnitName = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_5", ItemSeq, PersonalHomepageModel.UnitName, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
                     var SetDoctorJobTitle = _ServicesSoapClient.SetDoctorInfoDetail(UserId, CategoryCode, "Contact001_6", ItemSeq, PersonalHomepageModel.JobTitle, null, SortNo, user.UserId, user.TerminalName, user.TerminalIP, user.DeviceType);
@@ -316,7 +316,7 @@ namespace CDMIS.Controllers
             }
             //判断该用户是否为患者，同步Ps.BasicInfo表
             int isPatientFlag = 0;
-            if (user.Role == "Doctor")
+            if (user.Role == "Doctor" || user.Role == "HealthCoach")
             {
                 DataSet roleDs = _ServicesSoapClient.GetAllRoleMatch(UserId);
                 if (roleDs.Tables.Count != 0)
@@ -332,7 +332,7 @@ namespace CDMIS.Controllers
                     }
                 }
             }
-            if (user.Role == "Doctor" && isPatientFlag == 1)
+            if ((user.Role == "Doctor" || user.Role == "HealthCoach") && isPatientFlag == 1)
             {
                 var GetBasicInfoList = _ServicesSoapClient.GetUserBasicInfo(UserId);
                 var BloodType = Convert.ToInt32(GetBasicInfoList.BloodType);

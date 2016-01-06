@@ -115,7 +115,7 @@ namespace CDMIS.Controllers
                             FormsAuthentication.SetAuthCookie(UserId, true);
                             if (control == null && page == null)
                             {
-                                if (CurrentUser.Role == "Administrator")
+                                if (CurrentUser.Role == "Administrator" && LogOnModel.UserRole == "Administrator")
                                 {
                                     return RedirectToAction("Index", "Management");
                                 }
